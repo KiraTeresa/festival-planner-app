@@ -1,2 +1,36 @@
 <h1>{{appTitle}} 🚀</h1>
+{{#if isLoggedIn}}
 <p>Welcome Ironhacker!</p>
+{{/if}}
+
+
+
+{{#unless isLoggedIn}}
+<h2>Sign up here:</h2>
+<form action="/auth/signup" method="POST">
+   <label> Username
+      <input type="text" name="username">
+   </label>
+   <label> Password
+      <input type="password" name="password">
+   </label>
+
+   <button type="submit">Sign up</button>
+</form>
+
+<h2>Already have an account? Come in then:</h2>
+<form action="/auth/login" method="POST">
+   <label> Username
+      <input type="text" name="username">
+   </label>
+   <label> Password
+      <input type="password" name="password">
+   </label>
+
+   <button type="submit">Log in</button>
+</form>
+{{/unless}}
+
+{{#if errorMessage}}
+   {{errorMessage}}
+{{/if}}
