@@ -30,4 +30,14 @@ router.post("/create", isLoggedIn, (req, res) => {
     .catch((err) => console.log("Failed creating a group", err));
 });
 
+router.get("/:id", isLoggedIn, (req, res) => {
+  Group.findById(req.params.id)
+    .populate("admin crew festivals") // --> give the whole user object with this ID
+    .then((group) => {
+      const { groupName, admin, crew, festivals } = group;
+      res.render("group/details", { groupName, admin, crew, festivals });
+    })
+    .catch((err) => console.log("Sorry, that didn't work", err));
+});
+
 module.exports = router;

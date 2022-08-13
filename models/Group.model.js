@@ -9,11 +9,11 @@ const groupSchema = new Schema({
   },
   admin: {
     type: mongoose.Types.ObjectId,
-    ref: "user",
+    ref: "User",
   },
   crew: {
     type: [mongoose.Types.ObjectId],
-    ref: "user",
+    ref: "User",
   },
   festivals: [],
 });

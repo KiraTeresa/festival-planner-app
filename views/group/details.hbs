@@ -1,0 +1,26 @@
+<h2>Group details of {{groupName}}</h2>
+<div>
+    Admin: {{admin.username}}
+</div>
+<div>
+    The Crew:
+    <ul>
+        {{#each crew}}
+        <li>{{username}}</li>
+        {{/each}}
+    </ul>
+    {{#unless crew}}
+    -- no crew members --
+    {{/unless}}
+</div>
+<div>
+    Festivals:
+    <ul>
+        {{#each festivals}}
+        <li>-- model not yet defined --</li>
+        {{/each}}
+    </ul>
+    {{#unless festivals}}
+    -- no festivals added so far --
+    {{/unless}}
+</div>
