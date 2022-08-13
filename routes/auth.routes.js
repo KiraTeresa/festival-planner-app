@@ -126,7 +126,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
           });
         }
         // req.session.user = user;
-        req.session.user = user._id; // ! better and safer but in this case we saving the entire user object
+        req.session.userId = user._id; // ! better and safer but in this case we saving the entire user object
         console.log("Logged in user info: ", req.session.user);
         return res.redirect(`/user/${user._id}`);
       });

@@ -5,3 +5,9 @@
 <li>{{group.groupName}}</li>
 {{/each}}
 </ul>
+
+{{#unless group}}
+<p>Sorry, there are no groups at the moment. Go ahead and create one!</p>
+{{/unless}}
+
+<a href="/group/create">Create a new group</a>
