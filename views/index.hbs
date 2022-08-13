@@ -6,6 +6,7 @@
 
 
 {{#unless isLoggedIn}}
+<div>
 <h2>Sign up here:</h2>
 <form action="/auth/signup" method="POST">
    <label> Username
@@ -17,7 +18,9 @@
 
    <button type="submit">Sign up</button>
 </form>
+</div>
 
+<div>
 <h2>Already have an account? Come in then:</h2>
 <form action="/auth/login" method="POST">
    <label> Username
@@ -29,6 +32,7 @@
 
    <button type="submit">Log in</button>
 </form>
+</div>
 {{/unless}}
 
 {{#if errorMessage}}

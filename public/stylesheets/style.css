@@ -10,3 +10,7 @@ a {
 h1 {
   color: 15px;
 }
+
+div {
+  border: 1px solid #000;
+}
