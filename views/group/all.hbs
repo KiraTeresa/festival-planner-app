@@ -1,12 +1,12 @@
 <h1>All groups will be listed here</h1>
 
 <ul>
-{{#each group}}
-<li>{{group.groupName}}</li>
+{{#each groups}}
+<li>{{groupName}}</li>
 {{/each}}
 </ul>
 
-{{#unless group}}
+{{#unless groups}}
 <p>Sorry, there are no groups at the moment. Go ahead and create one!</p>
 {{/unless}}
 

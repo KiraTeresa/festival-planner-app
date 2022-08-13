@@ -18,11 +18,16 @@ router.get("/create", isLoggedIn, (req, res) => {
 
 router.post("/create", isLoggedIn, (req, res) => {
   const { groupName } = req.body;
-  const adminId = req.sessionID;
-  User.findById(adminId).then((admin) => {
-    console.log(`Creating the group ${groupName} with admin ${admin.username}`);
-    res.redirect("/");
-  });
+  const adminId = req.session.user;
+  User.findById(adminId)
+    .then((userFound) => {
+      console.log(
+        `Creating the group ${groupName} with admin ${userFound._id}`
+      );
+      Group.create({ groupName, admin: userFound._id });
+      res.redirect("/group");
+    })
+    .catch((err) => console.log("Failed creating a group", err));
 });
 
 module.exports = router;
