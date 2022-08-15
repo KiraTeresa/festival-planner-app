@@ -63,20 +63,18 @@ router.get("/:id/add-band", (req, res) => {
 });
 
 router.post("/:id/add-band", (req, res) => {
-  const { bandName, stage, day } = req.body;
+  const { bandName, stage, day, startTime, endTime } = req.body;
   const band = {
     bandName,
     stage,
     day,
+    startTime,
+    endTime,
   };
   Festival.findById(req.params.id)
     .then((festival) => {
       const { bands, _id } = festival;
-      console.log("Band list before: ", bands);
       bands.push(band);
-      console.log("You added the following band to the festival: ", band);
-      console.log("Band list after: ", bands);
-      console.log("The band will play on: ", band.day);
       festival.save();
       res.redirect(`/festival/${_id}`);
     })
