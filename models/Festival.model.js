@@ -15,10 +15,14 @@ const festivalSchema = new Schema({
     required: true,
   },
   stages: {
-    type: [String],
+    type: [],
+    required: true,
+    default: [],
   },
   bands: {
-    type: [{}],
+    type: [],
+    required: true,
+    default: [],
   },
 });
 

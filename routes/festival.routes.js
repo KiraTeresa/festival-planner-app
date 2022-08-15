@@ -35,9 +35,12 @@ router.get("/:id/add-stage", (req, res) => {
 
 router.post("/:id/add-stage", (req, res) => {
   const { stage } = req.body;
-  Festival.findByIdAndUpdate(req.params.id, { stages: stage })
+  Festival.findById(req.params.id)
     .then((festival) => {
-      res.redirect(`/festival/${festival._id}`);
+      const { stages, _id } = festival;
+      stages.push(stage);
+      festival.save();
+      res.redirect(`/festival/${_id}`);
     })
     .catch((err) => console.log("Adding stage failed", err));
 });
@@ -62,10 +65,15 @@ router.post("/:id/add-band", (req, res) => {
     stage,
     day,
   };
-  Festival.findByIdAndUpdate(req.params.id, { bands: band })
+  Festival.findById(req.params.id)
     .then((festival) => {
+      const { bands, _id } = festival;
+      console.log("Band list before: ", bands);
+      bands.push(band);
       console.log("You added the following band to the festival: ", band);
-      res.redirect(`/festival/${festival._id}`);
+      console.log("Band list after: ", bands);
+      festival.save();
+      res.redirect(`/festival/${_id}`);
     })
     .catch((err) => console.log("Adding a band failed", err));
 });
