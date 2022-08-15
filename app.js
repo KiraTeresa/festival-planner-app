@@ -36,6 +36,9 @@ app.use("/user", userRoutes);
 const groupRoutes = require("./routes/group.routes");
 app.use("/group", groupRoutes);
 
+const festivalRoutes = require("./routes/festival.routes");
+app.use("/festival", festivalRoutes);
+
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 
