@@ -1,0 +1,29 @@
+<h2>{{name}}</h2>
+<p>Here you'll find all the information about the {{name}} festival.</p>
+<div>
+    Stages:
+    <ul>
+    {{#each stages}}
+    <li>{{name}}</li>
+    {{/each}}
+
+    {{#unless stages}}
+    -- no stages listed --
+    {{/unless}}
+
+    <a href="/festival/{{_id}}/add-stage">add a stage</a>
+</div>
+<div>
+    Bands:
+    <ul>
+        {{#each bands}}
+        <li>{{name}}</li>
+        {{/each}}
+    </ul>
+
+    {{#unless bands}}
+    -- no bands added so far --
+    {{/unless}}
+
+    <a href="/festival/{{_id}}/add-band">add a band</a>
+</div>

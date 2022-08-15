@@ -23,4 +23,10 @@ router.get("/all", (req, res) => {
     .catch((err) => console.log("Rendering all festivals didn't work", err));
 });
 
+router.get("/:id", (req, res) => {
+  Festival.findById(req.params.id)
+    .then((festival) => res.render("festival/details", { festival }))
+    .catch((err) => console.log("Loading festival details failed", err));
+});
+
 module.exports = router;
