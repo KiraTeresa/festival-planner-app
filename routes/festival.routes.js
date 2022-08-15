@@ -13,9 +13,7 @@ router.get("/create", (req, res) => {
 
 router.post("/create", (req, res) => {
   const { name, startDate, endDate } = req.body;
-
   console.log(name, startDate, endDate);
-
   Festival.create({ name, startDate, endDate });
   res.redirect("/festival/all");
 });
@@ -78,6 +76,7 @@ router.post("/:id/add-band", (req, res) => {
       bands.push(band);
       console.log("You added the following band to the festival: ", band);
       console.log("Band list after: ", bands);
+      console.log("The band will play on: ", band.day);
       festival.save();
       res.redirect(`/festival/${_id}`);
     })
