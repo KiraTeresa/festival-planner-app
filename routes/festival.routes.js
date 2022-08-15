@@ -23,9 +23,43 @@ router.get("/all", (req, res) => {
     .catch((err) => console.log("Rendering all festivals didn't work", err));
 });
 
+router.get("/:id/add-stage", (req, res) => {
+  Festival.findById(req.params.id).then((festival) => {
+    const { _id, name, startDate, endDate, stages, bands } = festival;
+    res.render("festival/add-stage", {
+      _id,
+      name,
+      startDate,
+      endDate,
+      stages,
+      bands,
+    });
+  });
+});
+
+router.post("/:id/add-stage", (req, res) => {
+  const { stage } = req.body;
+  Festival.findByIdAndUpdate(req.params.id, { stages: stage })
+    .then((festival) => {
+      res.redirect(`/festival/${festival._id}`);
+    })
+    .catch((err) => console.log("Adding stage failed", err));
+});
+
 router.get("/:id", (req, res) => {
   Festival.findById(req.params.id)
-    .then((festival) => res.render("festival/details", { festival }))
+    .then((festival) => {
+      const { _id, name, startDate, endDate, stages, bands } = festival;
+      console.log(stages);
+      res.render("festival/details", {
+        _id,
+        name,
+        startDate,
+        endDate,
+        stages,
+        bands,
+      });
+    })
     .catch((err) => console.log("Loading festival details failed", err));
 });
 
