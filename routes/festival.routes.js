@@ -1,7 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const Festival = require("../models/Festival.model");
+const isOwner = require("../middleware/isOwner");
 
+// Making sure only users with the role "owner" can access the festival routes:
+router.use(isOwner);
+
+// route handling:
 router.get("/create", (req, res) => {
   res.render("festival/create");
 });
@@ -26,6 +31,7 @@ router.get("/all", (req, res) => {
 router.get("/:id/add-stage", (req, res) => {
   Festival.findById(req.params.id).then((festival) => {
     const { _id, name } = festival;
+    console.log("Session User: ", req.session.user);
     res.render("festival/add-stage", {
       _id,
       name,
