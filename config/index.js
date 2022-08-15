@@ -69,4 +69,19 @@ module.exports = (app) => {
     }
     next();
   });
+
+  // check if the user has the role "owner"
+  const isOwner = require("../middleware/isOwner");
+  app.use((req, res, next) => {
+    if (req.session.user) {
+      console.log("You are logged in");
+      if (isOwner) {
+        // isOwner is a function, not a boolean --> NEEDS FIXING!!!!
+        console.log("Whats returned by isOwner: ", isOwner);
+        res.locals.isOwner = true;
+        console.log("You are the owner: ", res.locals.isOwner);
+      }
+    }
+    next();
+  });
 };

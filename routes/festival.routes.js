@@ -84,6 +84,15 @@ router.post("/:id/add-band", (req, res) => {
     .catch((err) => console.log("Adding a band failed", err));
 });
 
+router.post("/:id/delete", (req, res) => {
+  Festival.findByIdAndDelete(req.params.id)
+    .then(() => {
+      console.log("Festival successfully deleted");
+      res.redirect("/festival/all");
+    })
+    .catch((err) => console.log("Deleting failed", err));
+});
+
 router.get("/:id", (req, res) => {
   Festival.findById(req.params.id)
     .then((festival) => {

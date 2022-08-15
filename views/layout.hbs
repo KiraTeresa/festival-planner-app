@@ -17,7 +17,9 @@
         | <a href="/group">See all groups</a>
         | <a href="/auth/logout">Logout</a>
         {{/if}}
-        <a href="/festival/all">See all festivals</a>
+        {{#if isOwner}}
+        | <a href="/festival/all">See all festivals</a>
+        {{/if}}
       </nav>
     </header>
 
