@@ -25,14 +25,10 @@ router.get("/all", (req, res) => {
 
 router.get("/:id/add-stage", (req, res) => {
   Festival.findById(req.params.id).then((festival) => {
-    const { _id, name, startDate, endDate, stages, bands } = festival;
+    const { _id, name } = festival;
     res.render("festival/add-stage", {
       _id,
       name,
-      startDate,
-      endDate,
-      stages,
-      bands,
     });
   });
 });
@@ -44,6 +40,34 @@ router.post("/:id/add-stage", (req, res) => {
       res.redirect(`/festival/${festival._id}`);
     })
     .catch((err) => console.log("Adding stage failed", err));
+});
+
+router.get("/:id/add-band", (req, res) => {
+  Festival.findById(req.params.id).then((festival) => {
+    const { _id, name, startDate, endDate, stages } = festival;
+    res.render("festival/add-band", {
+      _id,
+      name,
+      startDate,
+      endDate,
+      stages,
+    });
+  });
+});
+
+router.post("/:id/add-band", (req, res) => {
+  const { bandName, stage, day } = req.body;
+  const band = {
+    bandName,
+    stage,
+    day,
+  };
+  Festival.findByIdAndUpdate(req.params.id, { bands: band })
+    .then((festival) => {
+      console.log("You added the following band to the festival: ", band);
+      res.redirect(`/festival/${festival._id}`);
+    })
+    .catch((err) => console.log("Adding a band failed", err));
 });
 
 router.get("/:id", (req, res) => {
