@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Festival = require("../models/Festival.model");
 const isOwner = require("../middleware/isOwner");
+const spotifyApi = require("../utils/spotify");
 
 // Making sure only users with the role "owner" can access the festival routes:
 router.use(isOwner);
@@ -49,23 +50,33 @@ router.post("/:id/add-stage", (req, res) => {
     .catch((err) => console.log("Adding stage failed", err));
 });
 
-router.get("/:id/add-band", (req, res) => {
-  Festival.findById(req.params.id).then((festival) => {
-    const { _id, name, startDate, endDate, stages } = festival;
-    res.render("festival/add-band", {
-      _id,
-      name,
-      startDate,
-      endDate,
-      stages,
+router.get("/:id/add-band/", (req, res) => {
+  const { id } = req.params;
+  const { spotifyId } = req.query;
+  Festival.findById(id).then((festival) => {
+    const { _id, startDate, endDate, stages } = festival;
+    const festivalName = festival.name;
+    spotifyApi.getArtist(spotifyId).then((artist) => {
+      const { name, images } = artist.body;
+      res.render("festival/add-band", {
+        _id,
+        festivalName,
+        startDate,
+        endDate,
+        stages,
+        spotifyId,
+        name,
+        images,
+      });
     });
   });
 });
 
 router.post("/:id/add-band", (req, res) => {
-  const { bandName, stage, day, startTime, endTime } = req.body;
+  const { bandName, spotifyId, stage, day, startTime, endTime } = req.body;
   const band = {
     bandName,
+    spotifyId,
     stage,
     day,
     startTime,

@@ -27,7 +27,12 @@
     -- no bands added so far --
     {{/unless}}
 
-    <a href="/festival/{{_id}}/add-band">add a band</a>
+    {{!-- <a href="/festival/{{_id}}/add-band">add a band</a> --}}
+    <form action="/band/search-result" method="get">
+        <input type="hidden" name="festivalID" value="{{_id}}">
+        <input type="search" name="bandName" placeholder="search band you wanna add..">
+        <button type="submit">Search</button>
+    </form>
 </div>
 
 <form action="/festival/{{_id}}/delete" method="post">

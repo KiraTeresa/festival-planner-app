@@ -1,9 +1,10 @@
-<h2>Add a band to {{name}} festival</h2>
+<h2>Add a band to {{festivalName}} festival</h2>
 
 <form action="/festival/{{_id}}/add-band" method="post">
 
 <label for="bandName">Band name: </label>
-<input type="text" id="bandName" name="bandName">
+<input type="text" id="bandName" name="bandName" value="{{name}}" readonly>
+<input type="hidden" name="spotifyId" value="{{spotifyId}}">
 
 <label for="stage">On which stage will the band be playing?</label>
 <select name="stage" id="stage">
