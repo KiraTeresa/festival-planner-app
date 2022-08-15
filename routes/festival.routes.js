@@ -83,6 +83,27 @@ router.post("/:id/add-band", (req, res) => {
     .catch((err) => console.log("Adding a band failed", err));
 });
 
+router.get("/:id/update", (req, res) => {
+  Festival.findById(req.params.id)
+    .then((festival) => {
+      const { _id, name, startDate, endDate } = festival;
+      res.render("festival/update", { _id, name, startDate, endDate });
+    })
+    .catch((err) => console.log("Ups, something went wrong", err));
+});
+
+router.post("/:id/update", (req, res) => {
+  const { name, startDate, endDate } = req.body;
+  Festival.findByIdAndUpdate(req.params.id, { name, startDate, endDate })
+    .then(() => res.redirect(`/festival/${req.params.id}`))
+    .catch((err) =>
+      console.log(
+        "Updating the festival info didn't work, please try again",
+        err
+      )
+    );
+});
+
 router.post("/:id/delete", (req, res) => {
   Festival.findByIdAndDelete(req.params.id)
     .then(() => {
