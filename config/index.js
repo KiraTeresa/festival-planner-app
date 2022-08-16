@@ -28,6 +28,10 @@ const MongoStore = require("connect-mongo");
 // Connects the mongo uri to maintain the same naming structure
 const MONGO_URI = require("../utils/consts");
 
+// check for authorization by role "owner"
+// const isOwner = require("../middleware/isOwner");
+const User = require("../models/User.model");
+
 // Middleware configuration
 module.exports = (app) => {
   // In development environment the app logs
@@ -71,16 +75,16 @@ module.exports = (app) => {
   });
 
   // check if the user has the role "owner"
-  const isOwner = require("../middleware/isOwner");
-  app.use((req, res, next) => {
+  app.use(async (req, res, next) => {
     if (req.session.user) {
-      console.log("You are logged in");
-      if (isOwner) {
-        // isOwner is a function, not a boolean --> NEEDS FIXING!!!!
-        console.log("Whats returned by isOwner: ", isOwner);
-        res.locals.isOwner = true;
+      await User.findById(req.session.user).then((userFound) => {
+        if (userFound.role !== "owner") {
+          res.locals.isOwner = false;
+        } else {
+          res.locals.isOwner = true;
+        }
         console.log("You are the owner: ", res.locals.isOwner);
-      }
+      });
     }
     next();
   });
