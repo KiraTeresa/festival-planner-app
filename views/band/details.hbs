@@ -1,0 +1,7 @@
+<h2>{{bandName}}</h2>
+<div>Go watch on {{stage}}</div>
+<div>Stagetime: {{startTime}}-{{endTime}}{{#unless startTime}}n.a.{{/unless}}</div>
+
+{{#if isOwner}}
+<a href="/band/edit/{{bandName}}">Edit</a>
+{{/if}}

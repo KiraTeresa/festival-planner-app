@@ -20,4 +20,20 @@ router.get("/search-result", (req, res) => {
     );
 });
 
+router.get("/:bandName/:festivalID", (req, res) => {
+  const band = req.params.bandName;
+  const festivalID = req.params.festivalID;
+  Festival.findById(festivalID)
+    .then((festival) => {
+      const bandFound = festival.bands.find(
+        (element) => element.bandName === band
+      );
+      const { bandName, stage, day, startTime, endTime } = bandFound;
+      res.render("band/details", { bandName, stage, day, startTime, endTime });
+    })
+    .catch((err) =>
+      console.log("Did not find the band you were looking for", err)
+    );
+});
+
 module.exports = router;
