@@ -147,7 +147,7 @@ router.get("/logout", isLoggedIn, (req, res) => {
         .status(500)
         .render("auth/logout", { errorMessage: err.message });
     }
-    res.render("auth/logout");
+    res.redirect("/");
   });
 });
 
