@@ -1,6 +1,16 @@
 <h2>{{bandName}}</h2>
+<img src="{{images.1.url}}" alt="">
+<div>{{genres}}</div>
 <div>Go watch on {{stage}}</div>
 <div>Stagetime: {{startTime}}-{{endTime}}{{#unless startTime}}n.a.{{/unless}}</div>
+<div>Top tracks:
+    <ul>
+        {{#each tracks}}
+        <li>{{name}} </li>
+        <audio controls src="{{preview_url}}"></audio>
+        {{/each}}
+    </ul>
+</div>
 
 {{#if isOwner}}
 <a href="/band/edit/{{bandName}}">Edit</a>
