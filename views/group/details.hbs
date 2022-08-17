@@ -5,6 +5,7 @@
 <div>
     The Crew:
     <ul>
+        <li>{{admin.username}} <i>(admin)</i></li>
         {{#each crew}}
         <li>{{username}}</li>
         {{/each}}
@@ -12,6 +13,15 @@
     {{#unless crew}}
     -- no crew members --
     {{/unless}}
+    <form action="/group/{{id}}" method="post">
+    <button type="submit">Join the crew</button>
+    </form>
+    {{#if userError}}
+    {{userError}}
+    {{/if}}
+     {{#if adminError}}
+    {{adminError}}
+    {{/if}}
 </div>
 <div>
     Festivals:

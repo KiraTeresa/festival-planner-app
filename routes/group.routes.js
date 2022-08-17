@@ -31,13 +31,69 @@ router.post("/create", isLoggedIn, (req, res) => {
 });
 
 router.get("/:id", isLoggedIn, (req, res) => {
-  Group.findById(req.params.id)
+  const { id } = req.params;
+  Group.findById(id)
     .populate("admin crew festivals") // --> give the whole user object with this ID
     .then((group) => {
       const { groupName, admin, crew, festivals } = group;
-      res.render("group/details", { groupName, admin, crew, festivals });
+      res.render("group/details", {
+        groupName,
+        admin,
+        crew,
+        festivals,
+        id,
+      });
     })
     .catch((err) => console.log("Sorry, that didn't work", err));
+});
+
+// joining a crew:
+router.post("/:id", isLoggedIn, (req, res) => {
+  const { id } = req.params;
+  const currentUser = req.session.user;
+  console.log("The current user: ", currentUser);
+  Group.findById(id)
+    .populate("admin crew")
+    .then((group) => {
+      const { admin, crew, groupName, festivals } = group;
+      if (!admin._id.equals(currentUser)) {
+        const alreadyCrewMember = crew.find((aUser) =>
+          aUser._id.equals(currentUser)
+        );
+        if (!alreadyCrewMember) {
+          crew.push(currentUser);
+          group.save();
+          group.populate("crew");
+          res.render("group/details", {
+            groupName,
+            admin,
+            crew,
+            festivals,
+            id,
+          });
+        } else {
+          return res.status(400).render("group/details", {
+            groupName,
+            admin,
+            crew,
+            festivals,
+            id,
+            userError: "You are already part of the crew!",
+          });
+        }
+      } else {
+        return res.status(400).render("group/details", {
+          groupName,
+          admin,
+          crew,
+          festivals,
+          id,
+          adminError:
+            "You are the admin and therefore already part of the crew!",
+        });
+      }
+    })
+    .catch((err) => console.log("Joining the crew didn't work", err));
 });
 
 module.exports = router;
