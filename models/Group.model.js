@@ -19,7 +19,11 @@ const groupSchema = new Schema({
     type: [mongoose.Types.ObjectId],
     ref: "User",
   },
-  festivals: [],
+  festivals: {
+    type: [mongoose.Types.ObjectId],
+    ref: "Festival",
+    default: [],
+  },
 });
 
 const Group = mongoose.model("Group", groupSchema);

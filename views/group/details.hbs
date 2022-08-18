@@ -13,6 +13,7 @@
     {{#unless crew}}
     -- no crew members --
     {{/unless}}
+    <br>
     {{#if adminStatus}}
     Eager to join the crew:
     <ul>
@@ -23,7 +24,7 @@
     -- the waiting list is clear --
     {{/unless}}
     {{/if}}
-    <form action="/group/{{id}}" method="post">
+    <form action="/group/{{id}}/join" method="post">
     <button type="submit">Join the crew</button>
     </form>
     {{#if userError}}
@@ -32,12 +33,19 @@
 </div>
 <div>
     Festivals:
-    <ul>
-        {{#each festivals}}
-        <li>-- model not yet defined --</li>
-        {{/each}}
-    </ul>
+    {{#each festivals}}
+    <div>{{name}} | {{startDate}} – {{endDate}}</div>
+    {{/each}}
     {{#unless festivals}}
     -- no festivals added so far --
     {{/unless}}
+    <form action="/group/{{id}}" method="post">
+        <label for="addFestival">Choose a festival to start planning:</label>
+<select name="addFestival" id="addFestival">
+    {{#each festivalCollection}}
+    <option value="{{_id}}">{{name}} | {{startDate}} – {{endDate}}</option>
+    {{/each}}
+</select>
+<button type="submit">Add to list</button>
+    </form>
 </div>
