@@ -105,6 +105,7 @@ router.get("/:groupName/deny/:userId", (req, res) => {
     );
 });
 
+// Lists all groups:
 router.get("/:id", isLoggedIn, (req, res) => {
   const { id } = req.params;
   const currentUser = req.session.user;
@@ -150,6 +151,24 @@ router.post("/:id", isLoggedIn, (req, res) => {
           pending.push(currentUser);
           group.save();
           group.populate("pending");
+
+          // send notification to admin:
+          User.findById(currentUser).then((user) => {
+            const { username } = user;
+            User.findById(admin).then((adminUser) => {
+              const { notifications } = adminUser;
+              const today = new Date().toISOString().slice(0, 10);
+
+              const newNotification = {
+                message: `${username} wants to join your group "${groupName}"`,
+                date: today,
+                type: "group",
+              };
+              notifications.push(newNotification);
+              adminUser.save();
+            });
+          });
+
           res.render("group/details", {
             groupName,
             admin,
