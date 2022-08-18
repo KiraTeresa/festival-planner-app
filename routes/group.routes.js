@@ -39,12 +39,27 @@ router.get("/:groupName/join/:userId", (req, res) => {
     .then((group) => {
       const { _id, admin, crew, pending } = group;
       if (admin._id.equals(currentUser)) {
+        // add user to crew and remove from pendingArr:
         crew.push(userId);
         const posInWaitingList = pending.indexOf(userId);
         pending.splice(posInWaitingList, 1);
         group.save();
         group.populate("admin crew pending");
-        res.redirect(`/group/${_id}`);
+
+        // send notification to user:
+        User.findById(userId).then((user) => {
+          const { notifications } = user;
+          const today = new Date().toISOString().slice(0, 10);
+
+          const newNotification = {
+            message: `Hey ${user.username}, you've been accepted as a new crew member of the group ${groupName}. Congrats!`,
+            date: today,
+            type: "group",
+          };
+          notifications.push(newNotification);
+          user.save();
+          res.redirect(`/group/${_id}`);
+        });
       }
     })
     .catch((err) =>
@@ -68,7 +83,21 @@ router.get("/:groupName/deny/:userId", (req, res) => {
         console.log(
           `User ${userId} was denied access to the group ${groupName}`
         );
-        res.redirect(`/group/${_id}`);
+
+        // send notification to user:
+        User.findById(userId).then((user) => {
+          const { notifications } = user;
+          const today = new Date().toISOString().slice(0, 10);
+
+          const newNotification = {
+            message: `Sorry ${user.username}, the admin of the group ${groupName} didn't not give you permission to join the crew.`,
+            date: today,
+            type: "group",
+          };
+          notifications.push(newNotification);
+          user.save();
+          res.redirect(`/group/${_id}`);
+        });
       }
     })
     .catch((err) =>

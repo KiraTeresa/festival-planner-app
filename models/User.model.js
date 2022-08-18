@@ -18,6 +18,7 @@ const userSchema = new Schema(
       enum: ["user", "owner"],
       default: "user",
     },
+    notifications: [],
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`

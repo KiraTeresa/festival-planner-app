@@ -1,1 +1,12 @@
 <h1>Welcome to your personal Dashboard {{username}}</h1>
+
+{{#if notifications}}
+<div>
+    {{#each notifications}}
+    <div>
+        <p>{{message}}</p>
+        <p><i>{{date}} | {{type}}</i></p>
+    </div>
+    {{/each}}
+</div>
+{{/if}}
