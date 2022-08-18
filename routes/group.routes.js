@@ -101,7 +101,7 @@ router.post("/:id", isLoggedIn, async (req, res) => {
   Group.findById(id)
     .populate("admin crew")
     .then(async (group) => {
-      const { admin, crew, festivals = [] } = group;
+      const { groupName, admin, crew, festivals = [] } = group;
       // console.log(group);
       // check if user is crew member/admin:
       const isCrewmember = crew.find((user) => user._id.equals(currentUser));
@@ -114,7 +114,32 @@ router.post("/:id", isLoggedIn, async (req, res) => {
         if (!festivalAlreadyAdded) {
           festivals.push(new Types.ObjectId(addFestival));
           await group.save();
-          res.redirect(`/group/${id}`);
+
+          // send notification...
+          const today = new Date().toISOString().slice(0, 10);
+          User.findById(currentUser).then((user) => {
+            const { username } = user;
+            const newNotification = {
+              message: `${username} has added a new festival to your group "${groupName}". Go check it out!`,
+              date: today,
+              type: "group",
+            };
+            // ...to all crew members:
+            crew.forEach((element) => {
+              User.findById(element._id).then((user) => {
+                const { notifications } = user;
+                notifications.push(newNotification);
+                user.save();
+              });
+            });
+            // ...to group admin:
+            User.findById(admin._id).then((user) => {
+              const { notifications } = user;
+              notifications.push(newNotification);
+              user.save();
+            });
+            res.redirect(`/group/${id}`);
+          });
         } else {
           console.log("The festival you chose is already on the list.");
           res.redirect(`/group/${id}`);
