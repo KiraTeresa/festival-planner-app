@@ -13,14 +13,21 @@
     {{#unless crew}}
     -- no crew members --
     {{/unless}}
+    {{#if adminStatus}}
+    Eager to join the crew:
+    <ul>
+    {{#each pending}}
+    <li>{{username}} <a href="/group/{{../groupName}}/join/{{_id}}">worthy</a> | <a href="/group/{{../groupName}}/deny/{{_id}}">deny</a> </li>
+    {{/each}}
+    {{#unless pending}}
+    -- the waiting list is clear --
+    {{/unless}}
+    {{/if}}
     <form action="/group/{{id}}" method="post">
     <button type="submit">Join the crew</button>
     </form>
     {{#if userError}}
     {{userError}}
-    {{/if}}
-     {{#if adminError}}
-    {{adminError}}
     {{/if}}
 </div>
 <div>

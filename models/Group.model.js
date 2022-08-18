@@ -15,6 +15,10 @@ const groupSchema = new Schema({
     type: [mongoose.Types.ObjectId],
     ref: "User",
   },
+  pending: {
+    type: [mongoose.Types.ObjectId],
+    ref: "User",
+  },
   festivals: [],
 });
 
