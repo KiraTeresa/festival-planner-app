@@ -1,5 +1,16 @@
 <h1>Welcome to your personal Dashboard {{username}}</h1>
 
+{{#if watchlist}}
+<div>
+    Your personal setlist:
+    <ul>
+    {{#each watchlist}}
+        <li>{{band}}</li>
+    {{/each}}
+    </ul>
+</div>
+{{/if}}
+
 {{#if notifications}}
 <div>
     {{#each notifications}}
