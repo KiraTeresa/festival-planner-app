@@ -13,6 +13,7 @@ const userSchema = new Schema(
       required: true,
     },
     groups: [],
+    watchlist: [],
     role: {
       type: String,
       enum: ["user", "owner"],

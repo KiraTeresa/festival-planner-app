@@ -1,5 +1,7 @@
 <h2>Group details of {{groupName}}</h2>
 <div>
+    Id: {{id}}
+    <br>
     Admin: {{admin.username}}
 </div>
 <div>
@@ -48,4 +50,24 @@
 </select>
 <button type="submit">Add to list</button>
     </form>
+    <br>
+    <br>
+    {{#each festivals}}
+    <h3>{{name}}</h3>
+    {{#each bands}}
+    <div>{{bandName}} | {{day}} | {{stage}} | Stagetime: {{startTime}}-{{endTime}} 
+        <br>
+        Who is going?
+        <br>
+        <form action="/band/{{bandName}}/{{../_id}}/{{../../id}}/add-to-watchlist" method="post">
+        <button type="submit">Add to your personal setlist
+</button>
+        </form>
+        <form action="/band/{{bandName}}/{{../_id}}/{{../../id}}/remove-from-watchlist" method="post">
+        <button type="submit">Remove from your personal setlist
+</button>
+        </form>
+    </div>
+    {{/each}}
+    {{/each}}
 </div>

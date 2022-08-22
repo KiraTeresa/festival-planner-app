@@ -155,11 +155,11 @@ router.post("/:id", isLoggedIn, async (req, res) => {
 });
 
 // joining a crew:
-router.post("/:id/join", isLoggedIn, (req, res) => {
+router.post("/:id/join", isLoggedIn, async (req, res) => {
   const { id } = req.params;
   const currentUser = req.session.user;
   // console.log("The current user: ", currentUser);
-  Group.findById(id)
+  await Group.findById(id)
     .populate("admin crew pending")
     .then((group) => {
       const { admin, crew, pending, groupName, festivals } = group;
