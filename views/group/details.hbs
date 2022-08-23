@@ -17,16 +17,29 @@
     {{/unless}}
     <br>
     {{#if adminStatus}}
+
     Eager to join the crew:
+    {{!-- Solution with anchor tag --}}
     <ul>
     {{#each pending}}
     <li>{{username}} <a href="/group/{{../groupName}}/join/{{_id}}">worthy</a> | <a href="/group/{{../groupName}}/deny/{{_id}}">deny</a> </li>
     {{/each}}
     </ul>
+{{!-- Solution with form --}}
+    {{#each pending}}
+    {{username}}
+    <form action="/group/{{../groupName}}/join/{{_id}}" method="post">
+    <button type="submit">WORTHY</button>
+    </form>
+    <form action="/group/{{../groupName}}/deny/{{_id}}" method="post">
+    <button type="submit">DENY</button>
+    </form>
+    {{/each}}
     {{#unless pending}}
     -- the waiting list is clear --
     {{/unless}}
     {{/if}}
+
     <form action="/group/{{id}}/join" method="post">
     <button type="submit">Join the crew</button>
     </form>

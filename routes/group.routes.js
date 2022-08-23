@@ -272,10 +272,12 @@ router.get("/:groupName/join/:userId", (req, res) => {
       if (admin._id.equals(currentUser)) {
         // add user to crew and remove from pendingArr:
         crew.push(userId);
-        const posInWaitingList = pending.indexOf(userId);
+        const pendingUser = pending.find((element) => element.equals(userId));
+        const posInWaitingList = pending.indexOf(pendingUser);
+        console.log("Index: ", posInWaitingList);
         pending.splice(posInWaitingList, 1);
+        console.log("New pending: ", pending);
         group.save();
-        group.populate("admin crew pending");
 
         // send notification to user:
         User.findById(userId).then((user) => {
@@ -310,7 +312,8 @@ router.get("/:groupName/deny/:userId", (req, res) => {
     .then((group) => {
       const { _id, admin, pending } = group;
       if (admin._id.equals(currentUser)) {
-        const posInWaitingList = pending.indexOf(userId);
+        const pendingUser = pending.find((element) => element.equals(userId));
+        const posInWaitingList = pending.indexOf(pendingUser);
         pending.splice(posInWaitingList, 1);
         group.save();
         group.populate("admin crew pending");
@@ -415,6 +418,88 @@ router.post("/:id/leave", isLoggedIn, async (req, res) => {
       }
     })
     .catch((err) => console.log("Leaving the crew didn't work", err));
+});
+
+// Path when admin allows user to join the group:
+router.post("/:groupName/join/:userId", async (req, res) => {
+  const { groupName, userId } = req.params;
+  const currentUser = req.session.user;
+  await Group.findOne({ groupName })
+    .populate("admin crew pending")
+    .then(async (group) => {
+      const { _id, admin, crew, pending } = group;
+      if (admin._id.equals(currentUser)) {
+        // add user to crew and remove from pendingArr:
+        crew.push(userId);
+        const pendingUser = pending.find((element) => element.equals(userId));
+        const posInWaitingList = pending.indexOf(pendingUser);
+        console.log("Index: ", posInWaitingList);
+        pending.splice(posInWaitingList, 1);
+        console.log("New pending: ", pending);
+        group.save();
+        // group.populate("admin crew pending");
+
+        // send notification to user:
+        await User.findById(userId).then((user) => {
+          const { notifications, groups } = user;
+          const today = new Date().toISOString().slice(0, 10);
+
+          const newNotification = {
+            message: `Hey ${user.username}, you've been accepted as a new crew member of the group ${groupName}. Congrats!`,
+            date: today,
+            type: "group",
+          };
+          notifications.push(newNotification);
+
+          // also add group to user.groups array:
+          groups.push(new Types.ObjectId(_id));
+          user.save();
+          res.redirect(`/group/${_id}`);
+        });
+      }
+    })
+    .catch((err) =>
+      console.log("Error while allowing a user to join the crew.", err)
+    );
+});
+
+// Path when admin denies user to join the group:
+router.post("/:groupName/deny/:userId", (req, res) => {
+  const { groupName, userId } = req.params;
+  const currentUser = req.session.user;
+  Group.findOne({ groupName })
+    .populate("admin crew pending")
+    .then((group) => {
+      const { _id, admin, pending } = group;
+      if (admin._id.equals(currentUser)) {
+        const pendingUser = pending.find((element) => element.equals(userId));
+        const posInWaitingList = pending.indexOf(pendingUser);
+        pending.splice(posInWaitingList, 1);
+        group.save();
+        group.populate("admin crew pending");
+        console.log(
+          `User ${userId} was denied access to the group ${groupName}`
+        );
+
+        // send notification to user:
+        User.findById(userId).then((user) => {
+          const { notifications } = user;
+          const today = new Date().toISOString().slice(0, 10);
+
+          const newNotification = {
+            message: `Sorry ${user.username}, the admin of the group ${groupName} didn't not give you permission to join the crew.`,
+            date: today,
+            type: "group",
+          };
+          notifications.push(newNotification);
+          user.save();
+          res.redirect(`/group/${_id}`);
+        });
+      }
+    })
+    .catch((err) =>
+      console.log("Error while allowing a user to join the crew.", err)
+    );
 });
 
 module.exports = router;
