@@ -320,4 +320,74 @@ router.get("/:groupName/deny/:userId", (req, res) => {
     );
 });
 
+// Leave a crew:
+router.post("/:id/leave", isLoggedIn, async (req, res) => {
+  const { id } = req.params;
+  const currentUser = req.session.user;
+
+  await Group.findById(id)
+    .populate("admin crew")
+    .then((group) => {
+      const { admin, crew, pending, groupName, festivals } = group;
+      if (!admin._id.equals(currentUser)) {
+        // check if user is part of the crew or on pending list:
+        const crewMember = crew.find((aUser) => aUser._id.equals(currentUser));
+        const pendingMember = pending.find((aUser) =>
+          aUser._id.equals(currentUser)
+        );
+
+        // remove if user is a crew member:
+        if (crewMember) {
+          const index = crew.indexOf(crewMember);
+          crew.splice(index, 1);
+        }
+
+        // remove from pending list if user wants to leave before admin had a chance to accept or deny:
+        else if (pendingMember) {
+          const index = pending.indexOf(crewMember);
+          pending.splice(index, 1);
+        }
+
+        // redirect if none of the above is true:
+        else {
+          res.redirect("/group");
+        }
+
+        // save changes:
+        group.save();
+        group.populate("pending");
+
+        // send notification to admin:
+        User.findById(currentUser).then((user) => {
+          const { username } = user;
+          User.findById(admin).then((adminUser) => {
+            const { notifications } = adminUser;
+            const today = new Date().toISOString().slice(0, 10);
+
+            const newNotification = {
+              message: `${username} is no longer part of your group "${groupName}"`,
+              date: today,
+              type: "group",
+            };
+            notifications.push(newNotification);
+            adminUser.save();
+            res.redirect("/group");
+          });
+        });
+      } else if (admin._id.equals(currentUser)) {
+        group.populate("admin crew pending festivals");
+        return res.status(400).render("group/details", {
+          groupName,
+          admin,
+          crew,
+          pending,
+          festivals,
+          id,
+          userError: "You are the admin, you cannot leave!!!",
+        });
+      }
+    })
+    .catch((err) => console.log("Leaving the crew didn't work", err));
+});
+
 module.exports = router;

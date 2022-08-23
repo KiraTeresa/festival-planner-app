@@ -29,6 +29,9 @@
     <form action="/group/{{id}}/join" method="post">
     <button type="submit">Join the crew</button>
     </form>
+    <form action="/group/{{id}}/leave" method="post">
+    <button type="submit">Leave the crew</button>
+    </form>
     {{#if userError}}
     {{userError}}
     {{/if}}
