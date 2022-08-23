@@ -55,23 +55,14 @@ router.post(
             (element) => element === bandName
           );
 
-          // console.log("Band found on the list: ", bandOnList);
-
           // if band not found --> add:
           if (!bandOnList) {
             watchlist[index].bands.push(bandName);
             await user.update({ watchlist });
             console.log("TEST TEST TEST");
             console.log(watchlist);
-
-            // User.findByIdAndUpdate(currentUser, { watchlist });
           }
-
-          // console.log("ANOTHER TEST");
-          // console.log(watchlist[index].bands);
         }
-        // console.log("LAST CONSOLE BEFORE REDIRECT");
-        // console.log(watchlist);
 
         res.redirect(`/group/${groupID}`);
       })
@@ -85,37 +76,90 @@ router.post(
 router.post(
   "/:bandName/:festivalID/:groupID/remove-from-watchlist",
   isLoggedIn,
-  (req, res) => {
+  async (req, res) => {
     const bandName = req.params.bandName;
     const festivalID = req.params.festivalID;
     const groupID = req.params.groupID;
     const currentUser = req.session.user;
 
-    User.findById(currentUser)
-      .then((user) => {
-        const { watchlist } = user;
+    console.log("CUrrent User: ", currentUser);
+    console.log("CUrrent User ObjectId: ", new Types.ObjectId(currentUser));
 
-        // check if band-festival-combo is already on your list:
-        const alreadyOnList = watchlist.find(
-          (element) =>
-            element.festival.equals(festivalID) && element.band === bandName
-        );
+    console.log("-----------");
+    // console.log(
+    //   await User.findOne({
+    //     _id: new Types.ObjectId(currentUser),
+    //     watchlist: {
+    //       $elemMatch: {
+    //         festival: new Types.ObjectId(festivalID),
+    //         bands: bandName,
+    //       },
+    //     },
+    //   })
+    // );
 
-        // if on your list --> remove:
-        if (alreadyOnList) {
-          const index = watchlist.indexOf(alreadyOnList);
-
-          watchlist.splice(index, 1);
-          user.save();
-          console.log(
-            `${alreadyOnList} at index ${index} was successfully removed from your watchlist.`
-          );
+    await User.findOne({
+      _id: new Types.ObjectId(currentUser),
+      watchlist: {
+        $elemMatch: {
+          festival: new Types.ObjectId(festivalID),
+          bands: bandName,
+        },
+      },
+    })
+      .then(async (user) => {
+        // leave, if there is no user:
+        if (!user) {
+          console.log("This band is not on your watchlist");
+          res.redirect(`/group/${groupID}`);
         }
+
+        // remove the band from the list:
+        const { watchlist } = user;
+        const getFestival = watchlist.find((element) =>
+          element.festival.equals(festivalID)
+        );
+        console.log("Array element found: ", getFestival);
+        const { bands } = getFestival;
+        const bandIndex = bands.indexOf(bandName);
+        console.log(`${bandName} found at index ${bandIndex}`);
+        bands.splice(bandIndex, 1);
+        console.log(`Bands after splice: ${bands}`);
+
+        await user.update({ watchlist });
+        console.log(`${bandName} was removed from your list`);
+        console.log(`Your new watchlist: ${watchlist}`);
         res.redirect(`/group/${groupID}`);
       })
       .catch((err) =>
         console.log("Removing the band from your watchlist failed, sorry.", err)
       );
+
+    // User.findById(currentUser)
+    //   .then((user) => {
+    //     const { watchlist } = user;
+
+    //     // check if band-festival-combo is already on your list:
+    //     const alreadyOnList = watchlist.find(
+    //       (element) =>
+    //         element.festival.equals(festivalID) && element.band === bandName
+    //     );
+
+    //     // if on your list --> remove:
+    //     if (alreadyOnList) {
+    //       const index = watchlist.indexOf(alreadyOnList);
+
+    //       watchlist.splice(index, 1);
+    //       user.save();
+    //       console.log(
+    //         `${alreadyOnList} at index ${index} was successfully removed from your watchlist.`
+    //       );
+    //     }
+    //     res.redirect(`/group/${groupID}`);
+    //   })
+    //   .catch((err) =>
+    //     console.log("Removing the band from your watchlist failed, sorry.", err)
+    //   );
   }
 );
 
