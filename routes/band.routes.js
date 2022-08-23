@@ -56,6 +56,44 @@ router.post(
   }
 );
 
+// remove a band from your personal setlist:
+router.post(
+  "/:bandName/:festivalID/:groupID/remove-from-watchlist",
+  isLoggedIn,
+  (req, res) => {
+    const bandName = req.params.bandName;
+    const festivalID = req.params.festivalID;
+    const groupID = req.params.groupID;
+    const currentUser = req.session.user;
+
+    User.findById(currentUser)
+      .then((user) => {
+        const { watchlist } = user;
+
+        // check if band-festival-combo is already on your list:
+        const alreadyOnList = watchlist.find(
+          (element) =>
+            element.festival.equals(festivalID) && element.band === bandName
+        );
+
+        // if on your list --> remove:
+        if (alreadyOnList) {
+          const index = watchlist.indexOf(alreadyOnList);
+
+          watchlist.splice(index, 1);
+          user.save();
+          console.log(
+            `${alreadyOnList} at index ${index} was successfully removed from your watchlist.`
+          );
+        }
+        res.redirect(`/group/${groupID}`);
+      })
+      .catch((err) =>
+        console.log("Removing the band from your watchlist failed, sorry.", err)
+      );
+  }
+);
+
 // band details:
 router.get("/:bandName/:festivalID", (req, res) => {
   const band = req.params.bandName;
