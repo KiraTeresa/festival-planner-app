@@ -58,9 +58,7 @@ router.post(
           // if band not found --> add:
           if (!bandOnList) {
             watchlist[index].bands.push(bandName);
-            await user.update({ watchlist });
-            console.log("TEST TEST TEST");
-            console.log(watchlist);
+            await user.updateOne({ watchlist });
           }
         }
 
@@ -82,22 +80,6 @@ router.post(
     const groupID = req.params.groupID;
     const currentUser = req.session.user;
 
-    console.log("CUrrent User: ", currentUser);
-    console.log("CUrrent User ObjectId: ", new Types.ObjectId(currentUser));
-
-    console.log("-----------");
-    // console.log(
-    //   await User.findOne({
-    //     _id: new Types.ObjectId(currentUser),
-    //     watchlist: {
-    //       $elemMatch: {
-    //         festival: new Types.ObjectId(festivalID),
-    //         bands: bandName,
-    //       },
-    //     },
-    //   })
-    // );
-
     await User.findOne({
       _id: new Types.ObjectId(currentUser),
       watchlist: {
@@ -108,27 +90,24 @@ router.post(
       },
     })
       .then(async (user) => {
-        // leave, if there is no user:
+        // leave, if there is no such user:
         if (!user) {
           console.log("This band is not on your watchlist");
           res.redirect(`/group/${groupID}`);
         }
 
-        // remove the band from the list:
+        // if there is a user matchin the criteria --> find the band in the users watchlist..
         const { watchlist } = user;
         const getFestival = watchlist.find((element) =>
           element.festival.equals(festivalID)
         );
-        console.log("Array element found: ", getFestival);
         const { bands } = getFestival;
         const bandIndex = bands.indexOf(bandName);
-        console.log(`${bandName} found at index ${bandIndex}`);
+        // .. then remove the band
         bands.splice(bandIndex, 1);
-        console.log(`Bands after splice: ${bands}`);
-
-        await user.update({ watchlist });
+        await user.updateOne({ watchlist });
         console.log(`${bandName} was removed from your list`);
-        console.log(`Your new watchlist: ${watchlist}`);
+
         res.redirect(`/group/${groupID}`);
       })
       .catch((err) =>
