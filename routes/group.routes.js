@@ -175,7 +175,7 @@ router.post("/:id/join", isLoggedIn, async (req, res) => {
         if (!alreadyCrewMember && !alreadyPendingMember) {
           pending.push(currentUser);
           group.save();
-          group.populate("pending");
+          group.populate("pending festivals");
 
           // send notification to admin:
           User.findById(currentUser).then((user) => {
@@ -340,6 +340,14 @@ router.post("/:id/leave", isLoggedIn, async (req, res) => {
         if (crewMember) {
           const index = crew.indexOf(crewMember);
           crew.splice(index, 1);
+
+          // also remove group from user.groups array:
+          User.findById(currentUser).then((user) => {
+            const { groups } = user;
+            const indexOfGroup = groups.indexOf(group._id);
+            groups.splice(indexOfGroup, 1);
+            user.save();
+          });
         }
 
         // remove from pending list if user wants to leave before admin had a chance to accept or deny:
