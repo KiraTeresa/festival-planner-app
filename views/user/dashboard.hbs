@@ -3,16 +3,23 @@
 {{#if watchlist}}
 <div>
     Your personal setlist:
-    <ul>
+    
     {{#each watchlist}}
-        <li>{{band}}</li>
+    Festival ID: {{festival}}
+    Bands:
+    <ul>
+    {{#each bands}}
+        <li>{{this}}</li>
+        {{/each}}
+        </ul>
     {{/each}}
-    </ul>
+    
 </div>
 {{/if}}
 
 {{#if notifications}}
 <div>
+    <h3>Notifications:</h3>
     {{#each notifications}}
     <div>
         <p>{{message}}</p>

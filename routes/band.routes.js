@@ -15,7 +15,7 @@ router.get("/search-result", (req, res) => {
       const band = data.body.artists.items;
       Festival.findById(festivalID).then((festival) => {
         const festivalName = festival.name;
-        res.redirect("/band/search-result", { band, festivalName, festivalID });
+        res.render("band/search-result", { band, festivalName, festivalID });
       });
     })
     .catch((err) =>
@@ -34,20 +34,45 @@ router.post(
     const currentUser = req.session.user;
 
     User.findById(currentUser)
-      .then((user) => {
+      .then(async (user) => {
         const { watchlist } = user;
 
-        // check if band-festival-combo is already on your list:
-        const alreadyOnList = watchlist.find(
-          (element) =>
-            element.festival.equals(festivalID) && element.band === bandName
+        // check if festival is already on your list:
+        const festivalOnList = watchlist.find((element) =>
+          element.festival.equals(festivalID)
         );
         // if not on your list --> add:
-        if (!alreadyOnList) {
+        if (!festivalOnList) {
           const newElement = new Types.ObjectId(festivalID);
-          watchlist.push({ festival: newElement, band: bandName });
+          watchlist.push({ festival: newElement, bands: [bandName] });
           user.save();
         }
+
+        // if festival already on your list, check if you already added the band:
+        else if (festivalOnList) {
+          const index = watchlist.indexOf(festivalOnList);
+          const bandOnList = watchlist[index].bands.find(
+            (element) => element === bandName
+          );
+
+          // console.log("Band found on the list: ", bandOnList);
+
+          // if band not found --> add:
+          if (!bandOnList) {
+            watchlist[index].bands.push(bandName);
+            await user.update({ watchlist });
+            console.log("TEST TEST TEST");
+            console.log(watchlist);
+
+            // User.findByIdAndUpdate(currentUser, { watchlist });
+          }
+
+          // console.log("ANOTHER TEST");
+          // console.log(watchlist[index].bands);
+        }
+        // console.log("LAST CONSOLE BEFORE REDIRECT");
+        // console.log(watchlist);
+
         res.redirect(`/group/${groupID}`);
       })
       .catch((err) =>
