@@ -22,6 +22,7 @@
     {{#each pending}}
     <li>{{username}} <a href="/group/{{../groupName}}/join/{{_id}}">worthy</a> | <a href="/group/{{../groupName}}/deny/{{_id}}">deny</a> </li>
     {{/each}}
+    </ul>
     {{#unless pending}}
     -- the waiting list is clear --
     {{/unless}}

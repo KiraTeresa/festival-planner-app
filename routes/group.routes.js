@@ -162,8 +162,8 @@ router.post("/:id/join", isLoggedIn, async (req, res) => {
   const currentUser = req.session.user;
   // console.log("The current user: ", currentUser);
   await Group.findById(id)
-    .populate("admin crew pending")
-    .then((group) => {
+    .populate("admin crew pending festivals")
+    .then(async (group) => {
       const { admin, crew, pending, groupName, festivals } = group;
       if (!admin._id.equals(currentUser)) {
         const alreadyCrewMember = crew.find((aUser) =>
@@ -172,15 +172,20 @@ router.post("/:id/join", isLoggedIn, async (req, res) => {
         const alreadyPendingMember = pending.find((aUser) =>
           aUser._id.equals(currentUser)
         );
+
+        console.log(
+          `Already in crew? ${alreadyCrewMember} or already pending? ${alreadyPendingMember}`
+        );
+
         if (!alreadyCrewMember && !alreadyPendingMember) {
           pending.push(currentUser);
           group.save();
           group.populate("pending festivals");
 
           // send notification to admin:
-          User.findById(currentUser).then((user) => {
+          await User.findById(currentUser).then(async (user) => {
             const { username } = user;
-            User.findById(admin).then((adminUser) => {
+            await User.findById(admin).then((adminUser) => {
               const { notifications } = adminUser;
               const today = new Date().toISOString().slice(0, 10);
 
@@ -194,50 +199,64 @@ router.post("/:id/join", isLoggedIn, async (req, res) => {
             });
           });
 
-          res.render("group/details", {
-            groupName,
-            admin,
-            crew,
-            pending,
-            festivals,
-            id,
-            userError: "Your request has been send to the group admin.",
-          });
-        } else if (alreadyCrewMember) {
-          return res.status(400).render("group/details", {
-            groupName,
-            admin,
-            crew,
-            pending,
-            festivals,
-            id,
-            userError: "You are already part of the crew!",
-          });
-        } else if (alreadyPendingMember) {
-          console.log("Pending: ", pending);
-          return res.status(400).render("group/details", {
-            groupName,
-            admin,
-            crew,
-            pending,
-            festivals,
-            id,
-            userError:
-              "You are almost in, just wait for the admin to confirm that you are worthy to join this incredible crew. Have patience my friend.",
-          });
+          // Festival.find().then((festivalCollection) => {
+          //   res.render("group/details", {
+          //     groupName,
+          //     admin,
+          //     crew,
+          //     pending,
+          //     festivals,
+          //     id,
+          //     userError: "Your request has been send to the group admin.",
+          //     festivalCollection,
+          //   });
+          // });
+          //   } else if (alreadyCrewMember) {
+          //     Festival.find().then((festivalCollection) => {
+          //       return res.status(400).render("group/details", {
+          //         groupName,
+          //         admin,
+          //         crew,
+          //         pending,
+          //         festivals,
+          //         id,
+          //         userError: "You are already part of the crew!",
+          //         festivalCollection,
+          //       });
+          //     });
+          //   } else if (alreadyPendingMember) {
+          //     console.log("Pending: ", pending);
+          //     Festival.find().then((festivalCollection) => {
+          //       return res.status(400).render("group/details", {
+          //         groupName,
+          //         admin,
+          //         crew,
+          //         pending,
+          //         festivals,
+          //         id,
+          //         userError:
+          //           "You are almost in, just wait for the admin to confirm that you are worthy to join this incredible crew. Have patience my friend.",
+          //         festivalCollection,
+          //       });
+          //     });
+          //   }
+          // } else {
+          //   Festival.find().then((festivalCollection) => {
+          //     return res.status(400).render("group/details", {
+          //       groupName,
+          //       admin,
+          //       crew,
+          //       pending,
+          //       festivals,
+          //       id,
+          //       userError:
+          //         "You are the admin and therefore already part of the crew!",
+          //       festivalCollection,
+          //     });
+          // });
         }
-      } else {
-        return res.status(400).render("group/details", {
-          groupName,
-          admin,
-          crew,
-          pending,
-          festivals,
-          id,
-          userError:
-            "You are the admin and therefore already part of the crew!",
-        });
       }
+      return res.redirect(`/group/${id}`);
     })
     .catch((err) => console.log("Joining the crew didn't work", err));
 });
