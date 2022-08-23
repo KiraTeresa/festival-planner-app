@@ -6,6 +6,7 @@ const Festival = require("../models/Festival.model");
 const isLoggedIn = require("../middleware/isLoggedIn");
 const { Types } = require("mongoose");
 
+// all groups:
 router.get("/", isLoggedIn, (req, res) => {
   Group.find()
     .then((groups) => {
@@ -14,6 +15,7 @@ router.get("/", isLoggedIn, (req, res) => {
     .catch((err) => "Rendering list of all groups didn't work.");
 });
 
+// create a new group:
 router.get("/create", isLoggedIn, (req, res) => {
   res.render("group/create");
 });
@@ -258,7 +260,7 @@ router.get("/:groupName/join/:userId", (req, res) => {
 
         // send notification to user:
         User.findById(userId).then((user) => {
-          const { notifications } = user;
+          const { notifications, groups } = user;
           const today = new Date().toISOString().slice(0, 10);
 
           const newNotification = {
@@ -267,6 +269,9 @@ router.get("/:groupName/join/:userId", (req, res) => {
             type: "group",
           };
           notifications.push(newNotification);
+
+          // also add group to user.groups array:
+          groups.push(new Types.ObjectId(_id));
           user.save();
           res.redirect(`/group/${_id}`);
         });
