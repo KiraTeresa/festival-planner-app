@@ -16,7 +16,8 @@
     <h3>Your personal setlist:</h3>
     
     {{#each watchlist}}
-    Festival ID: {{festival}}
+    Festival: {{festivalName}}
+    <br>
     Bands:
     <ul>
     {{#each bands}}
@@ -28,14 +29,19 @@
 </div>
 {{/if}}
 
-{{#if notifications}}
+
 <div>
     <h3>Notifications:</h3>
+    {{#if notifications}}
     {{#each notifications}}
     <div>
         <p>{{message}}</p>
         <p><i>{{date}} | {{type}}</i></p>
     </div>
     {{/each}}
+    {{/if}}
+
+    {{#unless notifications}}
+    <p>Nothing happened since your last log in, you are up to date.</p>
+    {{/unless}}
 </div>
-{{/if}}

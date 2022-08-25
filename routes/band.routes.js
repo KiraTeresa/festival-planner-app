@@ -27,26 +27,35 @@ router.get("/search-result", (req, res) => {
 router.post(
   "/:bandName/:festivalID/:groupID/add-to-watchlist",
   isLoggedIn,
-  (req, res) => {
+  async (req, res) => {
     const bandName = req.params.bandName;
     const festivalID = req.params.festivalID;
     const groupID = req.params.groupID;
     const currentUser = req.session.user;
 
-    User.findById(currentUser)
+    let festival;
+    await Festival.findById(festivalID).then((element) => {
+      festival = element.name;
+    });
+
+    await User.findById(currentUser)
       .then(async (user) => {
         const { watchlist = [] } = user;
 
         // check if festival is already on your list:
-        const festivalOnList = watchlist.find((element) =>
-          element.festival.equals(festivalID)
+        const festivalOnList = watchlist.find(
+          (element) => element.festivalName === festival
         );
 
         console.log(festivalOnList);
         // if not on your list --> add:
         if (!festivalOnList) {
           const newElement = new Types.ObjectId(festivalID);
-          watchlist.push({ festival: newElement, bands: [bandName] });
+          watchlist.push({
+            festivalId: newElement,
+            festivalName: festival,
+            bands: [bandName],
+          });
           await user.save();
         }
 
