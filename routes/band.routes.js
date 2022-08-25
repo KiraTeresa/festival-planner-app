@@ -45,13 +45,13 @@ router.post(
         if (!festivalOnList) {
           const newElement = new Types.ObjectId(festivalID);
           watchlist.push({ festival: newElement, bands: [bandName] });
-          user.save();
+          await user.save();
         }
 
         // if festival already on your list, check if you already added the band:
         else if (festivalOnList) {
           const index = watchlist.indexOf(festivalOnList);
-          const bandOnList = watchlist[index].bands.find(
+          const bandOnList = await watchlist[index].bands.find(
             (element) => element === bandName
           );
 
