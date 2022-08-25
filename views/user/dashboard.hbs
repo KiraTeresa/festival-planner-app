@@ -1,8 +1,19 @@
 <h1>Welcome to your personal Dashboard {{username}}</h1>
 
+{{#if usersGroups}}
+<div>
+    <h3>Your groups:</h3>
+    <ul>
+    {{#each usersGroups}}
+<li>{{this}}</li>
+    {{/each}}
+    </ul>
+</div>
+{{/if}}
+
 {{#if watchlist}}
 <div>
-    Your personal setlist:
+    <h3>Your personal setlist:</h3>
     
     {{#each watchlist}}
     Festival ID: {{festival}}

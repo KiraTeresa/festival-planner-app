@@ -24,11 +24,16 @@ router.post("/create", isLoggedIn, (req, res) => {
   const { groupName } = req.body;
   const adminId = req.session.user;
   User.findById(adminId)
-    .then((userFound) => {
+    .then(async (userFound) => {
       console.log(
         `Creating the group ${groupName} with admin ${userFound._id}`
       );
-      Group.create({ groupName, admin: userFound._id });
+      const newGroup = await Group.create({ groupName, admin: userFound._id });
+
+      // also add group to user.groups array:
+      userFound.groups.push(new Types.ObjectId(newGroup._id));
+      await userFound.save();
+
       res.redirect("/group");
     })
     .catch((err) => console.log("Failed creating a group", err));
