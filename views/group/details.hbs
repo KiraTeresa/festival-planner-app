@@ -88,3 +88,21 @@
     {{/each}}
     {{/each}}
 </div>
+<hr>
+<div>
+    {{#each newFestivalArr}}
+    <div>
+        {{!-- <h3>{{festivalName}}</h3> --}}
+        <div>
+            {{#each bandsWithCrewArr}}
+{{this.bandName}}
+<br>
+{{#each this.crewArr}}
+{{this.username}} | 
+{{/each}}
+        </div>
+{{/each}}
+
+    </div>
+    {{/each}}
+</div>

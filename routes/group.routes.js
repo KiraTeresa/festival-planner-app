@@ -53,6 +53,60 @@ router.get("/:id", isLoggedIn, (req, res) => {
       if (admin._id.equals(currentUser)) {
         adminStatus = true;
       }
+
+      // check who of your crew is interested in which band:
+
+      // MongoDB search: {groups: ObjectId('62f7f3b44a04bf590e7f71cd'), watchlist: {$elemMatch: {festivalId: ObjectId('62fa183ba1a03c4c1c8bc273'), bands: "Clueso"}}}
+      const newFestivalArr = [];
+      for (element of festivals) {
+        const addFestival = {
+          festivalName: element.name,
+          bandsWithCrewArr: [],
+        };
+
+        await Festival.findById(element).then(async (festival) => {
+          const { _id, name, bands } = festival;
+
+          for (band of bands) {
+            const { bandName } = band;
+            const newBandObj = {
+              bandName,
+            };
+
+            await User.find({
+              groups: new Types.ObjectId(id),
+              watchlist: {
+                $elemMatch: {
+                  festivalId: new Types.ObjectId(_id),
+                  bands: bandName,
+                },
+              },
+            }).then((userArr) => {
+              newBandObj.crewArr = userArr;
+              addFestival.bandsWithCrewArr.push(newBandObj);
+            });
+          }
+        });
+        newFestivalArr.push(addFestival);
+      }
+
+      console.log("New Festival Array: ", newFestivalArr);
+      console.log(
+        "First Arr Element: ",
+        newFestivalArr[0].bandsWithCrewArr[1].crewArr
+      );
+
+      // STRUCTURE FOR ELEMENTS OF newFestivalArr:
+      // const addFestival = {
+      //   festivalName: name,
+      //   bands: [
+      //     {
+      //       bandName: "",
+      //       crewGoing: [],
+      //     },
+      //   ],
+      // };
+
       Festival.find().then((festivalCollection) => {
         res.render("group/details", {
           groupName,
@@ -63,6 +117,7 @@ router.get("/:id", isLoggedIn, (req, res) => {
           id,
           adminStatus,
           festivalCollection,
+          newFestivalArr,
         });
       });
     })
