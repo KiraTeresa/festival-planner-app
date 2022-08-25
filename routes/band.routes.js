@@ -122,6 +122,12 @@ router.post(
         await user.updateOne({ watchlist });
         console.log(`${bandName} was removed from your list`);
 
+        if (bands.length < 1) {
+          const index = watchlist.indexOf(getFestival);
+          watchlist.splice(index, 1);
+          await user.updateOne({ watchlist });
+        }
+
         res.redirect(`/group/${groupID}`);
       })
       .catch((err) =>
