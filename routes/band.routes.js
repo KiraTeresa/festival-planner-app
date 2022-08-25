@@ -38,7 +38,7 @@ router.post(
         const { watchlist } = user;
 
         // check if festival is already on your list:
-        const festivalOnList = watchlist.find((element) =>
+        const festivalOnList = await watchlist.find((element) =>
           element.festival.equals(festivalID)
         );
         // if not on your list --> add:
