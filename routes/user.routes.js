@@ -11,12 +11,14 @@ router.get("/dashboard", isLoggedIn, (req, res) => {
       const { username, watchlist, notifications, groups } = user;
 
       let usersGroups = [];
-      await groups.forEach(async (element) => {
-        await Group.findById(element.toString()).then(async (group) => {
-          const { groupName } = group;
-          await usersGroups.push(groupName);
+      if (groups) {
+        groups.forEach(async (element) => {
+          await Group.findById(element.toString()).then(async (group) => {
+            const { groupName } = group;
+            usersGroups.push(groupName);
+          });
         });
-      });
+      }
       res.render("user/dashboard", {
         username,
         notifications,

@@ -35,7 +35,7 @@ router.post(
 
     User.findById(currentUser)
       .then(async (user) => {
-        const { watchlist = [{ festival: "", bands: [] }] } = user;
+        const { watchlist = [] } = user;
 
         // check if festival is already on your list:
         const festivalOnList = watchlist.find((element) =>
