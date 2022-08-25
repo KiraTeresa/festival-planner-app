@@ -54,6 +54,7 @@ router.post(
         else if (festivalOnList) {
           const index = watchlist.indexOf(festivalOnList);
           console.log("INDEX:", index);
+          console.log("WATCHLIST: ", watchlist);
 
           const bandOnList = await watchlist[index].bands.find(
             (element) => element === bandName
