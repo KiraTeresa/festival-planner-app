@@ -98,7 +98,7 @@ router.post(
       _id: new Types.ObjectId(currentUser),
       watchlist: {
         $elemMatch: {
-          festival: new Types.ObjectId(festivalID),
+          festivalId: new Types.ObjectId(festivalID),
           bands: bandName,
         },
       },
@@ -110,10 +110,10 @@ router.post(
           res.redirect(`/group/${groupID}`);
         }
 
-        // if there is a user matchin the criteria --> find the band in the users watchlist..
+        // if there is a user matching the criteria --> find the band in the users watchlist..
         const { watchlist } = user;
         const getFestival = watchlist.find((element) =>
-          element.festival.equals(festivalID)
+          element.festivalId.equals(festivalID)
         );
         const { bands } = getFestival;
         const bandIndex = bands.indexOf(bandName);
