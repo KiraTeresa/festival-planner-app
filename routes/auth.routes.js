@@ -143,6 +143,7 @@ router.get("/logout", isLoggedIn, async (req, res) => {
   const currentUser = req.session.user;
   await User.findByIdAndUpdate(currentUser, {
     lastLogin: new Date().toISOString().slice(0, 10),
+    notifications: [],
   });
 
   req.session.destroy((err) => {
