@@ -11,18 +11,15 @@ router.get("/dashboard", isLoggedIn, async (req, res) => {
       const { username, watchlist, notifications, groups } = user;
 
       let usersGroups = [];
-      console.log("GROUPS BEFORE LOOP: ", usersGroups);
       if (groups) {
         for (const element of groups) {
           await Group.findById(element.toString()).then(async (group) => {
             const { groupName } = group;
             usersGroups.push(groupName);
-            console.log("Element: ", element);
-            console.log("-------");
           });
         }
       }
-      console.log("USERS GROUPS AFTER LOOP: ", usersGroups);
+
       res.render("user/dashboard", {
         username,
         notifications,

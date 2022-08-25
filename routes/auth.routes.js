@@ -141,13 +141,10 @@ router.post("/login", isLoggedOut, (req, res, next) => {
 
 router.get("/logout", isLoggedIn, async (req, res) => {
   const currentUser = req.session.user;
-  await User.findById(currentUser).then((user) => {
-    console.log("Logged out", user);
-    const today = new Date().toISOString().slice(0, 10);
-    user.lastLogin = today;
-    user.save();
-    console.log("AT: ", user.lastLogin);
+  await User.findByIdAndUpdate(currentUser, {
+    lastLogin: new Date().toISOString().slice(0, 10),
   });
+
   req.session.destroy((err) => {
     if (err) {
       return res
