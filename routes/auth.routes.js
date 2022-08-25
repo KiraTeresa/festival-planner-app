@@ -125,8 +125,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
             errorMessage: "Wrong credentials.",
           });
         }
-        // req.session.user = user;
-        req.session.user = user._id; // ! better and safer but in this case we saving the entire user object
+        req.session.user = user._id;
         console.log("Logged in user info: ", req.session.user);
         return res.redirect(`/user/dashboard`);
       });
@@ -140,7 +139,15 @@ router.post("/login", isLoggedOut, (req, res, next) => {
     });
 });
 
-router.get("/logout", isLoggedIn, (req, res) => {
+router.get("/logout", isLoggedIn, async (req, res) => {
+  const currentUser = req.session.user;
+  await User.findById(currentUser).then((user) => {
+    console.log("Logged out", user);
+    const today = new Date().toISOString().slice(0, 10);
+    user.lastLogin = today;
+    user.save();
+    console.log("AT: ", user.lastLogin);
+  });
   req.session.destroy((err) => {
     if (err) {
       return res
