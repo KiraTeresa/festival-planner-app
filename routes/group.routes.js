@@ -68,7 +68,7 @@ router.get("/:id", isLoggedIn, (req, res) => {
 
           for (band of bands) {
             const { bandName } = band;
-            console.log("TEST: ", band);
+            // console.log("TEST: ", band);
             const newBandObj = {
               band,
             };
@@ -91,11 +91,7 @@ router.get("/:id", isLoggedIn, (req, res) => {
         newFestivalArr.push(addFestival);
       }
 
-      console.log("New Festival Array: ", newFestivalArr);
-      console.log(
-        "First Arr Element: ",
-        newFestivalArr[0].bandsWithCrewArr[1].crewArr
-      );
+      // console.log("New Festival Array: ", newFestivalArr);
 
       Festival.find().then((festivalCollection) => {
         res.render("group/details", {

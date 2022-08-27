@@ -1,8 +1,11 @@
 <h2>{{bandName}}</h2>
+<div>
+    <div>Go watch at <b>{{festivalName}}</b> on {{stage}}</div>
+    <div>Stagetime: {{startTime}}-{{endTime}}{{#unless startTime}}n.a.{{/unless}}</div>
+</div>
 <img src="{{images.1.url}}" alt="">
 <div>{{genres}}</div>
-<div>Go watch on {{stage}}</div>
-<div>Stagetime: {{startTime}}-{{endTime}}{{#unless startTime}}n.a.{{/unless}}</div>
+
 <div>Top tracks:
     <ul>
         {{#each tracks}}
@@ -13,5 +16,5 @@
 </div>
 
 {{#if isOwner}}
-<a href="/band/edit/{{bandName}}">Edit</a>
+<a href="/band/{{bandName}}/{{festivalId}}/edit">Edit</a>
 {{/if}}

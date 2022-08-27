@@ -6,7 +6,7 @@ const User = require("../models/User.model");
 const isLoggedIn = require("../middleware/isLoggedIn");
 const { Types } = require("mongoose");
 
-router.get("/search-result", (req, res) => {
+router.get("/search-result", isLoggedIn, (req, res) => {
   const { bandName, festivalID } = req.query;
 
   spotifyApi
@@ -164,21 +164,20 @@ router.post(
 );
 
 // band details:
-router.get("/:bandName/:festivalID", (req, res) => {
+router.get("/:bandName/:festivalID", isLoggedIn, (req, res) => {
   const band = req.params.bandName;
   const festivalID = req.params.festivalID;
   // USE MONGOOSE SEARCH --> Find festival with that ID and that band?!
   Festival.findById(festivalID)
     .then((festival) => {
-      const bandFound = festival.bands.find(
-        (element) => element.bandName === band
-      );
+      const { _id, name, bands } = festival;
+      const bandFound = bands.find((element) => element.bandName === band);
       const { bandName, spotifyId, stage, day, startTime, endTime } = bandFound;
       spotifyApi.getArtist(spotifyId).then((artist) => {
         const { genres, images } = artist.body;
         spotifyApi.getArtistTopTracks(spotifyId, "de").then((topTracks) => {
           const { tracks } = topTracks.body;
-          console.log("Found the top tracks: ", tracks);
+          // console.log("Found the top tracks: ", tracks);
           res.render("band/details", {
             bandName,
             stage,
@@ -188,6 +187,8 @@ router.get("/:bandName/:festivalID", (req, res) => {
             genres,
             images,
             tracks,
+            festivalName: name,
+            festivalId: _id,
           });
         });
       });
@@ -195,6 +196,75 @@ router.get("/:bandName/:festivalID", (req, res) => {
     .catch((err) =>
       console.log("Did not find the band you were looking for", err)
     );
+});
+
+router.get("/:bandName/:festivalId/edit", isLoggedIn, async (req, res) => {
+  const { bandName, festivalId } = req.params;
+  await Festival.findById(festivalId).then((festival) => {
+    const { name, stages, bands } = festival;
+    const bandFound = bands.find((element) => element.bandName === bandName);
+    const { stage, day, startTime, endTime } = bandFound;
+    res.render("band/edit", {
+      bandName,
+      stage,
+      day,
+      startTime,
+      endTime,
+      festivalName: name,
+      festivalId,
+      stages,
+    });
+  });
+});
+
+router.post("/:bandName/:festivalId/edit", isLoggedIn, async (req, res) => {
+  const { bandName, festivalId } = req.params;
+  const { stageEdit, dayEdit, startTimeEdit, endTimeEdit } = req.body;
+  await Festival.findById(festivalId)
+    .then(async (festival) => {
+      const { bands } = festival;
+      const bandFound = bands.find((element) => element.bandName === bandName);
+
+      let { stage, day, startTime, endTime } = bandFound;
+      // console.log(bandFound, dayEdit);
+      // console.log("STAGE", stage, stageEdit, stage === stageEdit);
+      // console.log("day", day, dayEdit, day === dayEdit);
+      // console.log(
+      //   "startTime",
+      //   startTime,
+      //   startTimeEdit,
+      //   startTime === startTimeEdit
+      // );
+      // console.log("end", endTime, endTimeEdit, endTime === endTimeEdit);
+
+      // check if nothing has changed:
+      if (
+        stage === stageEdit &&
+        day === dayEdit &&
+        startTime === startTimeEdit &&
+        endTime === endTimeEdit
+      ) {
+        console.log("No changes were made");
+        return res.redirect(`/band/${bandName}/${festivalId}`);
+      }
+
+      console.log("NEW", stage, day, startTime, endTime);
+      // save changes
+      const idx = festival.bands.indexOf(bandFound);
+
+      festival.bands[idx] = {
+        ...festival.bands[idx],
+        sartTime: startTimeEdit,
+        endTime: endTimeEdit,
+        day: dayEdit,
+        stage: stageEdit,
+      };
+
+      await Festival.findByIdAndUpdate(festival._id, { bands: festival.bands });
+
+      return res.redirect(`/band/${bandName}/${festivalId}`);
+    })
+    .catch((err) => console.log(`Editing ${bandName} did not work.`, err));
 });
 
 module.exports = router;

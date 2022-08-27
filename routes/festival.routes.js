@@ -105,9 +105,10 @@ router.get("/:id/delete-band/:bandName", async (req, res) => {
     },
   })
     .then(async (festival) => {
-      const { bands } = festival;
-      console.log("Festival found: ", festival);
-      console.log("The bands: ", bands);
+      const { name, bands } = festival;
+      // console.log("Festival found: ", festival);
+      // console.log("The bands: ", bands);
+
       const bandIndex = bands.indexOf(bandName);
       bands.splice(bandIndex, 1);
       await festival.save();
