@@ -54,13 +54,12 @@ router.get("/:id", isLoggedIn, (req, res) => {
         adminStatus = true;
       }
 
-      // check who of your crew is interested in which band:
-
-      // MongoDB search: {groups: ObjectId('62f7f3b44a04bf590e7f71cd'), watchlist: {$elemMatch: {festivalId: ObjectId('62fa183ba1a03c4c1c8bc273'), bands: "Clueso"}}}
+      // check who of your crew is interested in which band and store in new array:
       const newFestivalArr = [];
       for (element of festivals) {
         const addFestival = {
           festivalName: element.name,
+          IdOfFestival: element._id,
           bandsWithCrewArr: [],
         };
 
@@ -69,10 +68,12 @@ router.get("/:id", isLoggedIn, (req, res) => {
 
           for (band of bands) {
             const { bandName } = band;
+            console.log("TEST: ", band);
             const newBandObj = {
-              bandName,
+              band,
             };
 
+            // Find all crew members who are interested to watch this band on that festival:
             await User.find({
               groups: new Types.ObjectId(id),
               watchlist: {
@@ -95,17 +96,6 @@ router.get("/:id", isLoggedIn, (req, res) => {
         "First Arr Element: ",
         newFestivalArr[0].bandsWithCrewArr[1].crewArr
       );
-
-      // STRUCTURE FOR ELEMENTS OF newFestivalArr:
-      // const addFestival = {
-      //   festivalName: name,
-      //   bands: [
-      //     {
-      //       bandName: "",
-      //       crewGoing: [],
-      //     },
-      //   ],
-      // };
 
       Festival.find().then((festivalCollection) => {
         res.render("group/details", {

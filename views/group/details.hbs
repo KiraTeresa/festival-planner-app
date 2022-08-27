@@ -53,21 +53,24 @@
 <div>
     Festivals:
     {{#each festivals}}
-    <div>{{name}} | {{startDate}} – {{endDate}}</div>
+    <div>
+        {{name}} | {{startDate}} – {{endDate}}
+        {{!-- ADD BUTTON TO SHOW/HIDE FESTIVAL DETAILS HERE --}}
+    </div>
     {{/each}}
     {{#unless festivals}}
     -- no festivals added so far --
     {{/unless}}
     <form action="/group/{{id}}" method="post">
         <label for="addFestival">Choose a festival to start planning:</label>
-<select name="addFestival" id="addFestival">
-    {{#each festivalCollection}}
-    <option value="{{_id}}">{{name}} | {{startDate}} – {{endDate}}</option>
-    {{/each}}
-</select>
-<button type="submit">Add to list</button>
+        <select name="addFestival" id="addFestival">
+         {{#each festivalCollection}}
+         <option value="{{_id}}">{{name}} | {{startDate}} – {{endDate}}</option>
+        {{/each}}
+        </select>
+        <button type="submit">Add to list</button>
     </form>
-    <br>
+    {{!-- <br>
     <br>
     {{#each festivals}}
     <h3>{{name}}</h3>
@@ -83,25 +86,38 @@
         <form action="/band/{{bandName}}/{{../_id}}/{{../../id}}/remove-from-watchlist" method="post">
         <button type="submit">Remove from your personal setlist
 </button>
-        </form>
-    </div>
+        </form> --}}
+    {{!-- </div>
     {{/each}}
-    {{/each}}
+    {{/each}} --}}
 </div>
 <hr>
 <div>
     {{#each newFestivalArr}}
     <div>
-        {{!-- <h3>{{festivalName}}</h3> --}}
+        <h3>{{this.festivalName}}</h3>
+                    {{#each bandsWithCrewArr}}
         <div>
-            {{#each bandsWithCrewArr}}
-{{this.bandName}}
-<br>
-{{#each this.crewArr}}
-{{this.username}} | 
-{{/each}}
+
+            {{this.band.bandName}} | Plays on {{this.band.day}} on {{this.band.stage}}| Stagetime: {{this.band.startTime}}-{{this.band.endTime}}
+            <br>
+            Who is going?
+            {{#each this.crewArr}}
+            {{this.username}} | 
+            {{/each}}
+            {{#unless this.crewArr}}
+            -- no one so far --
+            {{/unless}}
+            <form action="/band/{{this.band.bandName}}/{{../this.IdOfFestival}}/{{../../id}}/add-to-watchlist" method="post">
+        <button type="submit">Add to your personal setlist
+</button>
+        </form>
+        <form action="/band/{{this.band.bandName}}/{{../this.IdOfFestival}}/{{../../id}}/remove-from-watchlist" method="post">
+        <button type="submit">Remove from your personal setlist
+</button>
+        </form>
         </div>
-{{/each}}
+    {{/each}}
 
     </div>
     {{/each}}
