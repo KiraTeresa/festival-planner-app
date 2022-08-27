@@ -7,14 +7,14 @@ const { Types } = require("mongoose");
 const User = require("../models/User.model");
 
 // Making sure only users with the role "owner" can access the festival routes:
-router.use(isOwner);
+// router.use(isOwner);
 
 // route handling:
-router.get("/create", (req, res) => {
+router.get("/create", isOwner, (req, res) => {
   res.render("festival/create");
 });
 
-router.post("/create", async (req, res) => {
+router.post("/create", isOwner, async (req, res) => {
   const { name, startDate, endDate } = req.body;
   console.log(name, startDate, endDate);
   const newFestival = await Festival.create({ name, startDate, endDate });
@@ -56,7 +56,7 @@ router.get("/all", (req, res) => {
     .catch((err) => console.log("Rendering all festivals didn't work", err));
 });
 
-router.get("/:id/add-stage", (req, res) => {
+router.get("/:id/add-stage", isOwner, (req, res) => {
   Festival.findById(req.params.id).then((festival) => {
     const { _id, name } = festival;
     console.log("Session User: ", req.session.user);
@@ -67,7 +67,7 @@ router.get("/:id/add-stage", (req, res) => {
   });
 });
 
-router.post("/:id/add-stage", (req, res) => {
+router.post("/:id/add-stage", isOwner, (req, res) => {
   const { stage } = req.body;
   Festival.findById(req.params.id)
     .then((festival) => {
@@ -79,7 +79,7 @@ router.post("/:id/add-stage", (req, res) => {
     .catch((err) => console.log("Adding stage failed", err));
 });
 
-router.get("/:id/add-band/", (req, res) => {
+router.get("/:id/add-band/", isOwner, (req, res) => {
   const { id } = req.params;
   const { spotifyId } = req.query;
   Festival.findById(id).then((festival) => {
@@ -101,7 +101,7 @@ router.get("/:id/add-band/", (req, res) => {
   });
 });
 
-router.post("/:id/add-band", (req, res) => {
+router.post("/:id/add-band", isOwner, (req, res) => {
   const { bandName, spotifyId, stage, day, startTime, endTime } = req.body;
   const band = {
     bandName,
@@ -122,7 +122,7 @@ router.post("/:id/add-band", (req, res) => {
 });
 
 // remove a band from festival list:
-router.get("/:id/delete-band/:bandName", async (req, res) => {
+router.get("/:id/delete-band/:bandName", isOwner, async (req, res) => {
   const { id, bandName } = req.params;
   await Festival.findOne({
     _id: new Types.ObjectId(id),
@@ -145,7 +145,7 @@ router.get("/:id/delete-band/:bandName", async (req, res) => {
     .catch((err) => console.log("Deleting failed", err));
 });
 
-router.get("/:id/update", (req, res) => {
+router.get("/:id/update", isOwner, (req, res) => {
   Festival.findById(req.params.id)
     .then((festival) => {
       const { _id, name, startDate, endDate } = festival;
@@ -154,7 +154,7 @@ router.get("/:id/update", (req, res) => {
     .catch((err) => console.log("Ups, something went wrong", err));
 });
 
-router.post("/:id/update", (req, res) => {
+router.post("/:id/update", isOwner, (req, res) => {
   const { name, startDate, endDate } = req.body;
   Festival.findByIdAndUpdate(req.params.id, { name, startDate, endDate })
     .then(() => res.redirect(`/festival/${req.params.id}`))
@@ -166,7 +166,7 @@ router.post("/:id/update", (req, res) => {
     );
 });
 
-router.post("/:id/delete", (req, res) => {
+router.post("/:id/delete", isOwner, (req, res) => {
   Festival.findByIdAndDelete(req.params.id)
     .then(() => {
       console.log("Festival successfully deleted");

@@ -1,5 +1,7 @@
 <h2>{{name}}</h2>
+{{#if isOwner}}
 <a href="/festival/{{_id}}/update">Update festival info</a>
+{{/if}}
 <p>Here you'll find all the information about the {{name}} festival.</p>
 <p><b>{{startDate}} - {{endDate}}</b></p>
 <div>
@@ -13,7 +15,9 @@
     -- no stages listed --
     {{/unless}}
 
+    {{#if isOwner}}
     <a href="/festival/{{_id}}/add-stage">add a stage</a>
+    {{/if}}
 </div>
 <div>
     Bands:
@@ -22,7 +26,9 @@
         <li>
             {{bandName}} | {{day}} | {{stage}} | Stagetime: {{startTime}}-{{endTime}}
             <a href="/band/{{bandName}}/{{../_id}}">see more</a>
-            <a href="/festival/{{../_id}}/delete-band/{{bandName}}">delete</a>
+            {{#if ../isOwner}}
+            | <a href="/festival/{{../_id}}/delete-band/{{bandName}}">delete</a>
+            {{/if}}
             </li>
         {{/each}}
     </ul>
@@ -32,13 +38,17 @@
     {{/unless}}
 
     {{!-- <a href="/festival/{{_id}}/add-band">add a band</a> --}}
+    {{#if isOwner}}
     <form action="/band/search-result" method="get">
         <input type="hidden" name="festivalID" value="{{_id}}">
         <input type="search" name="bandName" placeholder="search band you wanna add..">
         <button type="submit">Search</button>
     </form>
+    {{/if}}
 </div>
 
+{{#if isOwner}}
 <form action="/festival/{{_id}}/delete" method="post">
 <button type="submit">DETELTE this festival</button>
 </form>
+{{/if}}
