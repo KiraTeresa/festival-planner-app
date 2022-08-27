@@ -4,6 +4,7 @@ const Festival = require("../models/Festival.model");
 const isOwner = require("../middleware/isOwner");
 const spotifyApi = require("../utils/spotify");
 const { Types } = require("mongoose");
+const User = require("../models/User.model");
 
 // Making sure only users with the role "owner" can access the festival routes:
 router.use(isOwner);
@@ -13,10 +14,37 @@ router.get("/create", (req, res) => {
   res.render("festival/create");
 });
 
-router.post("/create", (req, res) => {
+router.post("/create", async (req, res) => {
   const { name, startDate, endDate } = req.body;
   console.log(name, startDate, endDate);
-  Festival.create({ name, startDate, endDate });
+  const newFestival = await Festival.create({ name, startDate, endDate });
+
+  // send notification to all users:
+  const currentUser = req.session.user;
+  const today = new Date().toISOString().slice(0, 10);
+
+  await User.findById(currentUser).then(async (owner) => {
+    const { username } = owner;
+    const newNotification = {
+      message: `Great news from ${username}! A new festival has been added: ${newFestival.name}. Go check it out!`,
+      date: today,
+      type: "festival",
+    };
+    await User.find({ role: "user" }).then((allUsers) => {
+      console.log(
+        "These users get the notification about the new festival: ",
+        allUsers
+      );
+      for (element of allUsers) {
+        User.findById(element._id).then((user) => {
+          const { notifications } = user;
+          notifications.push(newNotification);
+          user.save();
+        });
+      }
+    });
+  });
+
   res.redirect("/festival/all");
 });
 

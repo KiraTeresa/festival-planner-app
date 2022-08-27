@@ -248,7 +248,7 @@ router.post("/:bandName/:festivalId/edit", isLoggedIn, async (req, res) => {
         return res.redirect(`/band/${bandName}/${festivalId}`);
       }
 
-      console.log("NEW", stage, day, startTime, endTime);
+      // console.log("NEW", stage, day, startTime, endTime);
       // save changes
       const idx = festival.bands.indexOf(bandFound);
 
