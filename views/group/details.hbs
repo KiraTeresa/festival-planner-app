@@ -55,7 +55,6 @@
     {{#each festivals}}
     <div>
         {{name}} | {{startDate}} – {{endDate}}
-        {{!-- ADD BUTTON TO SHOW/HIDE FESTIVAL DETAILS HERE --}}
         <form>
             <input type="hidden" value="{{_id}}" name="id">
         <button type="submit">Show</button>
@@ -122,7 +121,9 @@
         </form>
         </div>
     {{/each}}
-
+{{#unless bandsWithCrewArr}}
+<p>--- no bands were added to this festival so far ---</p>
+{{/unless}}
     </div>
     {{/each}}
 </div>
