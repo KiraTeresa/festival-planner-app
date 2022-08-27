@@ -107,7 +107,9 @@ router.get("/:id", isLoggedIn, (req, res) => {
           id,
           adminStatus,
           festivalCollection,
-          newFestivalArr,
+          newFestivalArr: newFestivalArr.filter((element) =>
+            element.IdOfFestival.equals(req.query.id)
+          ),
         });
       });
     })
