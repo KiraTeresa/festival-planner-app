@@ -19,7 +19,11 @@
     Bands:
     <ul>
         {{#each bands}}
-        <li>{{bandName}} | {{day}} | {{stage}} | Stagetime: {{startTime}}-{{endTime}} <a href="/band/{{bandName}}/{{../_id}}">see more</a></li>
+        <li>
+            {{bandName}} | {{day}} | {{stage}} | Stagetime: {{startTime}}-{{endTime}}
+            <a href="/band/{{bandName}}/{{../_id}}">see more</a>
+            <a href="/festival/{{../_id}}/delete-band/{{bandName}}">delete</a>
+            </li>
         {{/each}}
     </ul>
 

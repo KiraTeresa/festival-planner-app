@@ -3,6 +3,7 @@ const router = express.Router();
 const Festival = require("../models/Festival.model");
 const isOwner = require("../middleware/isOwner");
 const spotifyApi = require("../utils/spotify");
+const { Types } = require("mongoose");
 
 // Making sure only users with the role "owner" can access the festival routes:
 router.use(isOwner);
@@ -90,6 +91,29 @@ router.post("/:id/add-band", (req, res) => {
       res.redirect(`/festival/${_id}`);
     })
     .catch((err) => console.log("Adding a band failed", err));
+});
+
+// remove a band from festival list:
+router.get("/:id/delete-band/:bandName", async (req, res) => {
+  const { id, bandName } = req.params;
+  await Festival.findOne({
+    _id: new Types.ObjectId(id),
+    bands: {
+      $elemMatch: {
+        bandName,
+      },
+    },
+  })
+    .then(async (festival) => {
+      const { bands } = festival;
+      console.log("Festival found: ", festival);
+      console.log("The bands: ", bands);
+      const bandIndex = bands.indexOf(bandName);
+      bands.splice(bandIndex, 1);
+      await festival.save();
+      res.redirect(`/festival/${id}`);
+    })
+    .catch((err) => console.log("Deleting failed", err));
 });
 
 router.get("/:id/update", (req, res) => {
