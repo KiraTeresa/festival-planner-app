@@ -1,8 +1,16 @@
-<form action="/festival/{{festivalID}}/add-band" method="get">
-    <select name="spotifyId" id="band">
+
         {{#each band}}
-        <option value="{{id}}">{{name}} | {{genres}}</option>
+        <form action="/festival/{{../festivalID}}/add-band" method="get">
+        <div>
+            <img src="{{images.2.url}}" alt="">
+        {{id}}
+        <br>
+        <h3>{{name}}</h3>
+        Genre: {{genres}}
+        <br>
+        <input type="hidden" name="spotifyId" value="{{id}}">
+        
+        <button type="submit">Add this band to {{../festivalName}} line-up</button>
+        </form>
         {{/each}}
-    </select>
-    <button type="submit">Add this band to {{festivalName}} line-up</button>
-</form>
+        </div>

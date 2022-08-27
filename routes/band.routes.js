@@ -13,6 +13,7 @@ router.get("/search-result", (req, res) => {
     .searchArtists(bandName)
     .then((data) => {
       const band = data.body.artists.items;
+      console.log(band);
       Festival.findById(festivalID).then((festival) => {
         const festivalName = festival.name;
         res.render("band/search-result", { band, festivalName, festivalID });
