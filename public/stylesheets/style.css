@@ -1,4 +1,4 @@
-body {
+/* body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
@@ -13,4 +13,156 @@ h1 {
 
 div {
   border: 1px solid #000;
+} */
+
+
+/******* COLOR PALETTE *******/
+/* :root {
+  --primary-bg-color: #1A1423;
+  --secondary-bg-color: #372549;
+  --text-color: #EACDC2;
+  --primary-color: #774C60;
+  --secondary-color: #B75D69;
+} */
+
+:root {
+  --primary-bg-color: #739E82;
+  --secondary-bg-color: #99621e;
+  --text-color: #F3FFB6;
+  --primary-color: #2C5530;
+  --secondary-color: #D38B5D;
+}
+
+/******* FONTS *******/
+@font-face {
+  font-family: bangers;
+  src: url(/assets/fonts/Bangers/Bangers-Regular.ttf);
+}
+
+@font-face {
+  font-family: laila;
+  src: url(/assets/fonts/Laila/Laila-Regular.ttf);
+}
+
+/******* RESET CSS *******/
+*, ::before, ::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  display: block;
+  color: inherit;
+  font-family: inherit;
+  text-decoration: none;
+}
+
+/******* GLOBAL STYLES *******/
+body {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  font-family: 'laila';
+  color: var(--primary-color);
+  background: linear-gradient(to bottom right,#fff 50%, var(--primary-bg-color) 50%);
+}
+
+header {
+  /* border: purple dashed 1px; */
+  padding-top: 2rem;
+}
+
+nav {
+  /* background-color: aqua; */
+  text-align: center;
+}
+
+main {
+  /* border: aqua solid 1px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+  gap: 2rem;
+}
+
+footer {
+  text-align: center;
+  color: #fff;
+}
+
+/******* GENERAL STYLES *******/
+/* #logo {
+  height: 100px;
+  width: 150px;
+} */
+
+h1 {
+  font-size: 5rem;
+}
+
+h2 {
+  margin-top: 0.5rem;
+}
+
+.helgahelps {
+  font-family: 'bangers', sans-serif;
+  /* font-size: 2rem; */
+}
+
+input {
+  height: 1.5rem;
+  border: none;
+  border-bottom: #a3a3a3 solid 2.5px;
+  background-color: transparent;
+}
+
+input:hover {
+  border-bottom: var(--primary-color) solid 2.5px;
+}
+
+/******* HOMEPAGE *******/
+#hp-txt {
+  width: 50rem;
+  margin-top: 1.5rem;
+  text-align: justify;
+  display: flex;
+  flex-direction: column;
+}
+
+#logo {
+  height: 18rem;
+  width: 24rem;
+  align-self: center;
+}
+
+.form-container {
+  /* align-self: center; */
+  gap: 2.5rem;
+  display: flex;
+  justify-content: center;
+  width: fit-content;
+  /* border: red solid 1px; */
+}
+
+.homepage-form {
+  border: var(--primary-color) solid 2px;
+  border-radius: 5%;
+  min-height: 15rem;
+  width: 25rem;
+  /* display: flex;
+  flex-direction: column; */
+  text-align: center;
+  background-color: #fff;
+}
+
+.homepage-form > form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  /* border: red solid 1px; */
+  gap: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }

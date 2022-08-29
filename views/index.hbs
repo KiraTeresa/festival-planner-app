@@ -1,4 +1,4 @@
-<h1>{{appTitle}} 🚀</h1>
+{{!-- <h1 class="helgahelps">{{appTitle}}</h1> --}}
 {{#if isLoggedIn}}
 <p>Welcome Ironhacker!</p>
 {{/if}}
@@ -6,33 +6,44 @@
 
 
 {{#unless isLoggedIn}}
-<div>
-<h2>Sign up here:</h2>
-<form action="/auth/signup" method="POST">
-   <label> Username
-      <input type="text" name="username">
-   </label>
-   <label> Password
-      <input type="password" name="password">
-   </label>
-
-   <button type="submit">Sign up</button>
-</form>
+<div id="hp-txt">
+   {{!-- <img src="/assets/logo-illustration.png" alt="HelgaHelps logo" id="logo" > --}}
+   <p>Helga is here to help your crew to get organized for the next festival.</p>
+   <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio dignissimos repudiandae neque ipsum aliquam pariatur culpa tempora porro perspiciatis voluptates. Cupiditate maiores aut beatae omnis distinctio consectetur minima, ipsam natus.</p>
 </div>
 
-<div>
-<h2>Already have an account? Come in then:</h2>
-<form action="/auth/login" method="POST">
-   <label> Username
-      <input type="text" name="username">
-   </label>
-   <label> Password
-      <input type="password" name="password">
-   </label>
+<div class="form-container">
+   <div class="homepage-form" id="signup-form">
+      <h2>Are you new?</h2>
+      <form action="/auth/signup" method="POST">
+         <label>
+            <input type="text" name="username" placeholder="Username">
+         </label>
+         <label>
+            <input type="password" name="password" placeholder="Password">
+         </label>
 
-   <button type="submit">Log in</button>
-</form>
+         <button type="submit" class="button-53">Sign Up</button>
+      </form>
+   </div>
+
+   <div class="homepage-form" id="login-form">
+      <h2>Been here before?</h2>
+      <form action="/auth/login" method="POST">
+         <label>
+            <input type="text" name="username" placeholder="Username">
+         </label>
+         <label>
+            <input type="password" name="password" placeholder="Password">
+         </label>
+
+         <button type="submit" class="button-28">Log In</button>
+      </form>
+   </div>
 </div>
+
+   <img src="/assets/logo-illustration.png" alt="HelgaHelps logo" id="logo" >
+
 {{/unless}}
 
 {{#if errorMessage}}

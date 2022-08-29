@@ -1,0 +1,112 @@
+
+.btn-submit {
+    width: 8rem;
+    height: 1.5rem;
+    background-color: #fff;
+    border: var(--primary-color) solid 2px;
+    border-radius: 5%;
+    font-weight: bold;
+  }
+
+/* BUTTON 53 */
+.button-53 {
+    background-color: var(--primary-color);
+    border: 0 solid var(--secondary-bg-color);
+    box-sizing: border-box;
+    color: #fff;
+    display: flex;
+    font-family: ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-size: 1rem;
+    font-weight: 700;
+    justify-content: center;
+    line-height: 1.75rem;
+    padding: .75rem 1.65rem;
+    position: relative;
+    text-align: center;
+    text-decoration: none var(--secondary-color) solid;
+    text-decoration-thickness: auto;
+    width: 100%;
+    max-width: 15rem;
+    position: relative;
+    cursor: pointer;
+    transform: rotate(-2deg);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  
+  .button-53:focus {
+    outline: 0;
+  }
+  
+  .button-53:after {
+    content: '';
+    position: absolute;
+    border: 1px solid var(--primary-bg-color);
+    bottom: 4px;
+    left: 4px;
+    width: calc(100% - 1px);
+    height: calc(100% - 1px);
+  }
+  
+  .button-53:hover:after {
+    bottom: 2px;
+    left: 2px;
+  }
+  
+  @media (min-width: 768px) {
+    .button-53 {
+      padding: .75rem 3rem;
+      font-size: 1.25rem;
+    }
+  }
+  
+  
+  /* BUTTON 28 */
+  .button-28 {
+    appearance: none;
+    background-color: var(--primary-color);
+    border: 2px solid #fff;
+    border-radius: 15px;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: normal;
+    margin: 0;
+    min-height: 60px;
+    min-width: 0;
+    max-width: 15rem;
+    outline: none;
+    padding: 16px 24px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: 100%;
+    will-change: transform;
+  }
+  
+  .button-28:disabled {
+    pointer-events: none;
+  }
+  
+  .button-28:hover {
+    color: var(--primary-color);
+    background-color: #fff;
+    border: 1px solid var(--primary-color);
+    box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+    transform: translateY(-2px);
+  }
+  
+  .button-28:active {
+    box-shadow: none;
+    transform: translateY(0);
+  }
+  

@@ -6,13 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>{{appTitle}}</title>
     <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/stylesheets/buttons.css" />
   </head>
 
   <body>
     <header>
       <nav>
-        <a href="/">Home</a>
+        {{#unless isLoggedIn}}
+        <h1 class="helgahelps">{{appTitle}}</h1>
+        {{/unless}}
         {{#if isLoggedIn}}
+        <a class="helgahelps" href="/"><img src="/assets/logo-illustration.png" alt="HelgaHelps logo" id="logo" >
+        HelgaHelps</a>
         | <a href="/user/dashboard">DASHBOARD</a>
         | <a href="/group">See all groups</a>
         | <a href="/festival/all">See all festivals</a>
@@ -21,7 +26,11 @@
       </nav>
     </header>
 
+    <main>
     {{{body}}}
+    </main>
+
+    <footer>HelgaHelps is a project by Kira Soba</footer>
 
     <script src="/js/script.js"></script>
   </body>
