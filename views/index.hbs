@@ -1,17 +1,32 @@
-{{!-- <h1 class="helgahelps">{{appTitle}}</h1> --}}
 {{#if isLoggedIn}}
-<p>Welcome Ironhacker!</p>
+<h1>{{appTitle}}</h1>
 {{/if}}
 
 
 
-{{#unless isLoggedIn}}
+
 <div id="hp-txt">
    {{!-- <img src="/assets/logo-illustration.png" alt="HelgaHelps logo" id="logo" > --}}
    <p>Helga is here to help your crew to get organized for the next festival.</p>
-   <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio dignissimos repudiandae neque ipsum aliquam pariatur culpa tempora porro perspiciatis voluptates. Cupiditate maiores aut beatae omnis distinctio consectetur minima, ipsam natus.</p>
+   {{#if isLoggedIn}}
+   <div id="hp-info">
+      <ul>
+         <li>Join the group of people you like to go on a festival with</li>
+         <li>Your group is not registered yet? Go ahead and create one, so all your favourite people can join you</li>
+         <li>Good to know: not everyone can just join a crew! The group admin has to verify the request</li>
+         <li>Add all the festivals to your group you and your crew are interested in</li>
+         <li>Add bands to your personal setlist and see who else of your crew is eager to see them perform live on stage</li>
+         <li>Listen to previews of the best songs</li>
+         <li>GET EXCITED!!!</li>
+      </ul>
+   </div>
+   {{/if}}
+   {{#unless isLoggedIn}}
+   <p>Join your crew and get connected. Choose the bands you want to see perform on stage. Listen to some tunes and get all pumped for your the upcoming event.</p>
+   {{/unless}}
 </div>
 
+{{#unless isLoggedIn}}
 <div class="form-container">
    <div class="homepage-form" id="signup-form">
       <h2>Are you new?</h2>
@@ -37,12 +52,12 @@
             <input type="password" name="password" placeholder="Password">
          </label>
 
-         <button type="submit" class="button-28">Log In</button>
+         <button type="submit" class="button-53">Log In</button>
       </form>
    </div>
 </div>
 
-   <img src="/assets/logo-illustration.png" alt="HelgaHelps logo" id="logo" >
+   {{!-- <img src="/assets/logo-illustration.png" alt="HelgaHelps logo" id="logo" > --}}
 
 {{/unless}}
 

@@ -12,13 +12,12 @@
   <body>
     <header>
       <nav>
-        {{#unless isLoggedIn}}
-        <h1 class="helgahelps">{{appTitle}}</h1>
-        {{/unless}}
+
         {{#if isLoggedIn}}
-        <a class="helgahelps" href="/"><img src="/assets/logo-illustration.png" alt="HelgaHelps logo" id="logo" >
+        <a class="helgahelps" href="/">
+        {{!-- <img src="/assets/logo-illustration.png" alt="HelgaHelps logo" id="logo" > --}}
         HelgaHelps</a>
-        | <a href="/user/dashboard">DASHBOARD</a>
+        <a href="/user/dashboard">Dashboard</a>
         | <a href="/group">See all groups</a>
         | <a href="/festival/all">See all festivals</a>
         | <a href="/auth/logout">Logout</a>
@@ -27,10 +26,13 @@
     </header>
 
     <main>
-    {{{body}}}
+      {{#unless isLoggedIn}}
+      <h1>{{appTitle}}</h1>
+      {{/unless}}
+      {{{body}}}
     </main>
 
-    <footer>HelgaHelps is a project by Kira Soba</footer>
+    <footer>HelgaHelps, a project by Kira Soba</footer>
 
     <script src="/js/script.js"></script>
   </body>

@@ -1,47 +1,52 @@
-<h1>Welcome to your personal Dashboard {{username}}</h1>
+<h2>Welcome to your personal Dashboard <span id="username">{{username}}</span></h2>
 
-{{#if usersGroups}}
-<div>
-    <h3>Your groups:</h3>
-    <ul>
-    {{#each usersGroups}}
-<li>{{this}}</li>
-    {{/each}}
-    </ul>
-</div>
-{{/if}}
-
-{{#if watchlist}}
-<div>
-    <h3>Your personal setlist:</h3>
-    
-    {{#each watchlist}}
-    Festival: {{festivalName}}
-    <br>
-    Bands:
-    <ul>
-    {{#each bands}}
-        <li>{{this}}</li>
+<div class="dashboard-container">
+    {{#if usersGroups}}
+    <div class="dashboard-element" id="dashboard-item1">
+        <h3>Your groups:</h3>
+        
+        <div class="db-group-container">
+        {{#each usersGroups}}
+        <div class="db-group-item">{{this}}</div>
         {{/each}}
-        </ul>
-    {{/each}}
-    
-</div>
-{{/if}}
+        </div>
 
-
-<div>
-    <h3>Notifications:</h3>
-    {{#if notifications}}
-    {{#each notifications}}
-    <div>
-        <p>{{message}}</p>
-        <p><i>{{date}} | {{type}}</i></p>
     </div>
-    {{/each}}
     {{/if}}
 
-    {{#unless notifications}}
-    <p>Nothing happened since your last log in, you are up to date.</p>
-    {{/unless}}
+    {{#if watchlist}}
+    <div class="dashboard-element" id="dashboard-item2">
+        <h3>Your personal setlist:</h3>
+        
+        {{#each watchlist}}
+        <div class="item-card">
+            {{festivalName}}
+            <div class="db-band-container">
+            {{#each bands}}
+            <div class="db-band-item">
+                {{this}}
+            </div>
+            {{/each}}
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    {{/if}}
+
+
+    <div class="dashboard-element" id="dashboard-item3">
+        <h3>Notifications:</h3>
+        {{#if notifications}}
+        {{#each notifications}}
+        <div class="item-card">
+            <p>{{message}}</p>
+            <p><i>{{date}} | {{type}}</i></p>
+        </div>
+        {{/each}}
+        {{/if}}
+
+        {{#unless notifications}}
+        <p>Nothing happened since your last log in, you are up to date.</p>
+        {{/unless}}
+    </div>
 </div>
