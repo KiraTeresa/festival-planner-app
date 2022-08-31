@@ -2,8 +2,10 @@
 <h1>{{appTitle}}</h1>
 {{/if}}
 
-
-
+{{#unless isLoggedIn}}
+<div class="animation-wrapper"></div>
+<div class="animation-obj"></div>
+{{/unless}}
 
 <div id="hp-txt">
    {{!-- <img src="/assets/logo-illustration.png" alt="HelgaHelps logo" id="logo" > --}}

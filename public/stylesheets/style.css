@@ -111,7 +111,7 @@ body {
   font-family: 'poppins', sans-serif;
   color: var(--primary-color);
   background: linear-gradient(to bottom right,#fff 50%, var(--primary-bg-color) 50%);
-  margin: 2rem;
+  position: relative;
 }
 
 header {
@@ -237,6 +237,38 @@ input:hover {
   gap: 1.5rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+
+.animation-wrapper {
+  position: absolute;
+  top: calc(100% - 1.5rem);
+  left: 0;
+  height: 1.5rem;
+  width: 1.5rem;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  animation: 2s slideDown;
+}
+
+.animation-obj {
+  position: absolute;
+  top: 0;
+  left: calc(100% - 1.5rem);
+  height: 1.5rem;
+  width: 1.5rem;
+  background-color: var(--secondary-color);
+  border-radius: 50%;
+  animation: 2s slideUp;
+}
+
+@keyframes slideUp {
+  0% { top: calc(100% - 1.5rem); left: 0%; }
+  100% { top: 0%; left: calc(100% - 1.5rem); }
+}
+
+@keyframes slideDown {
+  0% { top: 0%; left: calc(100% - 1.5rem); }
+  100% { top: calc(100% - 1.5rem); left: 0%; }
 }
 
 /* *************************** */
