@@ -20,21 +20,50 @@ div {
 /******* COLOR PALETTE *******/
 /* ************************ */
 
-/* :root {
+/* Purple DarkRose Beige */
+:root {
   --primary-bg-color: #1A1423;
   --secondary-bg-color: #372549;
   --text-color: #EACDC2;
   --primary-color: #774C60;
   --secondary-color: #B75D69;
-} */
+}
 
-:root {
+/* Green Brown Yellow */
+/* :root {
   --primary-bg-color: #739E82;
   --secondary-bg-color: #99621e;
   --text-color: #F3FFB6;
   --primary-color: #2C5530;
   --secondary-color: #D38B5D;
-}
+} */
+
+/* Black Violet Lavender Mint */
+/* :root {
+  --primary-bg-color: #070707;
+  --secondary-bg-color: #553555;
+  --text-color: #ADF1D2;
+  --primary-color: #755B69;
+  --secondary-color: #96C5B0;
+} */
+
+/* Brown Orange Wheat Turquoise */
+/* :root {
+  --primary-bg-color: #562C2C;
+  --secondary-bg-color: #F2542D;
+  --text-color: #F5DFBB;
+  --primary-color: #0E9594;
+  --secondary-color: #127475;
+} */
+
+/* Yellow Snow Rose Mint Salom */
+/* :root {
+  --primary-bg-color: #F5CAC3;
+  --secondary-bg-color: #F6BD60;
+  --text-color: #F7EDE2;
+  --primary-color: #84A59D;
+  --secondary-color: #F28482;
+} */
 
 /* ********************** */
 /********* FONTS *********/
