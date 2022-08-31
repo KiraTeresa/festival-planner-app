@@ -29,15 +29,22 @@
 </div>
 
 {{#unless isLoggedIn}}
+
+
 <div class="form-container">
+   <input type="checkbox" id="check">
    <div class="homepage-form" id="signup-form">
-      <h2>Are you new?</h2>
+      
       <form action="/auth/signup" method="POST">
+         <label for="check">Are you new?</label>
          <label>
             <input type="text" name="username" placeholder="Username">
          </label>
          <label>
             <input type="password" name="password" placeholder="Password">
+         </label>
+         <label>
+            <input type="password" name="comfirm-pw" placeholder="Confirm Password">
          </label>
 
          <button type="submit" class="button-53">Sign Up</button>
@@ -45,8 +52,9 @@
    </div>
 
    <div class="homepage-form" id="login-form">
-      <h2>Been here before?</h2>
+      
       <form action="/auth/login" method="POST">
+         <label for="check">Been here before?</label>
          <label>
             <input type="text" name="username" placeholder="Username">
          </label>
@@ -64,5 +72,7 @@
 {{/unless}}
 
 {{#if errorMessage}}
+   <div>
    {{errorMessage}}
+   </div>
 {{/if}}

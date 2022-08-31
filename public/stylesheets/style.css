@@ -209,22 +209,27 @@ input:hover {
 }
 
 .form-container {
+  position: relative;
   /* align-self: center; */
-  gap: 2.5rem;
+  /* gap: 2.5rem; */
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
   width: fit-content;
-  /* border: red solid 1px; */
+  height: 21rem;
+  overflow: hidden;
+  border: var(--primary-color) solid 2px;
+  border-radius: 5%;
 }
 
 .homepage-form {
-  border: var(--primary-color) solid 2px;
-  border-radius: 5%;
-  min-height: 15rem;
+  /* border: var(--primary-color) solid 2px;
+  border-radius: 5%; */
+  height: 18rem;
   width: 25rem;
   /* display: flex;
   flex-direction: column; */
-  text-align: center;
+  /* text-align: center; */
   background-color: #fff;
 }
 
@@ -234,9 +239,47 @@ input:hover {
   align-items: center;
   justify-content: space-around;
   /* border: red solid 1px; */
+  height: 15rem;
   gap: 1.5rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+
+#signup-form {
+  height: 100%;
+}
+
+#login-form {
+  position: absolute;
+  top: 280px;
+  left: 120px;
+  transform: translateY(-.5rem);
+  transform: rotate(-8deg);
+  border: var(--primary-color) solid 2px;
+  border-radius: 5%;
+}
+
+#check {
+  display: none;
+}
+
+#check:checked ~ #login-form {
+  transform: translateY(-17.5rem);
+  height: 100%;
+  position: relative;
+  left: 0;
+  border: none;
+}
+
+#check:checked ~ #signup-form {
+  position: absolute;
+  top: 280px;
+  left: 120px;
+  transform: translateY(-.5rem);
+  transform: rotate(-8deg);
+  z-index: 1;
+  border: var(--primary-color) solid 2px;
+  border-radius: 5%;
 }
 
 .animation-wrapper {
