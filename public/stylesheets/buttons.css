@@ -29,7 +29,7 @@
     max-width: 15rem;
     position: relative;
     cursor: pointer;
-    transform: rotate(-2deg);
+    /* transform: rotate(-2deg); */
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
