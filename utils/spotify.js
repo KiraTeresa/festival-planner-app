@@ -10,7 +10,10 @@ const spotifyApi = new SpotifyWebApi({
 // retrieve an access token for spotify-api
 spotifyApi
   .clientCredentialsGrant()
-  .then((data) => spotifyApi.setAccessToken(data.body["access_token"]))
+  .then((data) => {
+    console.log("Token expires: ", data.body["expires_in"]);
+    spotifyApi.setAccessToken(data.body["access_token"]);
+  })
   .catch((err) =>
     console.log("Something went wrong when retrieving an access token", err)
   );

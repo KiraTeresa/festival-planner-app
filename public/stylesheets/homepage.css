@@ -1,0 +1,175 @@
+/* ********************* */
+/******* HOMEPAGE *******/
+/* ********************* */
+
+#hp-txt {
+    width: 50rem;
+    margin-top: 1.5rem;
+    margin-left: 5rem;
+    text-align: justify;
+    font-size: 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  #hp-info {
+    margin-top: 2rem;
+    background-color: var(--primary-color);
+    border: #000 solid 0.2rem;
+    border-radius: 1.5rem;
+    padding: 1rem 1.7rem;
+    color: #fff;
+  }
+  
+  #logo {
+    height: 18rem;
+    width: 24rem;
+    align-self: center;
+  }
+  
+  .form-container {
+    position: absolute;
+    left: calc(50% + 200px);
+    top: calc(50% - 248px);
+    /* align-self: center; */
+    /* gap: 2.5rem; */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    /* width: 400px; */
+    height: 31rem;
+    overflow: hidden;
+    background-color: #fff;
+    border: var(--primary-color) solid 2px;
+    border-radius: 5%;
+    /* transform: rotate(-25deg); */
+  }
+  
+  .homepage-form {
+    position: relative;
+    /* background-color: yellow; */
+    /* border: var(--primary-color) solid 2px; */
+    /*border-radius: 5%; */
+    /* height: calc(100% - 100px); */
+    /* height: 100%; */
+    width: 25rem;
+    /* display: flex;
+    flex-direction: column; */
+    text-align: center;
+    /* background-color: #fff; */
+    /* transform: rotate(25deg); */
+  }
+  
+  .homepage-form > form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    /* border: red solid 1px; */
+    height: 60%;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    /* margin-bottom: 1rem; */
+  }
+  
+  #signup-form {
+    /* border: var(--primary-color) solid 2px; */
+    /* border-radius: 5%; */
+    background-color: #fff;
+    height: 100%;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  #login-form {
+    color: #fff;
+    /* margin-top: 1rem; */
+    position: absolute;
+    top: 82%;
+    height: 100%;
+    /* left: 120px; */
+    /* transform: translateY(-.5rem); */
+    /* transform: rotate(-9deg); */
+    border: var(--primary-color) solid 2px;
+    /* border-radius: 5%; */
+    background-color: var(--secondary-color);
+    transition: 1.2s ease-in-out;
+  }
+  
+  label {
+    transition: 1.2s ease-in-out;
+  }
+  
+  /* ********************* */
+  /* Toggle Signup & Login */
+  /* ********************* */
+  #check {
+    display: none;
+  }
+  
+  #check:checked ~ #login-form {
+    /* transform: translateY(-17.5rem); */
+    /* height: 100%; */
+    /* position: absolute; */
+    top: 18%;
+    /*left: 0; */
+    border: none;
+  }
+  
+  #check:checked ~ #login-form label{
+    transform: scale(1.5);	
+  }
+  
+  .placeholder::placeholder {
+    color: #fff;
+    margin-left: 1rem;
+  }
+  
+  #check:checked ~ #signup-form {
+    /* position: absolute; */
+    /* top: 82%; */
+    /* transform: translateY(-.5rem); */
+    /* transform: rotate(-8deg); */
+    /* z-index: 1; */
+    /* background-color: #fff; */
+    font-size: 1rem;
+  }
+  
+  /* #check:checked ~ #signup-form label{
+    transform: scale(1);	
+  } */
+  
+  /* ******************* */
+  /* Homepage Animation */
+  /* ***************** */
+  .animation-wrapper {
+    position: absolute;
+    top: calc(100% - 1.5rem);
+    left: 0;
+    height: 1.5rem;
+    width: 1.5rem;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    animation: 2s slideDown;
+  }
+  
+  .animation-obj {
+    position: absolute;
+    top: 0;
+    left: calc(100% - 1.5rem);
+    height: 1.5rem;
+    width: 1.5rem;
+    background-color: var(--secondary-color);
+    border-radius: 50%;
+    animation: 2s slideUp;
+  }
+  
+  @keyframes slideUp {
+    0% { top: calc(100% - 1.5rem); left: 0%; }
+    100% { top: 0%; left: calc(100% - 1.5rem); }
+  }
+  
+  @keyframes slideDown {
+    0% { top: 0%; left: calc(100% - 1.5rem); }
+    100% { top: calc(100% - 1.5rem); left: 0%; }
+  }

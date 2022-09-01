@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>{{appTitle}}</title>
     <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/stylesheets/homepage.css" />
+    <link rel="stylesheet" href="/stylesheets/dashboard.css" />
     <link rel="stylesheet" href="/stylesheets/buttons.css" />
   </head>
 
@@ -14,21 +16,25 @@
       <nav>
 
         {{#if isLoggedIn}}
-        <a class="helgahelps" href="/">
-        {{!-- <img src="/assets/logo-illustration.png" alt="HelgaHelps logo" id="logo" > --}}
-        HelgaHelps</a>
-        <a href="/user/dashboard">Dashboard</a>
-        | <a href="/group">See all groups</a>
-        | <a href="/festival/all">See all festivals</a>
-        | <a href="/auth/logout">Logout</a>
+        <div>
+          <a class="helgahelps" href="/">
+          {{!-- <img src="/assets/logo-illustration.png" alt="HelgaHelps logo" id="logo" > --}}
+          HelgaHelps</a>
+        </div>
+        <div class="navigation">
+          <a href="/user/dashboard">Dashboard</a>
+          | <a href="/group">See all groups</a>
+          | <a href="/festival/all">See all festivals</a>
+          | <a href="/auth/logout">Logout</a>
+        </div>
         {{/if}}
       </nav>
     </header>
 
     <main>
-      {{#unless isLoggedIn}}
+      {{!-- {{#unless isLoggedIn}}
       <h1>{{appTitle}}</h1>
-      {{/unless}}
+      {{/unless}} --}}
       {{{body}}}
     </main>
 

@@ -1,13 +1,13 @@
-{{#if isLoggedIn}}
+{{#unless isLoggedIn}}
 <h1>{{appTitle}}</h1>
-{{/if}}
+{{/unless}}
 
 {{#unless isLoggedIn}}
 <div class="animation-wrapper"></div>
 <div class="animation-obj"></div>
 {{/unless}}
 
-<div id="hp-txt">
+<div id="hp-txt" {{#if isLoggedIn}}class="center"{{/if}}>
    {{!-- <img src="/assets/logo-illustration.png" alt="HelgaHelps logo" id="logo" > --}}
    <p>Helga is here to help your crew to get organized for the next festival.</p>
    {{#if isLoggedIn}}
