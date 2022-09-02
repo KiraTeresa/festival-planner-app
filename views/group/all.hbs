@@ -1,13 +1,23 @@
-<h1>All groups will be listed here</h1>
+<h2>All groups will be listed here</h2>
 
-<ul>
-{{#each groups}}
-<li><a href="/group/{{_id}}">{{groupName}}</a></li>
-{{/each}}
-</ul>
+<div class="group-container">
+    <div class="group-element"  id="create-group-item">
+        <a href="/group/create">Create a new group</a>
+    </div>
+    {{#each groups}}
+    <div class="group-element">
+        {{!-- <div class="db-group-container"> --}}
+    {{!-- {{#each groups}} --}}
+        {{!-- <div class="db-group-item"> --}}
+            <a href="/group/{{_id}}" class="group-name">{{groupName}}</a>
+        {{!-- </div> --}}
+    {{!-- {{/each}} --}}
+    </div>
+    {{/each}}
 
-{{#unless groups}}
-<p>Sorry, there are no groups at the moment. Go ahead and create one!</p>
-{{/unless}}
-
-<a href="/group/create">Create a new group</a>
+    {{#unless groups}}
+    <div class="group-element">
+    <p>Sorry, there are no groups at the moment. Go ahead and create one!</p>
+    </div>
+    {{/unless}}
+</div>

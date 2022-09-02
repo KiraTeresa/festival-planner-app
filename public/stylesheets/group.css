@@ -1,0 +1,45 @@
+.group-container {
+    background-color: var(--primary-color);
+    border: #000 solid 0.2rem;
+    border-radius: 1.5rem;
+    padding: 0.5rem;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-auto-rows: auto;
+    grid-gap: 1rem;
+    }
+    
+.group-element {
+    background-color: var(--primary-bg-color);
+    border: #fff solid 1px;
+    border-radius: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    word-break: break-word;
+    font-size: 1.4rem;
+    }
+
+.group-element:hover {
+    /* text-shadow: 0 0 20px var(--text-color); */
+    background-color: var(--text-color);
+}
+
+.group-name:hover {
+    /* display: block; */
+    /* background-color: var(--primary-bg-color); */
+    /* text-decoration: underline; */
+    /* text-shadow: 1px 1px 30px var(--primary-bg-color); */
+    /* font-size: 1.7rem; */
+}
+
+#create-group-item {
+    background-color: var(--secondary-bg-color);
+    color: var(--text-color);
+}
+
+#create-group-item:hover {
+
+}

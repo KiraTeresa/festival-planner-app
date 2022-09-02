@@ -1,23 +1,30 @@
 <h2>Welcome to your personal Dashboard <span id="username">{{username}}</span></h2>
 
 <div class="dashboard-container">
-    {{#if usersGroups}}
+    
     <div class="dashboard-element" id="dashboard-item1">
         <h3>Your groups:</h3>
         
         <div class="db-group-container">
+        {{#if usersGroups}}
         {{#each usersGroups}}
         <div class="db-group-item">{{this}}</div>
         {{/each}}
+        {{/if}}
+        {{#unless usersGroups}}
+        <div class="db-group-item">
+            You haven't joint a group yet.
+            <a href="/group">Go ahead!</a>
+        </div>
+        {{/unless}}
         </div>
 
     </div>
-    {{/if}}
 
-    {{#if watchlist}}
+
     <div class="dashboard-element" id="dashboard-item2">
         <h3>Your personal setlist:</h3>
-        
+    {{#if watchlist}}     
         {{#each watchlist}}
         <div class="item-card">
             {{festivalName}}
@@ -30,8 +37,14 @@
             </div>
         </div>
         {{/each}}
-    </div>
     {{/if}}
+
+        {{#unless watchlist}}
+        <div class="item-card">
+            Your personal setlist is empty. Go check out the bands coming to your festival and add your favourites to your list, so you're not going to miss them!
+        </div>
+        {{/unless}}
+    </div>
 
 
     <div class="dashboard-element" id="dashboard-item3">
