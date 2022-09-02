@@ -1,8 +1,8 @@
 <h2>Welcome to your personal Dashboard <span id="username">{{username}}</span></h2>
 
-<div class="dashboard-container">
+<div class="grid-container grid-5-col">
     
-    <div class="dashboard-element" id="dashboard-item1">
+    <div class="grid-element" id="dashboard-item1">
         <h3>Your groups:</h3>
         
         <div class="db-group-container">
@@ -22,7 +22,7 @@
     </div>
 
 
-    <div class="dashboard-element" id="dashboard-item2">
+    <div class="grid-element" id="dashboard-item2">
         <h3>Your personal setlist:</h3>
     {{#if watchlist}}     
         {{#each watchlist}}
@@ -40,14 +40,18 @@
     {{/if}}
 
         {{#unless watchlist}}
-        <div class="item-card">
-            Your personal setlist is empty. Go check out the bands coming to your festival and add your favourites to your list, so you're not going to miss them!
+        <div class="item-card empty-card">
+            <i>
+            Your personal setlist is empty.
+            <br>
+            Go check out the bands coming to your festival and add your favourites to your list, so you're not going to miss them!
+            </i>
         </div>
         {{/unless}}
     </div>
 
 
-    <div class="dashboard-element" id="dashboard-item3">
+    <div class="grid-element" id="dashboard-item3">
         <h3>Notifications:</h3>
         {{#if notifications}}
         {{#each notifications}}
@@ -59,7 +63,11 @@
         {{/if}}
 
         {{#unless notifications}}
-        <p>Nothing happened since your last log in, you are up to date.</p>
+        <div class="item-card empty-card">
+            <i>
+            <p>Nothing happened since your last log in, you are up to date.</p>
+            </i>
+        </div>
         {{/unless}}
     </div>
 </div>

@@ -1,129 +1,145 @@
 <h2>Group details of {{groupName}}</h2>
-<div>
-    Id: {{id}}
-    <br>
-    Admin: {{admin.username}}
-</div>
-<div>
-    The Crew:
-    <ul>
-        <li>{{admin.username}} <i>(admin)</i></li>
-        {{#each crew}}
-        <li>{{username}}</li>
-        {{/each}}
-    </ul>
-    {{#unless crew}}
-    -- no crew members --
-    {{/unless}}
-    <br>
-    {{#if adminStatus}}
+    <div class="grid-container group-detail-container grid-5-col">
+        <div class="grid-element" id="group-grid-item1">
+            <div>
+                {{!-- Id: {{id}}
+                <br> --}}
+                {{!-- Admin: {{admin.username}} --}}
+                The Crew:
+                <ul>
+                    <li>{{admin.username}} <i>(admin)</i></li>
+                    {{#each crew}}
+                    <li>{{username}}</li>
+                    {{/each}}
+                </ul>
+                {{#unless crew}}
+                -- no crew members --
+                {{/unless}}
+            </div>
 
-    Eager to join the crew:
-    {{!-- Solution with anchor tag --}}
-    <ul>
-    {{#each pending}}
-    <li>{{username}} <a href="/group/{{../groupName}}/join/{{_id}}">worthy</a> | <a href="/group/{{../groupName}}/deny/{{_id}}">deny</a> </li>
-    {{/each}}
-    </ul>
-{{!-- Solution with form --}}
-    {{#each pending}}
-    {{username}}
-    <form action="/group/{{../groupName}}/join/{{_id}}" method="post">
-    <button type="submit">WORTHY</button>
-    </form>
-    <form action="/group/{{../groupName}}/deny/{{_id}}" method="post">
-    <button type="submit">DENY</button>
-    </form>
-    {{/each}}
-    {{#unless pending}}
-    -- the waiting list is clear --
-    {{/unless}}
-    {{/if}}
+            <div>
+            {{#if adminStatus}}
+                Eager to join the crew:
+                {{!-- Solution with anchor tag --}}
+                <ul>
+                {{#each pending}}
+                <li>{{username}} <a href="/group/{{../groupName}}/join/{{_id}}">worthy</a> | <a href="/group/{{../groupName}}/deny/{{_id}}">deny</a> </li>
+                {{/each}}
+                </ul>
+                {{!-- Solution with form --}}
+                {{!-- {{#each pending}}
+                {{username}}
+                <form action="/group/{{../groupName}}/join/{{_id}}" method="post">
+                <button type="submit">WORTHY</button>
+                </form>
+                <form action="/group/{{../groupName}}/deny/{{_id}}" method="post">
+                <button type="submit">DENY</button>
+                </form>
+                {{/each}} --}}
+                {{#unless pending}}
+                -- the waiting list is clear --
+                {{/unless}}
+                {{/if}}
 
-    <form action="/group/{{id}}/join" method="post">
-    <button type="submit">Join the crew</button>
-    </form>
-    <form action="/group/{{id}}/leave" method="post">
-    <button type="submit">Leave the crew</button>
-    </form>
-    {{#if userError}}
-    {{userError}}
-    {{/if}}
-</div>
-<div>
-    Festivals:
-    {{#each festivals}}
-    <div>
-        {{name}} | {{startDate}} – {{endDate}}
-        <form>
-            <input type="hidden" value="{{_id}}" name="id">
-        <button type="submit">Show</button>
-        </form>
-    </div>
-    {{/each}}
-    {{#unless festivals}}
-    -- no festivals added so far --
-    {{/unless}}
-    <form action="/group/{{id}}" method="post">
-        <label for="addFestival">Choose a festival to start planning:</label>
-        <select name="addFestival" id="addFestival">
-         {{#each festivalCollection}}
-         <option value="{{_id}}">{{name}} | {{startDate}} – {{endDate}}</option>
-        {{/each}}
-        </select>
-        <button type="submit">Add to list</button>
-    </form>
-    {{!-- <br>
-    <br>
-    {{#each festivals}}
-    <h3>{{name}}</h3>
-    {{#each bands}}
-    <div>{{bandName}} | {{day}} | {{stage}} | Stagetime: {{startTime}}-{{endTime}} 
-        <br>
-        Who is going?
-        <br>
-        <form action="/band/{{bandName}}/{{../_id}}/{{../../id}}/add-to-watchlist" method="post">
-        <button type="submit">Add to your personal setlist
-</button>
-        </form>
-        <form action="/band/{{bandName}}/{{../_id}}/{{../../id}}/remove-from-watchlist" method="post">
-        <button type="submit">Remove from your personal setlist
-</button>
-        </form> --}}
-    {{!-- </div>
-    {{/each}}
-    {{/each}} --}}
-</div>
-<hr>
-<div>
-    {{#each newFestivalArr}}
-    <div>
-        <h3>{{this.festivalName}}</h3>
-                    {{#each bandsWithCrewArr}}
-        <div>
-
-            {{this.band.bandName}} | Plays on {{this.band.day}} on {{this.band.stage}}| Stagetime: {{this.band.startTime}}-{{this.band.endTime}}
-            <br>
-            Who is going?
-            {{#each this.crewArr}}
-            {{this.username}} | 
-            {{/each}}
-            {{#unless this.crewArr}}
-            -- no one so far --
-            {{/unless}}
-            <form action="/band/{{this.band.bandName}}/{{../this.IdOfFestival}}/{{../../id}}/add-to-watchlist" method="post">
-        <button type="submit">Add to your personal setlist
-</button>
-        </form>
-        <form action="/band/{{this.band.bandName}}/{{../this.IdOfFestival}}/{{../../id}}/remove-from-watchlist" method="post">
-        <button type="submit">Remove from your personal setlist
-</button>
-        </form>
+                <div>
+                    <form action="/group/{{id}}/join" method="post">
+                        <button type="submit" class="button-53 btn-join">Join the crew</button>
+                    </form>
+                    <form action="/group/{{id}}/leave" method="post">
+                        <button type="submit" class="button-53 btn-leave">Leave</button>
+                    </form>
+                    {{!-- <a href="/group/{{id}}/leave">Leave</a> --}}
+                </div>
+                {{#if userError}}
+                {{userError}}
+            {{/if}}
+            </div>
         </div>
-    {{/each}}
-{{#unless bandsWithCrewArr}}
-<p>--- no bands were added to this festival so far ---</p>
-{{/unless}}
+
+        <div class="grid-element" id="group-grid-item2">
+            Festivals:
+            {{#each festivals}}
+            <div class="item-card">
+                {{name}} | {{startDate}} – {{endDate}}
+                <form>
+                    <input type="hidden" value="{{_id}}" name="id">
+                <button type="submit" class="button-28 btn-white">Show</button>
+                </form>
+            </div>
+            {{/each}}
+            {{#unless festivals}}
+            -- no festivals added so far --
+            {{/unless}}
+            <form action="/group/{{id}}" method="post">
+                <label for="addFestival">Choose a festival to start planning:</label>
+                <select name="addFestival" id="addFestival">
+                {{#each festivalCollection}}
+                <option value="{{_id}}">{{name}} | {{startDate}} – {{endDate}}</option>
+                {{/each}}
+                </select>
+                <button type="submit">Add to list</button>
+            </form>
+            {{!-- <br>
+            <br>
+            {{#each festivals}}
+            <h3>{{name}}</h3>
+            {{#each bands}}
+            <div>{{bandName}} | {{day}} | {{stage}} | Stagetime: {{startTime}}-{{endTime}} 
+                <br>
+                Who is going?
+                <br>
+                <form action="/band/{{bandName}}/{{../_id}}/{{../../id}}/add-to-watchlist" method="post">
+                <button type="submit">Add to your personal setlist
+                </button>
+                </form>
+                <form action="/band/{{bandName}}/{{../_id}}/{{../../id}}/remove-from-watchlist" method="post">
+                <button type="submit">Remove from your personal setlist
+                 </button>
+                </form> --}}
+            {{!-- </div>
+            {{/each}}
+            {{/each}} --}}
+        </div>
+
+        {{#if newFestivalArr}}
+        <div class="grid-element" id="group-grid-item3">
+            {{#each newFestivalArr}}
+            <div>
+                <h3>{{this.festivalName}}</h3>
+                {{#each bandsWithCrewArr}}
+                <div class="item-card">
+                    <div>
+                        <span class="band-name">{{this.band.bandName}}</span> |
+                        {{this.band.day}} |
+                        {{this.band.stage}} |
+                        Stagetime: {{this.band.startTime}}-{{this.band.endTime}}
+                    </div>
+
+                    <div>Who is going?
+                        {{#each this.crewArr}}
+                        {{this.username}} | 
+                        {{/each}}
+                        {{#unless this.crewArr}}
+                        -- no one so far --
+                        {{/unless}}
+                    </div>
+
+                    <div>
+                        <form action="/band/{{this.band.bandName}}/{{../this.IdOfFestival}}/{{../../id}}/add-to-watchlist" method="post">
+                            <button type="submit" class="button-28 btn-white">Add to your personal setlist</button>
+                        </form>
+                        <form action="/band/{{this.band.bandName}}/{{../this.IdOfFestival}}/{{../../id}}/remove-from-watchlist" method="post">
+                            <button type="submit" class="button-28">Remove from your personal setlist</button>
+                        </form>
+                    </div>
+                </div>
+                {{/each}}
+                {{#unless bandsWithCrewArr}}
+                <p>--- no bands were added to this festival so far ---</p>
+                {{/unless}}
+            </div>
+            {{/each}}
+        </div>
+        {{/if}}
     </div>
-    {{/each}}
 </div>
