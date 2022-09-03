@@ -28,7 +28,11 @@ router.post("/create", isLoggedIn, (req, res) => {
       console.log(
         `Creating the group ${groupName} with admin ${userFound._id}`
       );
-      const newGroup = await Group.create({ groupName, admin: userFound._id });
+      const newGroup = await Group.create({
+        groupName,
+        admin: userFound._id,
+        crew: [userFound._id],
+      });
 
       // also add group to user.groups array:
       userFound.groups.push(new Types.ObjectId(newGroup._id));
@@ -79,7 +83,7 @@ router.get("/:id", isLoggedIn, (req, res) => {
               watchlist: {
                 $elemMatch: {
                   festivalId: new Types.ObjectId(_id),
-                  bands: bandName,
+                  bands: { $elemMatch: { bandName } },
                 },
               },
             }).then((userArr) => {
