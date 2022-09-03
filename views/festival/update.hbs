@@ -1,15 +1,19 @@
 <h2>Update the info for {{name}}</h2>
+<div>
+    <form action="/festival/{{_id}}/update" method="post" class="add-form">
 
-<form action="/festival/{{_id}}/update" method="post">
+        <label for="name">Name of the festival</label>
+        <input type="text" name="name" id="name" value="{{name}}">
 
-<label for="name">Name of the festival</label>
-<input type="text" name="name" id="name" value="{{name}}">
+        <label for="startDate">First day</label>
+        <input type="date" name="startDate" id="startDate" value="{{startDate}}">
 
-<label for="startDate">Start</label>
-<input type="date" name="startDate" id="startDate" value="{{startDate}}">
+        <label for="endDate">Last day</label>
+        <input type="date" name="endDate" id="endDate" value="{{endDate}}">
 
-<label for="endDate">End</label>
-<input type="date" name="endDate" id="endDate" value="{{endDate}}">
-
-<button type="submit">Update</button>
-</form>
+        <button type="submit" class="button-53">Update</button>
+        {{#if errorMessage}}
+            {{errorMessage}}
+        {{/if}}
+    </form>
+</div>

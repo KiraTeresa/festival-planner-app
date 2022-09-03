@@ -1,16 +1,20 @@
-
-        {{#each band}}
-        <form action="/festival/{{../festivalID}}/add-band" method="get">
-        <div>
+<div class="grid-container group-detail-container grid-5-col">
+<div class="grid-element" id="band-grid-item1">
+    {{#each band}}
+    <div class="item-card band-card">
+        <div class="band-card-info">
             <img src="{{images.2.url}}" alt="">
-        {{id}}
-        <br>
-        <h3>{{name}}</h3>
-        Genre: {{genres}}
-        <br>
-        <input type="hidden" name="spotifyId" value="{{id}}">
-        
-        <button type="submit">Add this band to {{../festivalName}} line-up</button>
-        </form>
-        {{/each}}
+            <div>
+                <h3>{{name}}</h3>
+                Genre: {{genres}}
+            </div>
         </div>
+        <form action="/festival/{{../festivalID}}/add-band" method="get">
+            <input type="hidden" name="spotifyId" value="{{id}}">
+                    
+            <button type="submit" class="button-28 btn-white">Add this band to {{../festivalName}} line-up</button>
+        </form>
+    </div>
+    {{/each}}
+</div>
+</div>

@@ -1,54 +1,75 @@
-<h2>{{name}}</h2>
-{{#if isOwner}}
-<a href="/festival/{{_id}}/update">Update festival info</a>
-{{/if}}
-<p>Here you'll find all the information about the {{name}} festival.</p>
-<p><b>{{startDate}} - {{endDate}}</b></p>
-<div>
-    Stages:
-    <ul>
-    {{#each stages}}
-    <li>{{this}}</li>
-    {{/each}}
+<h2>Festival info for {{name}}</h2>
+<div class="grid-container grid-5-col">
+    <div class="grid-element" id="festival-grid-item1">
+        <p><strong>{{startDate}} - {{endDate}}</strong></p>
+        {{#if isOwner}}
+        <div class="edit-wrapper">
+            <a href="/festival/{{_id}}/update" class="button-28 btn-white btn-small">Update</a>
+            <form action="/festival/{{_id}}/delete" method="post">
+                <button type="submit" class="button-28 btn-small btn-delete">Delete</button>
+            </form>
+        </div>
+        {{/if}}
+    </div>
 
-    {{#unless stages}}
-    -- no stages listed --
-    {{/unless}}
+    <div class="grid-element" id="festival-grid-item2">
+        {{!-- <div class="stage-container"> --}}
+            <h3>Stages</h3>
+        
+            {{#each stages}}
+            <div class="item-card stage-card">
+                {{this}}
+            </div>
+            {{/each}}
 
-    {{#if isOwner}}
-    <a href="/festival/{{_id}}/add-stage">add a stage</a>
-    {{/if}}
-</div>
-<div>
-    Bands:
-    <ul>
-        {{#each bands}}
-        <li>
-            {{bandName}} | {{day}} | {{stage}} | Stagetime: {{startTime}}-{{endTime}}
-            <a href="/band/{{bandName}}/{{../_id}}">see more</a>
-            {{#if ../isOwner}}
-            | <a href="/festival/{{../_id}}/delete-band/{{bandName}}">delete</a>
+            {{#unless stages}}
+            <div class="item-card empty-card">
+            -- no stages listed --
+            </div>
+            {{/unless}}
+
+            {{#if isOwner}}
+            <a href="/festival/{{_id}}/add-stage" class="button-28 btn-white btn-small">add a stage</a>
             {{/if}}
-            </li>
-        {{/each}}
-    </ul>
+        {{!-- </div> --}}
+    </div>
 
-    {{#unless bands}}
-    -- no bands added so far --
-    {{/unless}}
+    <div class="grid-element" id="group-grid-item3">
+        <h3>Bands</h3>
+        <div class="grid-5-col">
+            {{#each bands}}
+            <div class="item-card band-card">
+                <div class="band-card-item1">
+                    <a href="/band/{{bandName}}/{{../_id}}"><span class="band-name">{{bandName}}</span></a>
+                    <div class="band-day">{{day}}</div>
+                </div>
+                <div class="band-card-item2">                   
+                    {{stage}}: {{startTime}}-{{endTime}}
+                </div>
+                {{#if ../isOwner}}
+                    <a href="/festival/{{../_id}}/delete-band/{{bandName}}" class="button-28 btn-delete">Remove band</a>
+                {{/if}}
+            </div>
+            {{/each}}
+            {{#if isOwner}}
+            <div class="item-card add-card">
+                <form action="/band/search-result" method="get" id="search-band-form">
+                    <label for="bandName">Want to add another band?</label>
+                    <input type="hidden" name="festivalID" value="{{_id}}">
+                    <input type="search" name="bandName" placeholder="type here..">
+                    <button type="submit" class="button-28 btn-white">Search</button>
+                </form>
+            </div>
+        {{/if}}
+        </div>
 
-    {{!-- <a href="/festival/{{_id}}/add-band">add a band</a> --}}
-    {{#if isOwner}}
-    <form action="/band/search-result" method="get">
-        <input type="hidden" name="festivalID" value="{{_id}}">
-        <input type="search" name="bandName" placeholder="search band you wanna add..">
-        <button type="submit">Search</button>
-    </form>
-    {{/if}}
+        {{#unless bands}}
+            <div class="item-card empty-card">
+                -- no bands added so far --
+            </div>
+        {{/unless}}
+
+        {{!-- <a href="/festival/{{_id}}/add-band">add a band</a> --}}
+        
+    </div>
 </div>
-
-{{#if isOwner}}
-<form action="/festival/{{_id}}/delete" method="post">
-<button type="submit">DETELTE this festival</button>
-</form>
-{{/if}}

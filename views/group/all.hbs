@@ -1,11 +1,11 @@
 <h2>All groups will be listed here</h2>
 
 <div class="grid-container">
-    <div class="group-element"  id="create-group-item">
+    <div class="element"  id="create-group-item">
         <a href="/group/create">Create a new group</a>
     </div>
     {{#each groups}}
-    <div class="group-element">
+    <div class="element">
         {{!-- <div class="db-group-container"> --}}
     {{!-- {{#each groups}} --}}
         {{!-- <div class="db-group-item"> --}}
@@ -16,7 +16,7 @@
     {{/each}}
 
     {{#unless groups}}
-    <div class="group-element">
+    <div class="element">
     <p>Sorry, there are no groups at the moment. Go ahead and create one!</p>
     </div>
     {{/unless}}

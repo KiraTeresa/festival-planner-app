@@ -1,10 +1,16 @@
-<h2>All festivals:</h2>
-<ul>
-{{#each festivals}}
-<li>{{name}}: from <b>{{startDate}}</b> to <b>{{endDate}}</b> <a href="/festival/{{_id}}">See details</a></li>
-{{/each}}
-</ul>
+<h2>All festivals</h2>
 
-{{#if isOwner}}
-<a href="/festival/create">Add a festival</a>
-{{/if}}
+<div class="grid-container">
+
+    {{#each festivals}}
+        <div class="element festival-element">
+                <a href="/festival/{{_id}}"><strong>{{name}}</strong> from {{startDate}} to {{endDate}}</a>
+        </div>
+    {{/each}}
+
+    {{#if isOwner}}
+        <div class="element"  id="create-group-item">    
+            <a href="/festival/create">Add a festival</a>
+        </div>
+    {{/if}}
+</div>

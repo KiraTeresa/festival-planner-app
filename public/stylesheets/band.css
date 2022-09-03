@@ -1,0 +1,14 @@
+/* SEARCH BAND */
+#band-grid-item1 {
+    grid-column: 1/6;
+}
+
+/* #band-grid-item1 > div {
+    width: 20%;
+}
+
+.band-card-info {
+    display: flex;
+} */
+
+/* Adding form */

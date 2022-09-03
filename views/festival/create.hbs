@@ -1,15 +1,19 @@
 <h2>Add a festival to the database</h2>
+<div>
+    <form action="/festival/create" method="post" class="add-form">
 
-<form action="/festival/create" method="post">
+        <label for="name">Name of the festival</label>
+        <input type="text" name="name" id="name" {{#if name}}value="{{name}}"{{/if}}>
 
-<label for="name">Name of the festival</label>
-<input type="text" name="name" id="name">
+        <label for="startDate">First day</label>
+        <input type="date" name="startDate" id="startDate" {{#if startDate}}value="{{startDate}}"{{/if}}>
 
-<label for="startDate">Start</label>
-<input type="date" name="startDate" id="startDate">
+        <label for="endDate">Last day</label>
+        <input type="date" name="endDate" id="endDate" {{#if endDate}}value="{{endDate}}"{{/if}}>
 
-<label for="endDate">End</label>
-<input type="date" name="endDate" id="endDate">
-
-<button type="submit">Next</button>
-</form>
+        <button type="submit" class="button-53">Add</button>
+        {{#if errorMessage}}
+            {{errorMessage}}
+        {{/if}}
+    </form>
+</div>

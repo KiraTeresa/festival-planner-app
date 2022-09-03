@@ -10,13 +10,6 @@
     justify-content: center;
 }*/
 
-.create-group-container > form {
-    font-size: 1.1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
 #groupName {
     border-bottom-color: var(--primary-color);
 }
@@ -29,7 +22,7 @@
 /* ************************** */
 /******* OVERVIEW *******/
 /* ************************ */  
-.group-element {
+.element {
     background-color: var(--primary-bg-color);
     border: #fff solid 1px;
     border-radius: 1.5rem;
@@ -40,7 +33,7 @@
     font-size: 1.4rem;
     }
 
-.group-element:hover {
+.element:hover {
     /* text-shadow: 0 0 20px var(--text-color); */
     background-color: var(--text-color);
 }
@@ -129,53 +122,22 @@
     justify-content: space-between;
 } */
 
-#add-festival-card {
+/* #add-festival-card {
     background-color: var(--secondary-bg-color);
     color: var(--text-color);
   }
   
-  #add-festival-card:hover {
+#add-festival-card:hover {
     background-color: var(--text-color);
     color: var(--secondary-color);
   }
 
 #add-festival-card > form > label {
     transition: none;
-}
+} */
 
 /* festival bands */
 #group-grid-item3 {
     grid-column: 1/6;
     grid-row: 2;
-}
-
-.band-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.band-card:hover {
-    background-color: var(--secondary-color);
-    transform: translateY(.5rem);
-}
-
-.band-card-item1 {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    border-bottom: #fff double;
-}
-
-.band-name {
-    font-size: 1.2rem;
-}
-
-.band-day {
-    font-size: .8rem;
-    font-style: italic;
-}
-
-.band-card-item2 {
-    margin: .5rem 0;
 }

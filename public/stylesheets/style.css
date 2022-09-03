@@ -176,6 +176,13 @@ h3 {
 }
 
 /* form elements */
+.add-form {
+  font-size: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 input {
   /* height: 1.5rem; */
   padding-bottom: .3rem;
@@ -229,6 +236,7 @@ select {
   padding: .5rem;
 }
 
+/* CARDS */
 .item-card {
   /* border: turquoise dashed 2px; */
   border-radius: 1rem;
@@ -239,7 +247,52 @@ select {
 }
 
 .empty-card {
-  height: 75%;
-  font-size: 1.2rem;
+  font-style: italic;
   grid-column: 1/6;
 }
+
+.add-card {
+  background-color: var(--secondary-bg-color);
+  color: var(--text-color);
+}
+
+.add-card:hover {
+  background-color: var(--text-color);
+  color: var(--secondary-color);
+}
+
+.add-card > form > label {
+  transition: none;
+}
+
+.band-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.band-card:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(.5rem);
+}
+
+.band-card-item1 {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: #fff double;
+}
+
+.band-name {
+  font-size: 1.2rem;
+}
+
+.band-day {
+  font-size: .8rem;
+  font-style: italic;
+}
+
+.band-card-item2 {
+  margin: .5rem 0;
+}
+

@@ -142,3 +142,17 @@
 .btn-white:hover {
   transform: translateY(-2px);
 }
+
+.btn-delete {
+  font-size: .6rem;
+  letter-spacing: 2px;
+  border-width: 1px;
+  border-radius: .5rem;
+  width: fit-content;
+}
+
+.btn-delete:hover {
+  background-color: var(--text-color);
+  border-color: transparent;
+  color: var(--primary-bg-color);
+}

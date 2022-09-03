@@ -16,7 +16,19 @@ router.get("/create", isOwner, (req, res) => {
 
 router.post("/create", isOwner, async (req, res) => {
   const { name, startDate, endDate } = req.body;
-  console.log(name, startDate, endDate);
+
+  // check for missing information:
+  if (!name || !startDate || !endDate) {
+    return res.render("festival/create", {
+      errorMessage: "All fields are required.",
+      name,
+      startDate,
+      endDate,
+    });
+  }
+
+  // console.log(name, startDate, endDate);
+  // if all info was provided --> create:
   const newFestival = await Festival.create({ name, startDate, endDate });
 
   // send notification to all users:
@@ -146,6 +158,7 @@ router.get("/:id/delete-band/:bandName", isOwner, async (req, res) => {
     .catch((err) => console.log("Deleting failed", err));
 });
 
+// Update festival info:
 router.get("/:id/update", isOwner, (req, res) => {
   Festival.findById(req.params.id)
     .then((festival) => {
@@ -157,6 +170,19 @@ router.get("/:id/update", isOwner, (req, res) => {
 
 router.post("/:id/update", isOwner, (req, res) => {
   const { name, startDate, endDate } = req.body;
+  const _id = req.params.id;
+  // check for missing information:
+  if (!name || !startDate || !endDate) {
+    return res.render("festival/update", {
+      errorMessage: "All fields are required.",
+      _id,
+      name,
+      startDate,
+      endDate,
+    });
+  }
+
+  // if all info was provided --> update:
   Festival.findByIdAndUpdate(req.params.id, { name, startDate, endDate })
     .then(() => res.redirect(`/festival/${req.params.id}`))
     .catch((err) =>
