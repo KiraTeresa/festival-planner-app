@@ -8,7 +8,7 @@
         <div class="db-group-container">
         {{#if usersGroups}}
         {{#each usersGroups}}
-        <div class="db-group-item">{{this}}</div>
+        <div class="db-group-item"><a href="/group/{{_id}}">{{groupName}}</a></div>
         {{/each}}
         {{/if}}
         {{#unless usersGroups}}
@@ -27,7 +27,7 @@
     {{#if watchlist}}     
         {{#each watchlist}}
         <div class="item-card">
-            {{festivalName}}
+            <a href="/festival/{{festivalId}}">{{festivalName}}</a>
             <div class="db-band-container">
             {{#each bands}}
             <div class="db-band-item">

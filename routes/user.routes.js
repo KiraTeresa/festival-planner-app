@@ -14,8 +14,8 @@ router.get("/dashboard", isLoggedIn, async (req, res) => {
       if (groups) {
         for (const element of groups) {
           await Group.findById(element.toString()).then(async (group) => {
-            const { groupName } = group;
-            usersGroups.push(groupName);
+            const { _id, groupName } = group;
+            usersGroups.push({ _id, groupName });
           });
         }
       }
