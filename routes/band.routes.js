@@ -29,9 +29,8 @@ router.post(
   "/:bandName/:festivalID/:groupID/add-to-watchlist",
   isLoggedIn,
   async (req, res) => {
-    const bandName = req.params.bandName;
-    const festivalID = req.params.festivalID;
-    const groupID = req.params.groupID;
+    const { bandName, festivalID, groupID } = req.params;
+    const { spotifyId } = req.query;
     const currentUser = req.session.user;
 
     let festival;
@@ -55,7 +54,7 @@ router.post(
           watchlist.push({
             festivalId: newElement,
             festivalName: festival,
-            bands: [bandName],
+            bands: [{ bandName, spotifyId }],
           });
           await user.save();
         }
@@ -72,7 +71,7 @@ router.post(
 
           // if band not found --> add:
           if (!bandOnList) {
-            watchlist[index].bands.push(bandName);
+            watchlist[index].bands.push({ bandName, spotifyId });
             await user.updateOne({ watchlist });
           }
         }

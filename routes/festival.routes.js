@@ -79,10 +79,10 @@ router.post("/:id/add-stage", isOwner, (req, res) => {
     .catch((err) => console.log("Adding stage failed", err));
 });
 
-router.get("/:id/add-band/", isOwner, (req, res) => {
-  const { id } = req.params;
+router.get("/:festivalId/add-band/", isOwner, (req, res) => {
+  const { festivalId } = req.params;
   const { spotifyId } = req.query;
-  Festival.findById(id).then((festival) => {
+  Festival.findById(festivalId).then((festival) => {
     const { _id, startDate, endDate, stages } = festival;
     const festivalName = festival.name;
     spotifyApi.getArtist(spotifyId).then((artist) => {
@@ -101,7 +101,8 @@ router.get("/:id/add-band/", isOwner, (req, res) => {
   });
 });
 
-router.post("/:id/add-band", isOwner, (req, res) => {
+router.post("/:festivalId/add-band", isOwner, (req, res) => {
+  const { festivalId } = req.params;
   const { bandName, spotifyId, stage, day, startTime, endTime } = req.body;
   const band = {
     bandName,
@@ -111,12 +112,12 @@ router.post("/:id/add-band", isOwner, (req, res) => {
     startTime,
     endTime,
   };
-  Festival.findById(req.params.id)
+  Festival.findById(festivalId)
     .then((festival) => {
-      const { bands, _id } = festival;
+      const { bands } = festival;
       bands.push(band);
       festival.save();
-      res.redirect(`/festival/${_id}`);
+      res.redirect(`/festival/${festivalId}`);
     })
     .catch((err) => console.log("Adding a band failed", err));
 });

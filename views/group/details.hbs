@@ -126,6 +126,7 @@
 
                     <div>
                         <form action="/band/{{this.band.bandName}}/{{../this.IdOfFestival}}/{{../../id}}/add-to-watchlist" method="post">
+                            <input type="hidden" name="spotifyId" value="{{this.band.spotifyId}}">
                             <button type="submit" class="button-28 btn-white">Add to your personal setlist</button>
                         </form>
                         <form action="/band/{{this.band.bandName}}/{{../this.IdOfFestival}}/{{../../id}}/remove-from-watchlist" method="post">
