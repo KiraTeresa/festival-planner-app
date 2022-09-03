@@ -1,29 +1,43 @@
-<h2>Group details of {{groupName}}</h2>
+<h2>{{groupName}}</h2>
     <div class="grid-container group-detail-container grid-5-col">
         <div class="grid-element" id="group-grid-item1">
-            <div>
+            <h3>Group details</h3>
+            <div class="item-card">
                 {{!-- Id: {{id}}
                 <br> --}}
+                <div>
                 Admin: {{admin.username}}
-                <br>
-                The Crew:
-                <ul>
-                    {{#each crew}}
-                    <li>{{username}}</li>
+                </div>
+                <div class="crew-list">
+                    <div class="crew-list-element">Crew:</div>
+                    
+                    {{#each crewWithoutAdmin}}
+                    <div class="crew-list-element">{{username}}</div>
                     {{/each}}
-                </ul>
-                {{#unless crew}}
-                -- no crew members --
-                {{/unless}}
+
+                    {{#unless crewWithoutAdmin}}
+                    <i>-- no crew members --</i>
+                    {{/unless}}
+                </div>
             </div>
 
+
+
             <div class="item-card">
-                Eager to join the crew:
+                <h4>Waiting to join the crew:</h4>
                 {{!-- Solution with anchor tag --}}
                 {{#each pending}}
-                <div>{{username}} 
-                {{#if ../adminStatus}}<a href="/group/{{../groupName}}/join/{{_id}}">worthy</a> | <a href="/group/{{../groupName}}/deny/{{_id}}">deny</a>{{/if}} </div>
+                <div class="pending-user">
+                    <div>{{username}}</div>
+                    {{#if ../adminStatus}}
+                    <div class="handle-pending-user">
+                        <a href="/group/{{../groupName}}/join/{{_id}}" class="button-28 btn-white btn-small" id="worthy">worthy</a>
+                        <a href="/group/{{../groupName}}/deny/{{_id}}" class="button-28 btn-small" id="deny">deny</a>
+                    </div>
+                    {{/if}}
+                </div>
                 {{/each}}
+                
                 {{!-- Solution with form --}}
                 {{!-- {{#each pending}}
                 {{username}}
@@ -35,27 +49,29 @@
                 </form>
                 {{/each}} --}}
                 {{#unless pending}}
-                -- the waiting list is clear --
+                <i>-- the waiting list is clear --</i>
                 {{/unless}}
-
-
-                <div>
-                    <form action="/group/{{id}}/join" method="post">
-                        <button type="submit" class="button-53 btn-join">Join the crew</button>
-                    </form>
-                    <form action="/group/{{id}}/leave" method="post">
-                        <button type="submit" class="button-53 btn-leave">Leave</button>
-                    </form>
-                    {{!-- <a href="/group/{{id}}/leave">Leave</a> --}}
-                </div>
-                {{#if userError}}
-                {{userError}}
-            {{/if}}
             </div>
+
+            <div>
+                <form action="/group/{{id}}/join" method="post">
+                    <button type="submit" class="button-53 btn-join">Join the crew</button>
+                </form>
+                <form action="/group/{{id}}/leave" method="post">
+                    <button type="submit" class="button-53 btn-leave">Leave</button>
+                </form>
+                {{!-- <a href="/group/{{id}}/leave">Leave</a> --}}
+            </div>
+            {{#if userError}}
+            <div class="item-card empty-card">
+                {{userError}}
+            </div>
+            {{/if}}
+
         </div>
 
         <div class="grid-element" id="group-grid-item2">
-            Festivals:
+            <h3>Festivals</h3>
             {{#each festivals}}
             <div class="item-card">
                 {{name}} | {{startDate}} – {{endDate}}
@@ -71,7 +87,7 @@
             </div>
             {{/unless}}
 
-            <div class="item-card" id="choose-festival-card">
+            <div class="item-card" id="add-festival-card">
                 <form action="/group/{{id}}" method="post">
                     <label for="addFestival">Choose a festival:</label>
                     <select name="addFestival" id="addFestival">
@@ -111,21 +127,21 @@
             <div class="grid-5-col">
                 {{#each bandsWithCrewArr}}
                 <div class="item-card band-card">
-                    <div>
+                    <div class="band-card-item1">
                         <a href="/band/{{this.band.bandName}}/{{../this.idOfFestival}}"><span class="band-name">{{this.band.bandName}}</span></a>
-                        {{this.band.day}} |
-                        {{this.band.stage}}
-                        <br>
-                        Stagetime: {{this.band.startTime}}-{{this.band.endTime}}
+                        <div class="band-day">{{this.band.day}}</div>
+                    </div>
+                    <div class="band-card-item2">
+                        {{this.band.stage}}: {{this.band.startTime}}-{{this.band.endTime}}
                     </div>
 
-                    <div>Who is going?
+                    <div>Who of your crew is going?
                         <br>
                         {{#each this.crewArr}}
                         {{this.username}} | 
                         {{/each}}
                         {{#unless this.crewArr}}
-                        -- no one so far --
+                        <i>-- no one so far --</i>
                         {{/unless}}
                     </div>
 
@@ -141,7 +157,7 @@
                 </div>
                 {{/each}}
                 {{#unless bandsWithCrewArr}}
-                <p>--- no bands were added to this festival so far ---</p>
+                <div class="item-card empty-card">--- no bands were added to this festival so far ---</div>
                 {{/unless}}
             </div>
             {{/each}}

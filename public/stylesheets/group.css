@@ -1,4 +1,32 @@
 /* ************************** */
+/******* CREATE *******/
+/* ************************ */
+/* .create-group-container {
+    background-color: var(--primary-bg-color);
+    border-radius: 1.5rem;
+    height: 50%;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+}*/
+
+.create-group-container > form {
+    font-size: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#groupName {
+    border-bottom-color: var(--primary-color);
+}
+
+/* #groupName::placeholder {
+    color: #fff;
+    text-align: center;
+} */
+
+/* ************************** */
 /******* OVERVIEW *******/
 /* ************************ */  
 .group-element {
@@ -17,20 +45,137 @@
     background-color: var(--text-color);
 }
 
-/* .group-name:hover { */
-    /* display: block; */
-    /* background-color: var(--primary-bg-color); */
-    /* text-decoration: underline; */
-    /* text-shadow: 1px 1px 30px var(--primary-bg-color); */
-    /* font-size: 1.7rem; */
-/* } */
-
 #create-group-item {
     background-color: var(--secondary-bg-color);
     color: var(--text-color);
 }
 
-/* #create-group-item:hover {
+#create-group-item:hover {
+    background-color: #fff;
+    color: var(--secondary-color);
+}
 
+
+/* ************************** */
+/******* DETAILS *******/
+/* ************************ */
+.group-detail-container {
+    color: white;
+    padding-left: 2rem;
+}
+
+/* .group-detail-element {
+    background-color: var(--primary-bg-color);
+    border: #fff solid 1px;
+    border-radius: 1.5rem;
 } */
 
+/* crew */
+#group-grid-item1 {
+    grid-column: 1/3;
+}
+
+.crew-list {
+    display: flex;
+}
+
+.crew-list-element:not(:first-child) {
+    margin-left: .3rem;
+    border-bottom: dotted var(--primary-bg-color) 1px;
+}
+
+.crew-list-element:not(:first-child):hover {
+    border-bottom: dotted #fff 1px;
+    cursor:none;
+}
+
+.pending-user {
+    display: flex;
+    align-items: center;
+}
+
+.handle-pending-user {
+    display: flex;
+    align-items: center;
+    margin-left: .5rem;
+}
+
+.handle-pending-user > a {
+    text-transform: none;
+    padding: .3rem;
+}
+
+#worthy:hover {
+    transform: none;
+}
+
+#deny {
+    border: none;
+}
+
+/* festivals overview */
+#group-grid-item2 {
+    grid-column: 3/6;
+}
+
+#choose-festival-card {
+    background-color: var(--text-color);
+    color: var(--primary-color);
+}
+
+/* #choose-festival-card > form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+} */
+
+#add-festival-card {
+    background-color: var(--secondary-bg-color);
+    color: var(--text-color);
+  }
+  
+  #add-festival-card:hover {
+    background-color: var(--text-color);
+    color: var(--secondary-color);
+  }
+
+#add-festival-card > form > label {
+    transition: none;
+}
+
+/* festival bands */
+#group-grid-item3 {
+    grid-column: 1/6;
+    grid-row: 2;
+}
+
+.band-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.band-card:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(.5rem);
+}
+
+.band-card-item1 {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    border-bottom: #fff double;
+}
+
+.band-name {
+    font-size: 1.2rem;
+}
+
+.band-day {
+    font-size: .8rem;
+    font-style: italic;
+}
+
+.band-card-item2 {
+    margin: .5rem 0;
+}

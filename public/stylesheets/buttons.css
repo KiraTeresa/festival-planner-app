@@ -118,11 +118,12 @@
 
 .btn-join:after {
     border-color: #fff;
+    z-index: 1;
 }
 
 .btn-leave {
-    background-color: var(--text-color);
-    color: var(--primary-bg-color);
+    background-color: var(--secondary-bg-color);
+    color: #fff;
     font-size: .9rem;
     /* font-weight: 500; */
     width: 20%;

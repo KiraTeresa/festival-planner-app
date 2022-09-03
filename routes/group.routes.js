@@ -96,12 +96,13 @@ router.get("/:id", isLoggedIn, (req, res) => {
       }
 
       // console.log("New Festival Array: ", newFestivalArr);
+      const crewWithoutAdmin = crew.slice(1);
 
       Festival.find().then((festivalCollection) => {
         res.render("group/details", {
           groupName,
           admin,
-          crew,
+          crewWithoutAdmin,
           pending,
           festivals,
           id,
