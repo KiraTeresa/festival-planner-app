@@ -1,20 +1,35 @@
 <h2>{{bandName}}</h2>
-<div>
-    <div>Go watch at <b>{{festivalName}}</b> on {{stage}}</div>
-    <div>Stagetime: {{startTime}}-{{endTime}}{{#unless startTime}}n.a.{{/unless}}</div>
-</div>
-<img src="{{images.1.url}}" alt="">
-<div>{{genres}}</div>
+<div class="grid-container grid-5-col">
+    <div class="grid-element" id="band-item1">
+        <div>Go watch at
+            <a href="/festival/{{festivalID}}">
+            <strong>{{festivalName}}</strong>
+            </a>
+        </div>
+        <div>{{startTime}}-{{endTime}}{{#unless startTime}}n.a.{{/unless}}</div>
+        <div>on {{stage}}</div>
+    </div>
 
-<div>Top tracks:
-    <ul>
-        {{#each tracks}}
-        <li>{{name}} </li>
-        <audio controls src="{{preview_url}}"></audio>
-        {{/each}}
-    </ul>
-</div>
+    <div class="grid-element" id="band-item2">
+        <img src="{{images.1.url}}" alt="">
+        {{!-- <p>Genre: {{genres}}</p> --}}
+    </div>
 
-{{#if isOwner}}
-<a href="/band/{{bandName}}/{{festivalId}}/edit">Edit</a>
-{{/if}}
+    <div class="grid-container" id="band-item3">
+        <h3>Top tracks</h3>
+        <div class="track-container">
+            {{#each tracks}}
+            <div class="element track">
+                <p>{{name}}</p>
+                <audio controls src="{{preview_url}}"></audio>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+
+    {{#if isOwner}}
+    <div class="grid-container element" id="band-item4">
+        <a href="/band/{{bandName}}/{{festivalID}}/edit">Edit</a>
+    </div>
+    {{/if}}
+</div>

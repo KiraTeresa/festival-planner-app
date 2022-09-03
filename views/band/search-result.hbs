@@ -1,12 +1,15 @@
-<div class="grid-container group-detail-container grid-5-col">
-<div class="grid-element" id="band-grid-item1">
+<h2>Search results for: {{bandName}}</h2>
+<div class="grid-element grid-5-col">
+{{!-- <div class="grid-element" id="band-grid-item1"> --}}
     {{#each band}}
     <div class="item-card band-card">
         <div class="band-card-info">
-            <img src="{{images.2.url}}" alt="">
+            <div>
+                <img src="{{images.2.url}}" alt="{{name}} band image" class="band-img">
+            </div>
             <div>
                 <h3>{{name}}</h3>
-                Genre: {{genres}}
+                <p class="genre">Genre: {{genres}} {{#unless genres}}<i>--</i>{{/unless}}</p>
             </div>
         </div>
         <form action="/festival/{{../festivalID}}/add-band" method="get">
@@ -16,5 +19,5 @@
         </form>
     </div>
     {{/each}}
-</div>
+{{!-- </div> --}}
 </div>

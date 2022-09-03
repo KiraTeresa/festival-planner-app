@@ -1,25 +1,29 @@
-<p>Edit band info of <b>{{bandName}}</b> at {{festivalName}}</p>
-<form action="/band/{{bandName}}/{{festivalId}}/edit" method="post">
+<h2>Edit band info of {{bandName}} at {{festivalName}}</h2>
+<div>
+    <form action="/band/{{bandName}}/{{festivalId}}/edit" method="post" class="add-form">
 
-<label for="stage">On which stage will the band be playing?</label>
-<select name="stageEdit" id="stage">
-    {{#each stages}}
-    <option value="{{this}}" >{{this}}</option>
-    {{/each}}
-</select>
+        <label for="stage">On which stage will the band be playing?</label>
+        <select name="stageEdit" id="stage">
+            {{#each stages}}
+            <option value="{{this}}" >{{this}}</option>
+            {{/each}}
+        </select>
 
-<label for="day">Which day will they be playing?</label>
-<input type="date" name="dayEdit" id="day" min="{{startDate}}" max="{{endDate}}" value="{{day}}">
+        <label for="day">Which day will they be playing?</label>
+        <input type="date" name="dayEdit" id="day" min="{{startDate}}" max="{{endDate}}" value="{{day}}">
 
-<label for="startTime">When will they be on the stage?</label>
-<input type="time" id="startTimeEdit" name="startTimeEdit" value="{{startTime}}">
+        <label for="startTime">When will they be on the stage?</label>
+        <input type="time" id="startTimeEdit" name="startTimeEdit" value="{{startTime}}">
 
-<label for="endTime">When will they leave the stage?</label>
-<input type="time" id="endTimeEdit" name="endTimeEdit" value="{{endTime}}">
+        <label for="endTime">When will they leave the stage?</label>
+        <input type="time" id="endTimeEdit" name="endTimeEdit" value="{{endTime}}">
 
-<button type="submit">Update</button>
-</form>
-
+        <button type="submit" class="button-53">Update</button>
+        {{#if errorMessage}}
+            {{errorMessage}}
+        {{/if}}
+    </form>
+</div>
 {{!-- <form action="/band/{{bandName}}/{{festivalId}}/delete" method="post">
     <button type="submit">Remove from festival line-up</button>
 </form> --}}
