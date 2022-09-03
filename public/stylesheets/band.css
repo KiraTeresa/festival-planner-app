@@ -77,7 +77,7 @@
     background-color: var(--secondary-bg-color);
 }
 
-#band-item4 {
+#band-item4 > a {
     display: block;
     text-align: center;
     width: 100%;
