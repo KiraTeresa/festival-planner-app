@@ -17,15 +17,13 @@
                 {{/unless}}
             </div>
 
-            <div>
-            {{#if adminStatus}}
+            <div class="item-card">
                 Eager to join the crew:
                 {{!-- Solution with anchor tag --}}
-                <ul>
                 {{#each pending}}
-                <li>{{username}} <a href="/group/{{../groupName}}/join/{{_id}}">worthy</a> | <a href="/group/{{../groupName}}/deny/{{_id}}">deny</a> </li>
+                <div>{{username}} 
+                {{#if ../adminStatus}}<a href="/group/{{../groupName}}/join/{{_id}}">worthy</a> | <a href="/group/{{../groupName}}/deny/{{_id}}">deny</a>{{/if}} </div>
                 {{/each}}
-                </ul>
                 {{!-- Solution with form --}}
                 {{!-- {{#each pending}}
                 {{username}}
@@ -39,7 +37,7 @@
                 {{#unless pending}}
                 -- the waiting list is clear --
                 {{/unless}}
-                {{/if}}
+
 
                 <div>
                     <form action="/group/{{id}}/join" method="post">
@@ -63,22 +61,27 @@
                 {{name}} | {{startDate}} – {{endDate}}
                 <form>
                     <input type="hidden" value="{{_id}}" name="id">
-                <button type="submit" class="button-28 btn-white">Show</button>
+                <button type="submit" class="button-28 btn-white btn-small">Show</button>
                 </form>
             </div>
             {{/each}}
             {{#unless festivals}}
+            <div class="item-card empty-card">
             -- no festivals added so far --
+            </div>
             {{/unless}}
-            <form action="/group/{{id}}" method="post">
-                <label for="addFestival">Choose a festival to start planning:</label>
-                <select name="addFestival" id="addFestival">
-                {{#each festivalCollection}}
-                <option value="{{_id}}">{{name}} | {{startDate}} – {{endDate}}</option>
-                {{/each}}
-                </select>
-                <button type="submit">Add to list</button>
-            </form>
+
+            <div class="item-card" id="choose-festival-card">
+                <form action="/group/{{id}}" method="post">
+                    <label for="addFestival">Choose a festival:</label>
+                    <select name="addFestival" id="addFestival">
+                    {{#each festivalCollection}}
+                    <option value="{{_id}}">{{name}} | {{startDate}} – {{endDate}}</option>
+                    {{/each}}
+                    </select>
+                    <button type="submit" class="button-28 btn-white btn-small">Add to list</button>
+                </form>
+            </div>
             {{!-- <br>
             <br>
             {{#each festivals}}
@@ -104,18 +107,20 @@
         {{#if newFestivalArr}}
         <div class="grid-element" id="group-grid-item3">
             {{#each newFestivalArr}}
-            <div>
-                <h3>{{this.festivalName}}</h3>
+            <h3>{{this.festivalName}}</h3>
+            <div class="grid-5-col">
                 {{#each bandsWithCrewArr}}
-                <div class="item-card">
+                <div class="item-card band-card">
                     <div>
-                        <span class="band-name">{{this.band.bandName}}</span> |
+                        <a href="/band/{{this.band.bandName}}/{{../this.idOfFestival}}"><span class="band-name">{{this.band.bandName}}</span></a>
                         {{this.band.day}} |
-                        {{this.band.stage}} |
+                        {{this.band.stage}}
+                        <br>
                         Stagetime: {{this.band.startTime}}-{{this.band.endTime}}
                     </div>
 
                     <div>Who is going?
+                        <br>
                         {{#each this.crewArr}}
                         {{this.username}} | 
                         {{/each}}
@@ -125,11 +130,11 @@
                     </div>
 
                     <div>
-                        <form action="/band/{{this.band.bandName}}/{{../this.IdOfFestival}}/{{../../id}}/add-to-watchlist" method="post">
+                        <form action="/band/{{this.band.bandName}}/{{../this.idOfFestival}}/{{../../id}}/add-to-watchlist" method="post">
                             <input type="hidden" name="spotifyId" value="{{this.band.spotifyId}}">
                             <button type="submit" class="button-28 btn-white">Add to your personal setlist</button>
                         </form>
-                        <form action="/band/{{this.band.bandName}}/{{../this.IdOfFestival}}/{{../../id}}/remove-from-watchlist" method="post">
+                        <form action="/band/{{this.band.bandName}}/{{../this.idOfFestival}}/{{../../id}}/remove-from-watchlist" method="post">
                             <button type="submit" class="button-28">Remove from your personal setlist</button>
                         </form>
                     </div>

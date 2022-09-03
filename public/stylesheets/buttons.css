@@ -65,7 +65,7 @@
   /* BUTTON 28 */
   .button-28 {
     appearance: none;
-    background-color: var(--primary-color);
+    background-color: transparent;
     border: 2px solid #fff;
     border-radius: 15px;
     box-sizing: border-box;
@@ -89,7 +89,7 @@
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
-    width: fit-content;
+    width: 100%;
     /* will-change: transform; */
   }
   
@@ -102,7 +102,7 @@
     background-color: #fff; */
     /* border: 1px solid var(--primary-color); */
     box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
-    transform: translateY(-2px);
+    /* transform: translateY(-2px); */
   }
   
   .button-28:active {
@@ -134,7 +134,10 @@
   color: var(--primary-color);
 }
 
+.btn-small {
+  width: fit-content;
+}
+
 .btn-white:hover {
-  background-color: var(--primary-color);
-  color: #fff;
+  transform: translateY(-2px);
 }

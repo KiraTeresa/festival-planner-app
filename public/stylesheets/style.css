@@ -175,6 +175,7 @@ h3 {
   font-size: 2rem;
 }
 
+/* form elements */
 input {
   /* height: 1.5rem; */
   padding-bottom: .3rem;
@@ -193,6 +194,11 @@ input:focus, input:valid {
   font-size: 1rem;
   outline: none;
   border-bottom: var(--primary-color) solid 2.5px;
+}
+
+select {
+  padding: .3rem .1rem;
+  border-radius: .7rem;
 }
 
 .center {
