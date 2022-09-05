@@ -51,9 +51,12 @@ router.post("/create", isLoggedIn, (req, res) => {
 });
 
 // shows group details:
-router.get("/:id", isLoggedIn, (req, res) => {
+router.get("/:id", isLoggedIn, async (req, res) => {
   const { id } = req.params;
   const currentUser = req.session.user;
+  const currentUserName = await User.findById(currentUser).then((user) => {
+    return user.username;
+  });
 
   Group.findById(id)
     .populate("admin crew pending festivals")
@@ -107,6 +110,7 @@ router.get("/:id", isLoggedIn, (req, res) => {
 
       Festival.find().then((festivalCollection) => {
         res.render("group/details", {
+          currentUserName,
           groupName,
           admin,
           crewWithoutAdmin,

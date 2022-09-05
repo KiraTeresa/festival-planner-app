@@ -98,6 +98,7 @@
                     <button type="submit" class="button-28 btn-white btn-small">Add to list</button>
                 </form>
             </div>
+
             {{!-- <br>
             <br>
             {{#each festivals}}
@@ -128,7 +129,7 @@
                 {{#each bandsWithCrewArr}}
                 <div class="item-card band-card">
                     <div class="band-card-item1">
-                        <a href="/band/{{this.band.bandName}}/{{../this.idOfFestival}}"><span class="band-name">{{this.band.bandName}}</span></a>
+                        <a href="/{band}/{{this.band.bandName}}/{{../this.idOfFestival}}"><span class="band-name">{{this.band.bandName}}</span></a>
                         <div class="band-day">{{this.band.day}}</div>
                     </div>
                     <div class="band-card-item2">
@@ -146,11 +147,23 @@
                     </div>
 
                     <div>
-                        <form action="/band/{{this.band.bandName}}/{{../this.idOfFestival}}/{{../../id}}/add-to-watchlist" method="post">
+                        <form action="/user/{{../../currentUserName}}/add-to-watchlist/{{this.band.bandName}}" method="post">
+                            
+                            <input type="hidden" name="festivalID" value="{{../this.idOfFestival}}">
+                            
+                            <input type="hidden" name="groupId" value="{{../../id}}">
+                            
                             <input type="hidden" name="spotifyId" value="{{this.band.spotifyId}}">
+                            
                             <button type="submit" class="button-28 btn-white">Add to your personal setlist</button>
                         </form>
-                        <form action="/band/{{this.band.bandName}}/{{../this.idOfFestival}}/{{../../id}}/remove-from-watchlist" method="post">
+
+                        <form action="/user/{{../../currentUserName}}/remove-from-watchlist/{{this.band.bandName}}" method="post">
+
+                            <input type="hidden" name="festivalID" value="{{../this.idOfFestival}}">
+
+                            <input type="hidden" name="groupId" value="{{../../id}}">
+
                             <button type="submit" class="button-28">Remove from your personal setlist</button>
                         </form>
                     </div>
