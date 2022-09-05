@@ -44,6 +44,7 @@ router.post("/addCar/:groupId", isLoggedIn, async (req, res) => {
         postedInGroup: Types.ObjectId(groupId),
       }).then(async (newCar) => {
         const { _id } = newCar;
+
         // add the newly created car to the car pool of the group:
         await Group.findByIdAndUpdate(
           groupId,
@@ -61,33 +62,31 @@ router.post("/addCar/:groupId", isLoggedIn, async (req, res) => {
 });
 
 // get in a car
-router.post("/:groupId/joinCar/:carId", isLoggedIn, async (req, res) => {
-  const { groupId, carId } = req.params;
+router.post("/joinCar/:carId", isLoggedIn, async (req, res) => {
+  const { carId } = req.params;
   const currentUser = req.session.user;
 
-  await Group.findOnebyId(groupId).then(async (group) => {
-    const { carSharing } = group;
+  await Car.findById(carId)
+    .then(async (car) => {
+      const { driver, passengers, postedInGroup, seatsAvailable } = car;
+      const alreadyPassenger = passengers.find((element) =>
+        element.equals(currentUser)
+      );
 
-    const car = carSharing.find((element) => element._id.equals(carId));
-    console.log("CAR: ", car);
-    let { passengers, seatsAvailable, allOccupied } = car;
-
-    const alreadyPassenger = passengers.find((element) =>
-      element.equals(currentUser)
-    );
-    const carIndex = carSharing.indexOf(car);
-
-    if (!allOccupied && !alreadyPassenger) {
-      passengers.push(new Types.ObjectId(currentUser));
-      seatsAvailable = seatsAvailable - 1;
-      if (seatsAvailable === passengers.length) {
-        allOccupied = true;
+      // check if user is already a passenger or the driver:
+      if (alreadyPassenger || driver.equals(currentUser)) {
+        return res.redirect(`/group/${postedInGroup}`);
       }
-      await group.save();
-    }
-    console.log("NEW CAR: ", group.carSharing[carIndex]);
-    res.redirect(`/group/${groupId}`);
-  });
+
+      // add user as passenger and increment available seats:
+      await Car.findOneAndUpdate(
+        carId,
+        { $inc: { seatsAvailable: -1 }, $push: { passengers: currentUser } },
+        { new: true }
+      );
+      res.redirect(`/group/${postedInGroup}`);
+    })
+    .catch((err) => console.log("Getting in the car did not work.", err));
 });
 
 module.exports = router;

@@ -132,7 +132,7 @@
                     Back: {{dayDrivingBack}}
                     Seats available: {{seatsAvailable}}
                     {{#unless allOccupied}}
-                        <form action="/group/{{../id}}/joinCar/{{_id}}" method="post">
+                        <form action="/carsharing/joinCar/{{_id}}" method="post">
                             <button type="submit">Get in</button>
                         </form>
                     {{/unless}}

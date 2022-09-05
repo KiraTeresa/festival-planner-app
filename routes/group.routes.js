@@ -68,8 +68,6 @@ router.get("/:id", isLoggedIn, async (req, res) => {
     .then(async (group) => {
       const { groupName, admin, crew, pending, festivals, carSharing } = group;
 
-      console.log("Carsharing after populate: ", carSharing);
-
       let adminStatus = false;
       if (admin._id.equals(currentUser)) {
         adminStatus = true;
@@ -115,7 +113,7 @@ router.get("/:id", isLoggedIn, async (req, res) => {
       // console.log("New Festival Array: ", newFestivalArr);
       const crewWithoutAdmin = crew.slice(1);
 
-      console.log("CAR SHARING: ", carSharing);
+      // console.log("CAR SHARING: ", carSharing);
 
       Festival.find().then((festivalCollection) => {
         res.render("group/details", {
