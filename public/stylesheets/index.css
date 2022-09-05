@@ -1,11 +1,17 @@
 /* ********************* */
 /******* HOMEPAGE *******/
 /* ********************* */
+.index-container {
+  display: flex;
+  justify-content: center;
+  gap: 10rem;
+}
 
-#hp-txt {
-    width: 50rem;
-    margin-top: 1.5rem;
-    margin-left: 5rem;
+  #hp-txt {
+    width: 40%;
+    /* margin: 1.5rem 10rem 0 5rem; */
+    /* margin-top: 1.5rem; */
+    /* margin-left: 5rem; */
     text-align: justify;
     font-size: 1.5rem;
     display: flex;
@@ -28,15 +34,16 @@
   }
   
   .form-container {
-    position: absolute;
-    left: calc(50% + 200px);
-    top: calc(50% - 248px);
+    /* position: absolute; */
+    position: relative;
+    /* left: calc(50% + 200px);
+    top: calc(50% - 248px); */
     /* align-self: center; */
     /* gap: 2.5rem; */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    /* width: 400px; */
+    width: 25rem;
     height: 31rem;
     overflow: hidden;
     background-color: #fff;
@@ -45,7 +52,7 @@
     /* transform: rotate(-25deg); */
   }
   
-  .homepage-form {
+  .index-form {
     position: relative;
     /* background-color: yellow; */
     /* border: var(--primary-color) solid 2px; */
@@ -60,7 +67,7 @@
     /* transform: rotate(25deg); */
   }
   
-  .homepage-form > form {
+  .index-form > form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -98,6 +105,15 @@
   
   label {
     transition: 1.2s ease-in-out;
+  }
+
+  #index-errorMessage {
+    /* background-color: yellow; */
+    margin-top: .5rem;
+    padding: .5rem;
+    width: 25rem;
+    text-align: center;
+    /* z-index: 1; */
   }
   
   /* ********************* */

@@ -1,75 +1,75 @@
 {{#unless isLoggedIn}}
 <h1>{{appTitle}}</h1>
-{{/unless}}
-
-{{#unless isLoggedIn}}
 <div class="animation-wrapper"></div>
 <div class="animation-obj"></div>
 {{/unless}}
 
-<div id="hp-txt" {{#if isLoggedIn}}class="center"{{/if}}>
-   {{!-- <img src="/assets/logo-illustration.png" alt="HelgaHelps logo" id="logo" > --}}
-   <p>Helga is here to help your crew to get organized for the next festival.</p>
-   {{#if isLoggedIn}}
-   <div id="hp-info">
-      <ul>
-         <li>Join the group of people you like to go on a festival with</li>
-         <li>Your group is not registered yet? Go ahead and create one, so all your favourite people can join you</li>
-         <li>Good to know: not everyone can just join a crew! The group admin has to verify the request</li>
-         <li>Add all the festivals to your group you and your crew are interested in</li>
-         <li>Add bands to your personal setlist and see who else of your crew is eager to see them perform live on stage</li>
-         <li>Listen to previews of the best songs</li>
-         <li>GET EXCITED!!!</li>
-      </ul>
+<div class="index-container">
+   <div id="hp-txt" {{#if isLoggedIn}}class="center"{{/if}}>
+      {{!-- <img src="/assets/logo-illustration.png" alt="HelgaHelps logo" id="logo" > --}}
+      <p>Helga is here to help your crew to get organized for the next festival.</p>
+      {{#if isLoggedIn}}
+      <div id="hp-info">
+         <ul>
+            <li>Join the group of people you like to go on a festival with</li>
+            <li>Your group is not registered yet? Go ahead and create one, so all your favourite people can join you</li>
+            <li>Good to know: not everyone can just join a crew! The group admin has to verify the request</li>
+            <li>Add all the festivals to your group you and your crew are interested in</li>
+            <li>Add bands to your personal setlist and see who else of your crew is eager to see them perform live on stage</li>
+            <li>Listen to previews of the best songs</li>
+            <li>GET EXCITED!!!</li>
+         </ul>
+      </div>
+      {{/if}}
+      {{#unless isLoggedIn}}
+      <p>Join your crew and get connected. Choose the bands you want to see perform on stage. Listen to some tunes and get all pumped for the upcoming event.</p>
+      {{/unless}}
    </div>
-   {{/if}}
+
    {{#unless isLoggedIn}}
-   <p>Join your crew and get connected. Choose the bands you want to see perform on stage. Listen to some tunes and get all pumped for the upcoming event.</p>
-   {{/unless}}
-</div>
+   <div>
+   <div class="form-container">
+      <input type="checkbox" id="check">
+      <div class="index-form" id="signup-form">
+         
+         <form action="/auth/signup" method="POST">
+            <label for="check">
+               Are you new?
+            </label>
 
-{{#unless isLoggedIn}}
-<div class="form-container">
-   <input type="checkbox" id="check">
-   <div class="homepage-form" id="signup-form">
-      
-      <form action="/auth/signup" method="POST">
-         <label for="check">
-            Are you new?
-         </label>
+               <input type="text" name="username" placeholder="Username">
 
-            <input type="text" name="username" placeholder="Username">
+               <input type="password" name="password" placeholder="Password">
 
-            <input type="password" name="password" placeholder="Password">
-
-            <input type="password" name="confirmPw" placeholder="Confirm Password">
+               <input type="password" name="confirmPw" placeholder="Confirm Password">
 
 
-         <button type="submit" class="button-53">Sign Up</button>
-      </form>
+            <button type="submit" class="button-53">Sign Up</button>
+         </form>
+      </div>
+
+      <div class="index-form" id="login-form">
+         
+         <form action="/auth/login" method="POST">
+            <label for="check">Been here before?</label>
+
+               <input type="text" name="username" placeholder="Username" class="placeholder">
+
+               <input type="password" name="password" placeholder="Password" class="placeholder">
+
+
+            <button type="submit" class="button-53">Log In</button>
+         </form>
+      </div>
    </div>
-
-   <div class="homepage-form" id="login-form">
-      
-      <form action="/auth/login" method="POST">
-         <label for="check">Been here before?</label>
-
-            <input type="text" name="username" placeholder="Username" class="placeholder">
-
-            <input type="password" name="password" placeholder="Password" class="placeholder">
-
-
-         <button type="submit" class="button-53">Log In</button>
-      </form>
+         {{#if errorMessage}}
+            <div class="errorMessage" id="index-errorMessage">
+            {{errorMessage}}
+            </div>
+         {{/if}}
    </div>
 </div>
 
    {{!-- <img src="/assets/logo-illustration.png" alt="HelgaHelps logo" id="logo" > --}}
 
 {{/unless}}
-
-{{#if errorMessage}}
-   <div>
-   {{errorMessage}}
-   </div>
-{{/if}}
