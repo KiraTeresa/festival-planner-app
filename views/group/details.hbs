@@ -136,6 +136,11 @@
                             <button type="submit">Get in</button>
                         </form>
                     {{/unless}}
+                    {{#if passengers}}
+                        <form action="/carsharing/leaveCar/{{_id}}" method="post">
+                            <button type="submit">Get out</button>
+                        </form>
+                    {{/if}}
                 </div>
                 {{/each}}
             {{/if}}

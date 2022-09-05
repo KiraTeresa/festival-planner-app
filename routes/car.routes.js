@@ -89,4 +89,36 @@ router.post("/joinCar/:carId", isLoggedIn, async (req, res) => {
     .catch((err) => console.log("Getting in the car did not work.", err));
 });
 
+// get out of a car
+router.post("/leaveCar/:carId", async (req, res) => {
+  const { carId } = req.params;
+  const currentUser = req.session.user;
+
+  await Car.findById(carId)
+    .then(async (car) => {
+      const { passengers, postedInGroup } = car;
+      const userIsPassenger = await passengers.find((element) =>
+        element.equals(currentUser)
+      );
+
+      if (!userIsPassenger) {
+        return res.redirect(`/group/${postedInGroup}`);
+      }
+
+      const passengerIndex = passengers.indexOf(userIsPassenger);
+
+      await Car.findByIdAndUpdate(
+        carId,
+        { $inc: { seatsAvailable: 1 }, $pull: { passengers: userIsPassenger } },
+        { new: true }
+      ).then(() => res.redirect(`/group/${postedInGroup}`));
+    })
+    .catch((err) =>
+      console.log(
+        "Something went wrong when trying to get out of the car.",
+        err
+      )
+    );
+});
+
 module.exports = router;
