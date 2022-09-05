@@ -22,6 +22,13 @@ router.get("/create", isLoggedIn, (req, res) => {
 
 router.post("/create", isLoggedIn, (req, res) => {
   const { groupName } = req.body;
+
+  if (!groupName || groupName.length < 2) {
+    return res.status(400).render("group/create", {
+      errorMessage:
+        "Please choose a name for your group with at least two characters.",
+    });
+  }
   const adminId = req.session.user;
   User.findById(adminId)
     .then(async (userFound) => {

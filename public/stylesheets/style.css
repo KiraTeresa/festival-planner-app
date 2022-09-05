@@ -175,12 +175,18 @@ h3 {
   font-size: 2rem;
 }
 
-/* form elements */
+.errorMessage {
+  font-size: 1rem;
+  font-style: italic;
+}
+
+/* FORM ELEMENTS*/
 .add-form {
   font-size: 1.1rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  max-width: 15rem;
 }
 
 input {

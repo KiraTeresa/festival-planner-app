@@ -1,27 +1,36 @@
-<h2>Add a band to {{festivalName}} festival</h2>
-<div>
+<h2>Add {{bandName}} to {{festivalName}} festival</h2>
+<div class="band-form-container">
     <form action="/festival/{{_id}}/add-band" method="post" class="add-form">
 
-        <label for="bandName">Band name: </label>
-        <input type="text" id="bandName" name="bandName" value="{{name}}" readonly>
+        <input type="hidden" name="festivalName" value="{{festivalName}}">
+        <input type="hidden" id="bandName" name="bandName" value="{{bandName}}">
         <input type="hidden" name="spotifyId" value="{{spotifyId}}">
+        <input type="hidden" name="image" value="{{image}}">
 
-        <label for="stage">On which stage will the band be playing?</label>
+        <label for="stage">On which stage will {{bandName}} be playing?</label>
         <select name="stage" id="stage">
             {{#each stages}}
             <option value="{{this}}">{{this}}</option>
             {{/each}}
         </select>
 
-        <label for="day">Which day will they be playing?</label>
+        <label for="day">On which day?</label>
         <input type="date" name="day" id="day" min="{{startDate}}" max="{{endDate}}">
 
-        <label for="startTime">When will they be on the stage?</label>
+        <label for="startTime">Start of the show?</label>
         <input type="time" id="startTime" name="startTime">
 
-        <label for="endTime">When will they leave the stage?</label>
+        <label for="endTime">End of the show?</label>
         <input type="time" id="endTime" name="endTime">
 
         <button type="submit" class="button-53">Add to line up</button>
+        {{#if errorMessage}}
+            <div class="errorMessage">
+                {{errorMessage}}
+            </div>
+        {{/if}}  
     </form>
+    <div class="band-image-wrapper">
+        <img src="{{image}}" alt="">
+    </div>
 </div>

@@ -1,21 +1,21 @@
-<h2>Edit band info of {{bandName}} at {{festivalName}}</h2>
+<h2>Edit info for {{bandName}} at {{festivalName}}</h2>
 <div>
     <form action="/band/{{bandName}}/{{festivalId}}/edit" method="post" class="add-form">
 
-        <label for="stage">On which stage will the band be playing?</label>
+        <label for="stage">On which stage will {{bandName}} be playing?</label>
         <select name="stageEdit" id="stage">
             {{#each stages}}
             <option value="{{this}}" >{{this}}</option>
             {{/each}}
         </select>
 
-        <label for="day">Which day will they be playing?</label>
+        <label for="day">On which day?</label>
         <input type="date" name="dayEdit" id="day" min="{{startDate}}" max="{{endDate}}" value="{{day}}">
 
-        <label for="startTime">When will they be on the stage?</label>
+        <label for="startTime">Start of the show?</label>
         <input type="time" id="startTimeEdit" name="startTimeEdit" value="{{startTime}}">
 
-        <label for="endTime">When will they leave the stage?</label>
+        <label for="endTime">End of the show?</label>
         <input type="time" id="endTimeEdit" name="endTimeEdit" value="{{endTime}}">
 
         <button type="submit" class="button-53">Update</button>

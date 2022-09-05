@@ -4,5 +4,11 @@
         <label for="stage">Stage name: </label>
         <input type="text" id="stage" name="stage">
         <button type="submit" class="button-53">Add stage</button>
+        
+        {{#if errorMessage}}
+            <div class="errorMessage">
+                {{errorMessage}}
+            </div>
+        {{/if}}    
     </form>
 </div>

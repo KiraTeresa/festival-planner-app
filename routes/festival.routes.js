@@ -81,9 +81,20 @@ router.get("/:id/add-stage", isOwner, (req, res) => {
 
 router.post("/:id/add-stage", isOwner, (req, res) => {
   const { stage } = req.body;
+
   Festival.findById(req.params.id)
     .then((festival) => {
-      const { stages, _id } = festival;
+      const { name, stages, _id } = festival;
+
+      // check if all needed information was provided:
+      if (!stage) {
+        return res.status(400).render("festival/add-stage", {
+          _id,
+          name,
+          errorMessage: "Please provide the name of the stage.",
+        });
+      }
+
       stages.push(stage);
       festival.save();
       res.redirect(`/festival/${_id}`);
@@ -94,11 +105,14 @@ router.post("/:id/add-stage", isOwner, (req, res) => {
 router.get("/:festivalId/add-band/", isOwner, (req, res) => {
   const { festivalId } = req.params;
   const { spotifyId } = req.query;
+
   Festival.findById(festivalId).then((festival) => {
     const { _id, startDate, endDate, stages } = festival;
     const festivalName = festival.name;
+
     spotifyApi.getArtist(spotifyId).then((artist) => {
       const { name, images } = artist.body;
+
       res.render("festival/add-band", {
         _id,
         festivalName,
@@ -106,8 +120,8 @@ router.get("/:festivalId/add-band/", isOwner, (req, res) => {
         endDate,
         stages,
         spotifyId,
-        name,
-        images,
+        bandName: name,
+        image: images[2].url,
       });
     });
   });
@@ -115,7 +129,16 @@ router.get("/:festivalId/add-band/", isOwner, (req, res) => {
 
 router.post("/:festivalId/add-band", isOwner, (req, res) => {
   const { festivalId } = req.params;
-  const { bandName, spotifyId, stage, day, startTime, endTime } = req.body;
+  const {
+    festivalName,
+    bandName,
+    spotifyId,
+    stage,
+    day,
+    startTime,
+    endTime,
+    image,
+  } = req.body;
   const band = {
     bandName,
     spotifyId,
@@ -124,9 +147,27 @@ router.post("/:festivalId/add-band", isOwner, (req, res) => {
     startTime,
     endTime,
   };
+
   Festival.findById(festivalId)
     .then((festival) => {
-      const { bands } = festival;
+      const { startDate, endDate, stages, bands } = festival;
+
+      // check if any information is missing:
+      if (!stage || !day || !startTime || !endTime) {
+        return res.status(400).render("festival/add-band", {
+          _id: festivalId,
+          festivalName,
+          startDate,
+          endDate,
+          stages,
+          spotifyId,
+          bandName,
+          image,
+          errorMessage: "All fields are required.",
+        });
+      }
+
+      // if all required info is provided --> add the band:
       bands.push(band);
       festival.save();
       res.redirect(`/festival/${festivalId}`);

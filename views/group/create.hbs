@@ -6,6 +6,10 @@
         <input type="text" name="groupName" id="groupName">
 
         <button type="submit" class="button-53">Create group</button>
-        
+        {{#if errorMessage}}
+        <div class="errorMessage">
+            {{errorMessage}}
+        </div>
+        {{/if}}
     </form>
 </div>

@@ -34,6 +34,27 @@
     font-size: .8rem;
 }
 
+/* ADD BAND FORM */
+.band-form-container {
+    display: flex;
+    gap: 12rem;
+}
+
+.band-image-wrapper {
+    background-color: var(--secondary-color);
+    /* border: var(--secondary-bg-color) solid 2px; */
+    border-radius: 15px;
+    height: fit-content;
+}
+
+.band-image-wrapper > img {
+    width: 30rem;
+    border: #fff solid 2px;
+    border-radius: 15px;
+    margin: .2rem;
+    padding: .2rem;
+}
+
 /* BAND DETAILS */
 #band-item1 {
     grid-column: 1/2;
@@ -42,6 +63,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: center;
     font-size: 1.4rem;
 }
 
