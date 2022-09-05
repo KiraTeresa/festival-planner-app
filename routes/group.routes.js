@@ -61,8 +61,8 @@ router.get("/:id", isLoggedIn, async (req, res) => {
   Group.findById(id)
     .populate("admin crew pending festivals")
     .then(async (group) => {
-      const { groupName, admin, crew, pending, festivals } = group;
-      // console.log("The festivals: ", festivals);
+      const { groupName, admin, crew, pending, festivals, carSharing } = group;
+      console.log("The carSharing: ", carSharing);
       let adminStatus = false;
       if (admin._id.equals(currentUser)) {
         adminStatus = true;
@@ -108,6 +108,8 @@ router.get("/:id", isLoggedIn, async (req, res) => {
       // console.log("New Festival Array: ", newFestivalArr);
       const crewWithoutAdmin = crew.slice(1);
 
+      console.log("CAR SHARING: ", carSharing);
+
       Festival.find().then((festivalCollection) => {
         res.render("group/details", {
           currentUserName,
@@ -116,6 +118,7 @@ router.get("/:id", isLoggedIn, async (req, res) => {
           crewWithoutAdmin,
           pending,
           festivals,
+          carSharing,
           id,
           adminStatus,
           festivalCollection,
@@ -564,6 +567,34 @@ router.post("/:id/leave", isLoggedIn, async (req, res) => {
       }
     })
     .catch((err) => console.log("Leaving the crew didn't work", err));
+});
+
+// Share your car:
+router.post("/:groupId/addCar", isLoggedIn, async (req, res) => {
+  const currentUser = req.session.user;
+  const { groupId } = req.params;
+  const { festivalDriving, dayDriving, dayDrivingBack, capacity } = req.body;
+
+  await Group.findByIdAndUpdate(
+    groupId,
+    {
+      $push: {
+        carSharing: {
+          driver: await User.findById(currentUser).then(
+            (user) => user.username
+          ),
+          festivalDriving,
+          dayDriving,
+          dayDrivingBack,
+          capacity,
+          seatsAvailable: capacity,
+        },
+      },
+    },
+    { new: true }
+  )
+    .then(() => res.redirect(`/group/${groupId}`))
+    .catch((err) => console.log("Adding your car didn't Work.", err));
 });
 
 module.exports = router;

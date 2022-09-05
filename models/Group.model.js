@@ -24,6 +24,7 @@ const groupSchema = new Schema({
     ref: "Festival",
     default: [],
   },
+  carSharing: [{}],
 });
 
 const Group = mongoose.model("Group", groupSchema);

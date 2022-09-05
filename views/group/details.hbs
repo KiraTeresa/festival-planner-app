@@ -121,6 +121,43 @@
             {{/each}} --}}
         </div>
 
+        <div class="grid-element" id="group-grid-item4">
+            <h3>Car Sharing</h3>
+            {{#if carSharing}}
+                {{#each carSharing}}
+                <div class="item-card">
+                    Driver: {{driver}}
+                    Festival: {{festivalDriving}}
+                    To: {{dayDriving}}
+                    Back: {{dayDrivingBack}}
+                    Seats available: {{seatsAvailable}}
+                </div>
+                {{/each}}
+            {{/if}}
+            <div class="item-card add-card">
+                <h4>Are you going to drive?</h4>
+                <form action="/group/{{id}}/addCar" method="post">
+                    <label for="festivalDriving">Which festival?</label>
+                    <select name="festivalDriving" id="festivalDriving">
+                        {{#each festivals}}
+                        <option value="{{name}}">{{name}}</option>
+                        {{/each}}
+                    </select>
+
+                    <label for="dayDriving">Drive to festival</label>
+                    <input type="date" name="dayDriving" id="dayDriving">
+
+                    <label for="dayDrivingBack">Drive back</label>
+                    <input type="date" name="dayDrivingBack" id="dayDrivingBack">
+
+                    <label for="capacity">Capacity</label>
+                    <input type="number" name="capacity" id="capacity">
+
+                    <button type="submit" class="button-28 btn-white btn-small">Share your car</button>
+                </form>
+            </div>
+        </div>
+
         {{#if newFestivalArr}}
         <div class="grid-element" id="group-grid-item3">
             {{#each newFestivalArr}}
