@@ -133,11 +133,13 @@
                     Seats available: {{seatsAvailable}}
                     {{#unless allOccupied}}
                         <form action="/carsharing/joinCar/{{_id}}" method="post">
+                            <input type="hidden" name="groupId" value="{{../id}}">
                             <button type="submit">Get in</button>
                         </form>
                     {{/unless}}
                     {{#if passengers}}
                         <form action="/carsharing/leaveCar/{{_id}}" method="post">
+                            <input type="hidden" name="groupId" value="{{../id}}">
                             <button type="submit">Get out</button>
                         </form>
                     {{/if}}

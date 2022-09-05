@@ -6,11 +6,18 @@ const Festival = require("../models/Festival.model");
 const Car = require("../models/Car.model");
 const isLoggedIn = require("../middleware/isLoggedIn");
 const { Types } = require("mongoose");
+const isCrewmember = require("../utils/isCrewmember");
 
 // Share your car:
 router.post("/addCar/:groupId", isLoggedIn, async (req, res) => {
   const currentUser = req.session.user;
   const { groupId } = req.params;
+
+  if (!isCrewmember(currentUser, groupId)) {
+    console.log("YOU ARE NO CREW MEMBER");
+    return res.redirect("/group");
+  }
+
   const { festivalDrivingId, dayDriving, dayDrivingBack, capacity } = req.body;
   let allOccupied = false;
 
@@ -65,6 +72,12 @@ router.post("/addCar/:groupId", isLoggedIn, async (req, res) => {
 router.post("/joinCar/:carId", isLoggedIn, async (req, res) => {
   const { carId } = req.params;
   const currentUser = req.session.user;
+  const { groupId } = req.body;
+
+  if (!isCrewmember(currentUser, groupId)) {
+    console.log("YOU ARE NO CREW MEMBER");
+    return res.redirect("/group");
+  }
 
   await Car.findById(carId)
     .then(async (car) => {
@@ -93,6 +106,12 @@ router.post("/joinCar/:carId", isLoggedIn, async (req, res) => {
 router.post("/leaveCar/:carId", async (req, res) => {
   const { carId } = req.params;
   const currentUser = req.session.user;
+  const { groupId } = req.body;
+
+  if (!isCrewmember(currentUser, groupId)) {
+    console.log("YOU ARE NO CREW MEMBER");
+    return res.redirect("/group");
+  }
 
   await Car.findById(carId)
     .then(async (car) => {
