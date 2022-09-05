@@ -42,6 +42,9 @@ app.use("/festival", festivalRoutes);
 const bandRoutes = require("./routes/band.routes");
 app.use("/band", bandRoutes);
 
+const carRoutes = require("./routes/car.routes");
+app.use("/carsharing", carRoutes);
+
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 

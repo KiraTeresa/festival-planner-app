@@ -3,6 +3,7 @@ const router = express.Router();
 const Group = require("../models/Group.model");
 const User = require("../models/User.model");
 const Festival = require("../models/Festival.model");
+const Car = require("../models/Car.model");
 const isLoggedIn = require("../middleware/isLoggedIn");
 const { Types } = require("mongoose");
 
@@ -59,10 +60,16 @@ router.get("/:id", isLoggedIn, async (req, res) => {
   });
 
   Group.findById(id)
-    .populate("admin crew pending festivals")
+    .populate("admin crew pending festivals carSharing")
+    .populate({
+      path: "carSharing",
+      populate: { path: "driver festivalDriving" },
+    })
     .then(async (group) => {
       const { groupName, admin, crew, pending, festivals, carSharing } = group;
-      console.log("The carSharing: ", carSharing);
+
+      console.log("Carsharing after populate: ", carSharing);
+
       let adminStatus = false;
       if (admin._id.equals(currentUser)) {
         adminStatus = true;
@@ -132,7 +139,7 @@ router.get("/:id", isLoggedIn, async (req, res) => {
 });
 
 // add festival to group:
-router.post("/:id", isLoggedIn, async (req, res) => {
+router.post("/:id/add-festival", isLoggedIn, async (req, res) => {
   const { id } = req.params;
   const { addFestival } = req.body;
   const currentUser = req.session.user;
@@ -567,34 +574,6 @@ router.post("/:id/leave", isLoggedIn, async (req, res) => {
       }
     })
     .catch((err) => console.log("Leaving the crew didn't work", err));
-});
-
-// Share your car:
-router.post("/:groupId/addCar", isLoggedIn, async (req, res) => {
-  const currentUser = req.session.user;
-  const { groupId } = req.params;
-  const { festivalDriving, dayDriving, dayDrivingBack, capacity } = req.body;
-
-  await Group.findByIdAndUpdate(
-    groupId,
-    {
-      $push: {
-        carSharing: {
-          driver: await User.findById(currentUser).then(
-            (user) => user.username
-          ),
-          festivalDriving,
-          dayDriving,
-          dayDrivingBack,
-          capacity,
-          seatsAvailable: capacity,
-        },
-      },
-    },
-    { new: true }
-  )
-    .then(() => res.redirect(`/group/${groupId}`))
-    .catch((err) => console.log("Adding your car didn't Work.", err));
 });
 
 module.exports = router;

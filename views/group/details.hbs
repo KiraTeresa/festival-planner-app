@@ -88,7 +88,7 @@
             {{/unless}}
 
             <div class="item-card add-card">
-                <form action="/group/{{id}}" method="post">
+                <form action="/group/{{id}}/add-festival" method="post">
                     <label for="addFestival">Choose a festival:</label>
                     <select name="addFestival" id="addFestival">
                     {{#each festivalCollection}}
@@ -126,21 +126,26 @@
             {{#if carSharing}}
                 {{#each carSharing}}
                 <div class="item-card">
-                    Driver: {{driver}}
-                    Festival: {{festivalDriving}}
+                    Driver: {{driver.username}}
+                    Festival: {{festivalDriving.name}}
                     To: {{dayDriving}}
                     Back: {{dayDrivingBack}}
                     Seats available: {{seatsAvailable}}
+                    {{#unless allOccupied}}
+                        <form action="/group/{{../id}}/joinCar/{{_id}}" method="post">
+                            <button type="submit">Get in</button>
+                        </form>
+                    {{/unless}}
                 </div>
                 {{/each}}
             {{/if}}
             <div class="item-card add-card">
                 <h4>Are you going to drive?</h4>
-                <form action="/group/{{id}}/addCar" method="post">
+                <form action="/carsharing/addCar/{{id}}" method="post">
                     <label for="festivalDriving">Which festival?</label>
-                    <select name="festivalDriving" id="festivalDriving">
+                    <select name="festivalDrivingId" id="festivalDrivingId">
                         {{#each festivals}}
-                        <option value="{{name}}">{{name}}</option>
+                        <option value="{{_id}}">{{name}}</option>
                         {{/each}}
                     </select>
 
