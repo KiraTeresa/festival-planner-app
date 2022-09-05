@@ -19,7 +19,7 @@ const isLoggedIn = require("../middleware/isLoggedIn");
 // });
 
 router.post("/signup", isLoggedOut, (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, confirmPw } = req.body;
 
   if (!username) {
     return res.status(400).render("index", {
@@ -30,6 +30,12 @@ router.post("/signup", isLoggedOut, (req, res) => {
   if (password.length < 8) {
     return res.status(400).render("index", {
       errorMessage: "Your password needs to be at least 8 characters long.",
+    });
+  }
+
+  if (confirmPw !== password) {
+    return res.status(400).render("index", {
+      errorMessage: "Please confirm your password.",
     });
   }
 
