@@ -5,11 +5,12 @@ const isOwner = require("../middleware/isOwner");
 const spotifyApi = require("../utils/spotify");
 const { Types } = require("mongoose");
 const User = require("../models/User.model");
+const Group = require("../models/Group.model");
 
 // Making sure only users with the role "owner" can access the festival routes:
 // router.use(isOwner);
 
-// route handling:
+// Create a new festival:
 router.get("/create", isOwner, (req, res) => {
   res.render("festival/create");
 });
@@ -60,6 +61,7 @@ router.post("/create", isOwner, async (req, res) => {
   res.redirect("/festival/all");
 });
 
+// Show list of all festivals:
 router.get("/all", (req, res) => {
   Festival.find()
     .then((festivals) => {
@@ -68,6 +70,7 @@ router.get("/all", (req, res) => {
     .catch((err) => console.log("Rendering all festivals didn't work", err));
 });
 
+// Add a stage to a festival:
 router.get("/:id/add-stage", isOwner, (req, res) => {
   Festival.findById(req.params.id).then((festival) => {
     const { _id, name } = festival;
@@ -102,6 +105,7 @@ router.post("/:id/add-stage", isOwner, (req, res) => {
     .catch((err) => console.log("Adding stage failed", err));
 });
 
+// Add a band to a festival:
 router.get("/:festivalId/add-band/", isOwner, (req, res) => {
   const { festivalId } = req.params;
   const { spotifyId } = req.query;
@@ -175,7 +179,7 @@ router.post("/:festivalId/add-band", isOwner, (req, res) => {
     .catch((err) => console.log("Adding a band failed", err));
 });
 
-// remove a band from festival list:
+// Remove a band from festival list:
 router.get("/:id/delete-band/:bandName", isOwner, async (req, res) => {
   const { id, bandName } = req.params;
   await Festival.findOne({
@@ -234,15 +238,32 @@ router.post("/:id/update", isOwner, (req, res) => {
     );
 });
 
+// Delete a festival:
 router.post("/:id/delete", isOwner, (req, res) => {
-  Festival.findByIdAndDelete(req.params.id)
-    .then(() => {
+  const festivalId = req.params.id;
+  Festival.findByIdAndDelete(festivalId)
+    .then(async () => {
       console.log("Festival successfully deleted");
+
+      // remove festival from all groups..
+      await Group.updateMany(
+        { festivals: { $in: Types.ObjectId(festivalId) } },
+        { $pull: { festivals: Types.ObjectId(festivalId) } },
+        { new: true }
+      );
+
+      // remove festival from user watchlists..
+
+      // remove all car pools which were driving there..
+
+      // send notification..
+
       res.redirect("/festival/all");
     })
     .catch((err) => console.log("Deleting failed", err));
 });
 
+// Show festival details:
 router.get("/:id", (req, res) => {
   Festival.findById(req.params.id)
     .then((festival) => {
