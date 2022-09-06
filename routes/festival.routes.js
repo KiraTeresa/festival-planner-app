@@ -255,14 +255,16 @@ router.get("/:id/delete-band/:bandName", isOwner, async (req, res) => {
             type: "band",
           };
 
-          // update user...
-          await User.findByIdAndUpdate(
-            _id,
-            {
-              $push: { watchlist: findWatchlistObj },
-            },
-            { new: true }
-          );
+          // update user witch new watchlist object, if it still holds a band...
+          if (findWatchlistObj.bands.length > 0) {
+            await User.findByIdAndUpdate(
+              _id,
+              {
+                $push: { watchlist: findWatchlistObj },
+              },
+              { new: true }
+            );
+          }
 
           // send notification..
           await User.findByIdAndUpdate(
