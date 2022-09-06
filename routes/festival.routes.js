@@ -183,24 +183,119 @@ router.post("/:festivalId/add-band", isOwner, (req, res) => {
 // Remove a band from festival list:
 router.get("/:id/delete-band/:bandName", isOwner, async (req, res) => {
   const { id, bandName } = req.params;
-  await Festival.findOne({
-    _id: new Types.ObjectId(id),
-    bands: {
-      $elemMatch: {
-        bandName,
-      },
-    },
-  })
-    .then(async (festival) => {
-      const { name, bands } = festival;
-      // console.log("Festival found: ", festival);
-      // console.log("The bands: ", bands);
 
-      const bandIndex = bands.indexOf(bandName);
-      bands.splice(bandIndex, 1);
-      await festival.save();
+  await Festival.findByIdAndUpdate(
+    id,
+    { $pull: { bands: { bandName } } },
+    { new: true }
+  ).then((updatedFestival) =>
+    console.log("Updated Festival: ", updatedFestival)
+  );
+
+  // also remove from user watchlist..
+
+  await User.find({
+    watchlist: { $elemMatch: { festivalId: Types.ObjectId(id) } },
+  })
+    .then(async (userFound) => {
+      console.log("User FOUND: ", userFound);
+
+      for (element of userFound) {
+        User.findById(element._id).then(async (user) => {
+          const { _id, watchlist } = user;
+          console.log("THE WATCHLIST: ", watchlist);
+
+          const findWatchlistObj = watchlist.find((list) =>
+            list.festivalId.equals(id)
+          );
+          console.log("THE WATCHLST OBJ: ", findWatchlistObj);
+
+          await User.findByIdAndUpdate(
+            _id,
+            {
+              $pull: { watchlist: findWatchlistObj },
+            },
+            { new: true }
+          );
+
+          const indexOfWatchlistObj = watchlist.indexOf(findWatchlistObj);
+          console.log("WATCHLIST found at indes: ", indexOfWatchlistObj);
+
+          const findBandObj = findWatchlistObj.bands.find(
+            (list) => list.bandName === bandName
+          );
+          console.log("THE BAND OBJ: ", findBandObj);
+
+          const indexOfBandObj = findWatchlistObj.bands.indexOf(findBandObj);
+          console.log("Band found at index: ", indexOfBandObj);
+
+          findWatchlistObj.bands.splice(indexOfBandObj, 1);
+
+          // findWatchlistObj.bands.splice(indexOfBandObj, 1);
+          console.log("NEW WatchlistObj: ", findWatchlistObj);
+
+          console.log("IF: ", findWatchlistObj.bands);
+          // if (newWatchlistObj.bands) {
+          await User.findByIdAndUpdate(
+            _id,
+            { $push: { watchlist: findWatchlistObj } },
+            { new: true }
+          );
+          // }
+
+          // if (findWatchlistObj.bands.length === 0) {
+          //   await User.findByIdAndUpdate(_id, {
+          //     $pull: { watchlist: findWatchlistObj },
+          //   });
+          // }
+
+          console.log("New Watchlist: ", watchlist);
+
+          // await user.save();
+          // await user.updateOne();
+        });
+      }
+    })
+    .then((updatedUsers) => {
+      console.log("Updated Users: ", updatedUsers);
       res.redirect(`/festival/${id}`);
     })
+
+    // await User.updateMany(
+    //   { watchlist: { $elemMatch: { festivalId: Types.ObjectId(id) } } },
+    //   {
+    //     $pull: {
+    //       "watchlist.bands": { bandName },
+    //       //   watchlist: {
+    //       //     bands: { $in: [bandName] },
+    //       //   },
+    //     },
+    //   },
+    //   { new: true }
+    // )
+    // .then((updatedUsers) => console.log("Updated Users: ", updatedUsers))
+
+    // send notification to all users, who had this band on their watchlist..
+
+    // await Festival.findOne({
+    //   _id: new Types.ObjectId(id),
+    //   bands: {
+    //     $elemMatch: {
+    //       bandName,
+    //     },
+    //   },
+    // })
+    // .then(async (festival) => {
+    //   const { name, bands } = festival;
+    //   // console.log("Festival found: ", festival);
+    //   // console.log("The bands: ", bands);
+
+    //   const bandIndex = bands.indexOf(bandName);
+    //   bands.splice(bandIndex, 1);
+    //   await festival.save();
+    //   res.redirect(`/festival/${id}`);
+    // })
+
     .catch((err) => console.log("Deleting failed", err));
 });
 
