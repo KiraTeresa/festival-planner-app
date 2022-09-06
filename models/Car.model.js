@@ -15,7 +15,10 @@ const carSchema = new Schema(
     dayDrivingBack: String,
     capacity: Number,
     seatsAvailable: Number,
-    allOccupied: Boolean,
+    allOccupied: {
+      type: Boolean,
+      default: false,
+    },
     passengers: {
       type: [mongoose.Types.ObjectId],
       ref: "User",

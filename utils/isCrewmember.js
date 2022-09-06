@@ -8,7 +8,7 @@ async function isCrewmember(user, groupId) {
       { groups: { $in: Types.ObjectId(groupId) } },
     ],
   }).then((userFound) => {
-    console.log("USER FOUND FUNCTION: ", userFound);
+    // console.log("USER FOUND FUNCTION: ", userFound);
     return userFound;
   });
 }
