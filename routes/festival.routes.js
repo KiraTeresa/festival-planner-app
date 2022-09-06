@@ -241,27 +241,53 @@ router.post("/:id/update", isOwner, (req, res) => {
 
 // Delete a festival:
 router.post("/:id/delete", isOwner, (req, res) => {
-  const festivalId = req.params.id;
-  Festival.findByIdAndDelete(festivalId)
-    .then(async () => {
-      console.log("Festival successfully deleted");
-
+  const festival = req.params.id;
+  Festival.findByIdAndDelete(festival)
+    .then(async (deletedFestival) => {
       // remove festival from all groups..
       await Group.updateMany(
-        { festivals: { $in: Types.ObjectId(festivalId) } },
-        { $pull: { festivals: Types.ObjectId(festivalId) } },
+        { festivals: { $in: Types.ObjectId(festival) } },
+        { $pull: { festivals: Types.ObjectId(festival) } },
         { new: true }
       );
 
       // remove festival from user watchlists..
+      await User.updateMany(
+        {
+          watchlist: { $elemMatch: { festivalId: Types.ObjectId(festival) } },
+        },
+        {
+          $pull: {
+            watchlist: {
+              festivalId: Types.ObjectId(festival),
+            },
+          },
+        },
+        { new: true }
+      ).then((updatedUsers) =>
+        console.log("Users after deleting a festival: ", updatedUsers)
+      );
 
       // remove all car pools which were driving there..
       await Car.deleteMany({
-        festivalDriving: Types.ObjectId(festivalId),
+        festivalDriving: Types.ObjectId(festival),
       });
 
-      // send notification..
+      // send notification to all users..
+      const today = new Date().toISOString().slice(0, 10);
+      const newNotification = {
+        message: `The festival "${deletedFestival.name}" was deleted by Helga.`,
+        date: today,
+        type: "festival",
+      };
 
+      await User.updateMany(
+        { role: "user" },
+        { $push: { notifications: newNotification } },
+        { new: true }
+      );
+
+      // redirect when all collections are cleared..
       res.redirect("/festival/all");
     })
     .catch((err) => console.log("Deleting failed", err));

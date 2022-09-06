@@ -18,7 +18,7 @@ const festivalSchema = new Schema(
     stages: {
       type: [],
       required: true,
-      default: [],
+      default: ["Main Stage"],
     },
     bands: {
       type: [],
