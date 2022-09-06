@@ -183,17 +183,18 @@ router.post("/:festivalId/add-band", isOwner, (req, res) => {
 // Remove a band from festival list:
 router.get("/:id/delete-band/:bandName", isOwner, async (req, res) => {
   const { id, bandName } = req.params;
+  let festivalName;
 
   await Festival.findByIdAndUpdate(
     id,
     { $pull: { bands: { bandName } } },
     { new: true }
-  ).then((updatedFestival) =>
-    console.log("Updated Festival: ", updatedFestival)
-  );
+  ).then((updatedFestival) => {
+    festivalName = updatedFestival.name;
+    // console.log("Updated Festival: ", updatedFestival);
+  });
 
   // also remove from user watchlist..
-
   await User.find({
     watchlist: { $elemMatch: { festivalId: Types.ObjectId(id) } },
   })
@@ -201,15 +202,17 @@ router.get("/:id/delete-band/:bandName", isOwner, async (req, res) => {
       console.log("User FOUND: ", userFound);
 
       for (element of userFound) {
-        User.findById(element._id).then(async (user) => {
+        await User.findById(element._id).then(async (user) => {
           const { _id, watchlist } = user;
           console.log("THE WATCHLIST: ", watchlist);
 
+          //.. find obj in watchlist arr, which holds the info for that festival..
           const findWatchlistObj = watchlist.find((list) =>
             list.festivalId.equals(id)
           );
           console.log("THE WATCHLST OBJ: ", findWatchlistObj);
 
+          //.. delete that obj..
           await User.findByIdAndUpdate(
             _id,
             {
@@ -218,84 +221,63 @@ router.get("/:id/delete-band/:bandName", isOwner, async (req, res) => {
             { new: true }
           );
 
+          await User.findById(_id).then((user) =>
+            console.log("Updated User: ", user)
+          );
+
+          //.. find the index, where the object was found..
           const indexOfWatchlistObj = watchlist.indexOf(findWatchlistObj);
           console.log("WATCHLIST found at indes: ", indexOfWatchlistObj);
 
+          //.. within the watchlist object look for that element in the bands array, which holds the band info..
           const findBandObj = findWatchlistObj.bands.find(
             (list) => list.bandName === bandName
           );
           console.log("THE BAND OBJ: ", findBandObj);
 
+          //.. get the index, of where the band was found..
           const indexOfBandObj = findWatchlistObj.bands.indexOf(findBandObj);
           console.log("Band found at index: ", indexOfBandObj);
 
           findWatchlistObj.bands.splice(indexOfBandObj, 1);
 
-          // findWatchlistObj.bands.splice(indexOfBandObj, 1);
           console.log("NEW WatchlistObj: ", findWatchlistObj);
 
           console.log("IF: ", findWatchlistObj.bands);
-          // if (newWatchlistObj.bands) {
+          console.log("LENGTH: ", findWatchlistObj.bands.length);
+
+          // prepare notification...
+          const today = new Date().toISOString().slice(0, 10);
+
+          const newNotification = {
+            message: `${bandName} is no longer coming to ${festivalName}.`,
+            date: today,
+            type: "band",
+          };
+
+          // update user...
           await User.findByIdAndUpdate(
             _id,
-            { $push: { watchlist: findWatchlistObj } },
+            {
+              $push: { watchlist: findWatchlistObj },
+            },
             { new: true }
           );
-          // }
 
-          // if (findWatchlistObj.bands.length === 0) {
-          //   await User.findByIdAndUpdate(_id, {
-          //     $pull: { watchlist: findWatchlistObj },
-          //   });
-          // }
+          // send notification..
+          await User.findByIdAndUpdate(
+            _id,
+            {
+              $push: { notifications: newNotification },
+            },
+            { new: true }
+          ).then((updatedUser) => console.log("Updated User: ", updatedUser));
 
-          console.log("New Watchlist: ", watchlist);
-
-          // await user.save();
-          // await user.updateOne();
+          // console.log("New Watchlist: ", watchlist);
         });
       }
     })
-    .then((updatedUsers) => {
-      console.log("Updated Users: ", updatedUsers);
-      res.redirect(`/festival/${id}`);
-    })
-
-    // await User.updateMany(
-    //   { watchlist: { $elemMatch: { festivalId: Types.ObjectId(id) } } },
-    //   {
-    //     $pull: {
-    //       "watchlist.bands": { bandName },
-    //       //   watchlist: {
-    //       //     bands: { $in: [bandName] },
-    //       //   },
-    //     },
-    //   },
-    //   { new: true }
-    // )
-    // .then((updatedUsers) => console.log("Updated Users: ", updatedUsers))
-
-    // send notification to all users, who had this band on their watchlist..
-
-    // await Festival.findOne({
-    //   _id: new Types.ObjectId(id),
-    //   bands: {
-    //     $elemMatch: {
-    //       bandName,
-    //     },
-    //   },
-    // })
-    // .then(async (festival) => {
-    //   const { name, bands } = festival;
-    //   // console.log("Festival found: ", festival);
-    //   // console.log("The bands: ", bands);
-
-    //   const bandIndex = bands.indexOf(bandName);
-    //   bands.splice(bandIndex, 1);
-    //   await festival.save();
-    //   res.redirect(`/festival/${id}`);
-    // })
-
+    .then(() => res.redirect(`/festival/${id}`))
     .catch((err) => console.log("Deleting failed", err));
 });
 
