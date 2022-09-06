@@ -111,6 +111,7 @@ router.get("/:id", isLoggedIn, async (req, res) => {
       }
 
       // console.log("New Festival Array: ", newFestivalArr);
+      // create crew array without admin:
       const crewWithoutAdmin = crew.slice(1);
 
       // console.log("CAR SHARING: ", carSharing);
@@ -500,77 +501,150 @@ router.get("/:groupName/deny/:userId", (req, res) => {
 router.post("/:id/leave", isLoggedIn, async (req, res) => {
   const { id } = req.params;
   const currentUser = req.session.user;
+  const currentUserObj = await User.findOne({ _id: currentUser });
 
   await Group.findById(id)
     .populate("admin crew")
-    .then((group) => {
+    .then(async (group) => {
       const { admin, crew, pending, groupName, festivals } = group;
-      if (!admin._id.equals(currentUser)) {
-        // check if user is part of the crew or on pending list:
-        const crewMember = crew.find((aUser) => aUser._id.equals(currentUser));
-        const pendingMember = pending.find((aUser) =>
-          aUser._id.equals(currentUser)
+      const numCrewmembers = crew.length;
+
+      // if (!admin._id.equals(currentUser)) {
+
+      // check if user is part of the crew or on pending list:
+      const crewMember = await crew.find((aUser) =>
+        aUser._id.equals(currentUser)
+      );
+      const pendingMember = pending.find((aUser) =>
+        aUser._id.equals(currentUser)
+      );
+
+      // remove if user is a crew member:
+      if (crewMember) {
+        // const index = crew.indexOf(crewMember);
+        // crew.splice(index, 1);
+
+        // console.log("Crew before: ", crew);
+        // console.log("The Crewmember: ", crewMember.username, crewMember._id);
+        // console.log("Log if-statement: ", admin._id.equals(crewMember._id));
+        // console.log("Index 0: ", crew[0]._id);
+        // console.log("Index 1: ", crew[1]._id);
+
+        // check if the current user also is the admin:
+        if (await admin._id.equals(crewMember._id)) {
+          // if admin is the only member --> delete the group:
+          if (numCrewmembers === 1) {
+            await Group.findByIdAndDelete(id);
+          }
+          // otherwise name a new admin, if user was the group admin:
+          else {
+            await Group.findByIdAndUpdate(
+              id,
+              {
+                $pull: { crew: crewMember },
+                $set: { admin: crew[1]._id },
+              },
+              { new: true }
+            ).then(async (updatedGroup) => {
+              // send notification to new admin:
+              const today = new Date().toISOString().slice(0, 10);
+
+              const newNotification = {
+                message: `${currentUserObj.username} left the group "${updatedGroup.groupName}", you are the admin now!`,
+                date: today,
+                type: "group",
+              };
+
+              await User.findByIdAndUpdate(
+                updatedGroup.admin,
+                { $push: { notifications: newNotification } },
+                { new: true }
+              );
+            });
+          }
+          // .then((updatedGroup) => {
+          //   console.log(
+          //     "The Updated Group with admin change looks like this: ",
+          //     updatedGroup
+          //   );
+          //   console.log("Index 0: ", updatedGroup.crew[0]._id);
+          //   console.log("Index 1: ", updatedGroup.crew[1]._id);
+          // });
+        } else {
+          await Group.findByIdAndUpdate(
+            id,
+            { $pull: { crew: crewMember } },
+            { new: true }
+          );
+        }
+
+        // also remove group from user.groups array:
+        await User.findByIdAndUpdate(
+          currentUser,
+          {
+            $pull: { groups: Types.ObjectId(id) },
+          },
+          { new: true }
         );
 
-        // remove if user is a crew member:
-        if (crewMember) {
-          const index = crew.indexOf(crewMember);
-          crew.splice(index, 1);
-
-          // also remove group from user.groups array:
-          User.findById(currentUser).then((user) => {
-            const { groups } = user;
-            const indexOfGroup = groups.indexOf(group._id);
-            groups.splice(indexOfGroup, 1);
-            user.save();
-          });
-        }
-
-        // remove from pending list if user wants to leave before admin had a chance to accept or deny:
-        else if (pendingMember) {
-          const index = pending.indexOf(crewMember);
-          pending.splice(index, 1);
-        }
-
-        // redirect if none of the above is true:
-        else {
-          res.redirect("/group");
-        }
-
-        // save changes:
-        group.save();
-        group.populate("pending");
-
-        // send notification to admin:
-        User.findById(currentUser).then((user) => {
-          const { username } = user;
-          User.findById(admin).then((adminUser) => {
-            const { notifications } = adminUser;
-            const today = new Date().toISOString().slice(0, 10);
-
-            const newNotification = {
-              message: `${username} is no longer part of your group "${groupName}"`,
-              date: today,
-              type: "group",
-            };
-            notifications.push(newNotification);
-            adminUser.save();
-            res.redirect("/group");
-          });
-        });
-      } else if (admin._id.equals(currentUser)) {
-        group.populate("admin crew pending festivals");
-        return res.status(400).render("group/details", {
-          groupName,
-          admin,
-          crew,
-          pending,
-          festivals,
-          id,
-          userError: "You are the admin, you cannot leave!!!",
-        });
+        // .then((user) => {
+        //   const { groups } = user;
+        //   const indexOfGroup = groups.indexOf(group._id);
+        //   groups.splice(indexOfGroup, 1);
+        //   user.save();
+        // });
       }
+
+      // remove from pending list if user wants to leave before admin had a chance to accept or deny:
+      else if (pendingMember) {
+        await Group.findByIdAndUpdate(
+          id,
+          { $pull: { pending: crewMember } },
+          { new: true }
+        );
+        // const index = pending.indexOf(crewMember);
+        // pending.splice(index, 1);
+      }
+
+      // redirect if none of the above is true:
+      else {
+        res.redirect("/group");
+      }
+
+      console.log("The Group AFTER: ", group);
+
+      // save changes:
+      // group.save();
+      group.populate("admin");
+
+      // send notification to admin:
+      await User.findById(currentUser).then(async (user) => {
+        const today = new Date().toISOString().slice(0, 10);
+        const newNotification = {
+          message: `${currentUserObj.username} is no longer part of your group "${groupName}"`,
+          date: today,
+          type: "group",
+        };
+
+        await User.findByIdAndUpdate(admin._id, {
+          $push: { notifications: newNotification },
+        });
+      });
+
+      // } else if (admin._id.equals(currentUser)) {
+      //   group.populate("admin crew pending festivals");
+      //   return res.status(400).render("group/details", {
+      //     groupName,
+      //     admin,
+      //     crew,
+      //     pending,
+      //     festivals,
+      //     id,
+      //     userError: "You are the admin, you cannot leave!!!",
+      //   });
+      // }
     })
+    .then(() => res.redirect(`/group/${id}`))
     .catch((err) => console.log("Leaving the crew didn't work", err));
 });
 
