@@ -134,12 +134,14 @@
                     {{#unless allOccupied}}
                         <form action="/carsharing/joinCar/{{_id}}" method="post">
                             <input type="hidden" name="groupId" value="{{../id}}">
+                            <input type="hidden" name="festivalName" value="{{festivalDriving.name}}">
                             <button type="submit">Get in</button>
                         </form>
                     {{/unless}}
                     {{#if passengers}}
                         <form action="/carsharing/leaveCar/{{_id}}" method="post">
                             <input type="hidden" name="groupId" value="{{../id}}">
+                            <input type="hidden" name="festivalName" value="{{festivalDriving.name}}">
                             <button type="submit">Get out</button>
                         </form>
                     {{/if}}
@@ -149,7 +151,7 @@
             <div class="item-card add-card">
                 <h4>Are you going to drive?</h4>
                 <form action="/carsharing/addCar/{{id}}" method="post">
-                    <label for="festivalDriving">Which festival?</label>
+                    <label for="festivalDrivingId">Which festival?</label>
                     <select name="festivalDrivingId" id="festivalDrivingId">
                         {{#each festivals}}
                         <option value="{{_id}}">{{name}}</option>

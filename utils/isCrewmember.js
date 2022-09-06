@@ -1,8 +1,8 @@
 const { Types } = require("mongoose");
 const User = require("../models/User.model");
 
-function isCrewmember(user, groupId) {
-  User.findOne({
+async function isCrewmember(user, groupId) {
+  await User.findOne({
     $and: [
       { _id: Types.ObjectId(user) },
       { groups: { $in: Types.ObjectId(groupId) } },
