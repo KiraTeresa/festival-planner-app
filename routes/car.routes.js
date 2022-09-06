@@ -103,7 +103,7 @@ router.post("/joinCar/:carId", isLoggedIn, async (req, res) => {
   const currentUser = req.session.user;
   const { groupId, festivalName } = req.body;
 
-  console.log("Car Id from params: ", carId);
+  // console.log("Car Id from params: ", carId);
 
   if (!isCrewmember(currentUser, groupId)) {
     console.log("YOU ARE NO CREW MEMBER");
@@ -117,7 +117,8 @@ router.post("/joinCar/:carId", isLoggedIn, async (req, res) => {
         async (element) => await element.equals(currentUser)
       );
 
-      console.log("THE CAR: ", car);
+      // console.log("THE CAR: ", car);
+
       // check if user is already a passenger or the driver:
       if (alreadyPassenger || driver.equals(currentUser)) {
         console.log("You are already a passenger.");
@@ -136,9 +137,10 @@ router.post("/joinCar/:carId", isLoggedIn, async (req, res) => {
         { $inc: { seatsAvailable: -1 }, $push: { passengers: currentUser } },
         { new: true }
       ).then(async (updatedCar) => {
-        console.log("The updated car: ", updatedCar);
+        // console.log("The updated car: ", updatedCar);
         const { _id, seatsAvailable } = updatedCar;
 
+        // change value of allOccupied of no more vacant seats:
         if (seatsAvailable <= 0) {
           await Car.findByIdAndUpdate(
             Types.ObjectId(_id),
@@ -174,7 +176,7 @@ router.post("/joinCar/:carId", isLoggedIn, async (req, res) => {
 router.post("/leaveCar/:carId", async (req, res) => {
   const { carId } = req.params;
   const currentUser = req.session.user;
-  const { groupId } = req.body;
+  const { groupId, festivalName } = req.body;
 
   if (!isCrewmember(currentUser, groupId)) {
     console.log("YOU ARE NO CREW MEMBER");
@@ -183,22 +185,57 @@ router.post("/leaveCar/:carId", async (req, res) => {
 
   await Car.findById(carId)
     .then(async (car) => {
-      const { passengers, postedInGroup } = car;
-      const userIsPassenger = await passengers.find((element) =>
-        element.equals(currentUser)
+      const { driver, passengers, postedInGroup, allOccupied } = car;
+      const userIsPassenger = await passengers.find(
+        async (element) => await element.equals(currentUser)
       );
 
+      // return if there is no such passenger:
       if (!userIsPassenger) {
         return res.redirect(`/group/${postedInGroup}`);
       }
 
       const passengerIndex = passengers.indexOf(userIsPassenger);
 
+      // remove user from passenger list and increment num available seats:
       await Car.findByIdAndUpdate(
         carId,
         { $inc: { seatsAvailable: 1 }, $pull: { passengers: userIsPassenger } },
         { new: true }
-      ).then(() => res.redirect(`/group/${postedInGroup}`));
+      )
+        .then(async (updatedCar) => {
+          // change value of allOccupied if all seats were taken before this user got out:
+          if (allOccupied) {
+            await Car.findByIdAndUpdate(
+              updatedCar._id,
+              { $set: { allOccupied: !allOccupied } },
+              { new: true }
+            );
+          }
+        })
+        .then(async () => {
+          // send notification...
+          const today = new Date().toISOString().slice(0, 10);
+
+          await User.findById(currentUser).then(async (user) => {
+            const { username } = user;
+
+            const newNotification = {
+              message: `${username} does no longer needs a seat in your care to drive to ${festivalName}.`,
+              date: today,
+              type: "carsharing",
+            };
+
+            // ... to driver:
+            await User.findByIdAndUpdate(
+              driver,
+              { $push: { notifications: newNotification } },
+              { new: true }
+            );
+          });
+
+          res.redirect(`/group/${postedInGroup}`);
+        });
     })
     .catch((err) =>
       console.log(
