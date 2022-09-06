@@ -63,7 +63,7 @@ router.get("/:id", isLoggedIn, async (req, res) => {
     .populate("admin crew pending festivals carSharing")
     .populate({
       path: "carSharing",
-      populate: { path: "driver festivalDriving" },
+      populate: { path: "driver festivalDriving passengers" },
     })
     .then(async (group) => {
       const { groupName, admin, crew, pending, festivals, carSharing } = group;

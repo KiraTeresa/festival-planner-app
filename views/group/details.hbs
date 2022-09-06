@@ -131,6 +131,7 @@
                     To: {{dayDriving}}
                     Back: {{dayDrivingBack}}
                     Seats available: {{seatsAvailable}}
+                    Passengers: {{#if passengers}}{{#each passengers}} {{username}} {{/each}}{{/if}} {{#unless passengers}} none {{/unless}}
                     {{#unless allOccupied}}
                         <form action="/carsharing/joinCar/{{_id}}" method="post">
                             <input type="hidden" name="groupId" value="{{../id}}">
