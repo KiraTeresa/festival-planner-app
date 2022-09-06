@@ -6,6 +6,7 @@ const spotifyApi = require("../utils/spotify");
 const { Types } = require("mongoose");
 const User = require("../models/User.model");
 const Group = require("../models/Group.model");
+const Car = require("../models/Car.model");
 
 // Making sure only users with the role "owner" can access the festival routes:
 // router.use(isOwner);
@@ -255,6 +256,9 @@ router.post("/:id/delete", isOwner, (req, res) => {
       // remove festival from user watchlists..
 
       // remove all car pools which were driving there..
+      await Car.deleteMany({
+        festivalDriving: Types.ObjectId(festivalId),
+      });
 
       // send notification..
 
