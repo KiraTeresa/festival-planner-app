@@ -78,12 +78,14 @@ module.exports = (app) => {
   app.use(async (req, res, next) => {
     if (req.session.user) {
       await User.findById(req.session.user).then((userFound) => {
-        if (userFound.role !== "owner") {
-          res.locals.isOwner = false;
-        } else {
-          res.locals.isOwner = true;
+        if (userFound) {
+          if (userFound.role !== "owner") {
+            res.locals.isOwner = false;
+          } else {
+            res.locals.isOwner = true;
+          }
+          console.log("You are the owner: ", res.locals.isOwner);
         }
-        console.log("You are the owner: ", res.locals.isOwner);
       });
     }
     next();

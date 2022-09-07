@@ -34,7 +34,7 @@ router.get("/dashboard", isLoggedIn, async (req, res) => {
             const back = car.dayDrivingBack;
             const seats = car.seatsAvailable;
             const passengers = [];
-            for (const element of passengers) {
+            for (const element of car.passengers) {
               const passenger = await User.findById(element);
               passengers.push(passenger);
             }
@@ -47,40 +47,42 @@ router.get("/dashboard", isLoggedIn, async (req, res) => {
       const carsPassenger = [];
       await Car.find({
         passengers: { $in: Types.ObjectId(currentUser) },
-      }).then(async (cars) => {
-        for (const car of cars) {
-          const driver = await User.findById(car.driver);
-          const group = await Group.findById(car.postedInGroup);
-          const festival = await Festival.findById(car.festivalDriving);
-          const to = car.dayDriving;
-          const back = car.dayDrivingBack;
-          const seats = car.seatsAvailable;
-          const passengers = [];
-          for (const element of passengers) {
-            const passenger = await User.findById(element);
-            passengers.push(passenger);
+      })
+        .then(async (cars) => {
+          for (const car of cars) {
+            const driver = await User.findById(car.driver);
+            const group = await Group.findById(car.postedInGroup);
+            const festival = await Festival.findById(car.festivalDriving);
+            const to = car.dayDriving;
+            const back = car.dayDrivingBack;
+            const seats = car.seatsAvailable;
+            const passengers = [];
+            for (const element of car.passengers) {
+              const passenger = await User.findById(element);
+              passengers.push(passenger);
+            }
+            const carInfo = {
+              driver,
+              group,
+              festival,
+              to,
+              back,
+              seats,
+              passengers,
+            };
+            carsPassenger.push(carInfo);
           }
-          const carInfo = {
-            driver,
-            group,
-            festival,
-            to,
-            back,
-            seats,
-            passengers,
-          };
-          carsPassenger.push(carInfo);
-        }
-      });
-
-      res.render("user/dashboard", {
-        username,
-        notifications,
-        watchlist,
-        usersGroups,
-        carsDriving,
-        carsPassenger,
-      });
+        })
+        .then(() => {
+          res.render("user/dashboard", {
+            username,
+            notifications,
+            watchlist,
+            usersGroups,
+            carsDriving,
+            carsPassenger,
+          });
+        });
     })
 
     .catch((err) => console.log("Something went wrong", err));
@@ -229,5 +231,178 @@ router.post(
     //   );
   }
 );
+
+// delete a user:
+router.post("/delete", isLoggedIn, async (req, res) => {
+  const currentUser = req.session.user;
+  let username;
+
+  await User.findById(currentUser).then(async (user) => {
+    username = user.username;
+  });
+  const today = new Date().toISOString().slice(0, 10);
+
+  // .. remove from all groups where user is crew member
+  await Group.find({ crew: { $in: Types.ObjectId(currentUser) } }).then(
+    async (groupsFound) => {
+      console.log("GROUPS: ", groupsFound);
+
+      // send notification to admin:
+      for (const group of groupsFound) {
+        const newNotification = {
+          message: `${username} deleted the account and therefore left the group "${group.groupName}".!`,
+          date: today,
+          type: "group",
+        };
+        console.log("NOTIFICATION FOR GROUP ADMIN: ", newNotification);
+
+        await User.findByIdAndUpdate(
+          group.admin,
+          {
+            $push: { notifications: newNotification },
+          },
+          { new: true }
+        );
+
+        await Group.findByIdAndUpdate(
+          group._id,
+          {
+            $pull: { crew: Types.ObjectId(currentUser) },
+          },
+          { new: true }
+        );
+      }
+    }
+  );
+
+  // .. remove from all groups where user is admin
+  await Group.find({ admin: Types.ObjectId(currentUser) }).then(
+    async (groups) => {
+      for (const group of groups) {
+        const { _id, crew } = group;
+        console.log("User is admin of: ", group.groupName);
+
+        // ..name a new admin if there is a crew member..
+        if (crew.length > 0) {
+          console.log("Member at index 0 ", crew[0]);
+          await Group.findByIdAndUpdate(
+            _id,
+            { $set: { admin: crew[0] } },
+            { new: true }
+          ).then(async (updatedGroup) => {
+            // send notification to new admin:
+            const newNotification = {
+              message: `${username} deleted the account and therefore left the group "${updatedGroup.groupName}". You are the admin now!!`,
+              date: today,
+              type: "group",
+            };
+
+            await User.findByIdAndUpdate(
+              updatedGroup.admin,
+              { $push: { notifications: newNotification } },
+              { new: true }
+            );
+          });
+        }
+
+        // ..otherwise delete the group..
+        else {
+          await Group.findByIdAndDelete(_id);
+        }
+      }
+    }
+  );
+
+  // .. remove all cars where user is driver
+  await Car.find({ driver: Types.ObjectId(currentUser) }).then(async (cars) => {
+    for (const car of cars) {
+      const { _id, passengers, festivalDriving } = car;
+      console.log("CAR TO: ", festivalDriving);
+
+      await Car.findByIdAndDelete(_id);
+
+      // send notification...
+      let festival;
+      await Festival.findById(festivalDriving).then(
+        (festival) => (festival = festival.name)
+      );
+
+      const newNotification = {
+        message: `${username} deleted the account and is therefore no longer driving to ${festival}.`,
+        date: today,
+        type: "carsharing",
+      };
+
+      // ... to all passengers:
+      for (const passenger of passengers) {
+        console.log("Every passenger: ", passenger);
+        await User.findByIdAndUpdate(
+          passenger,
+          { $push: { notifications: newNotification } },
+          { new: true }
+        );
+      }
+    }
+  });
+
+  // .. remove from all cars where user is passenger
+  await Car.find({ passengers: { $in: Types.ObjectId(currentUser) } })
+    .populate("driver festivalDriving")
+    .then(async (cars) => {
+      for (const car of cars) {
+        const { _id, driver, festivalDriving } = car;
+
+        await Car.findByIdAndUpdate(
+          _id,
+          {
+            $inc: { seatsAvailable: 1 },
+            $pull: { passengers: Types.ObjectId(currentUser) },
+          },
+          { new: true }
+        ).then(async (updatedCar) => {
+          console.log("The updated car where user was passenger: ", updatedCar);
+          const { allOccupied } = updatedCar;
+          // change value of allOccupied if all seats were taken before this user got out:
+          if (allOccupied) {
+            await Car.findByIdAndUpdate(
+              updatedCar._id,
+              { $set: { allOccupied: !allOccupied } },
+              { new: true }
+            );
+          }
+        });
+
+        // send notification...
+        const newNotification = {
+          message: `${username} deleted the account and therefore does no longer need a seat in your car to drive to ${festivalDriving.name}.`,
+          date: today,
+          type: "carsharing",
+        };
+
+        // ... to driver:
+        await User.findByIdAndUpdate(
+          driver._id,
+          { $push: { notifications: newNotification } },
+          { new: true }
+        );
+      }
+    });
+
+  // .. delete user
+  await User.findByIdAndDelete(currentUser)
+    .then(() => {
+      req.session.destroy((err) => {
+        if (err) {
+          return res
+            .status(500)
+            .render("auth/logout", { errorMessage: err.message });
+        }
+        res.redirect("/");
+      });
+    })
+    .catch((err) =>
+      console.log("Something went wrong when deleting a user..", err)
+    );
+});
 
 module.exports = router;

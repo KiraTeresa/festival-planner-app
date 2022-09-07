@@ -69,7 +69,7 @@ router.post("/addCar/:groupId", isLoggedIn, async (req, res) => {
 
           // create notification...
           const today = new Date().toISOString().slice(0, 10);
-          await User.findById(currentUser).then((user) => {
+          await User.findById(currentUser).then(async (user) => {
             const { username } = user;
 
             const newNotification = {
@@ -78,7 +78,7 @@ router.post("/addCar/:groupId", isLoggedIn, async (req, res) => {
               type: "carsharing",
             };
             // ...send to all crew members except current user:
-            crew.forEach(async (element) => {
+            for (const element of crew)
               await User.findById(element._id).then(async (user) => {
                 if (!user._id.equals(currentUser)) {
                   await User.findByIdAndUpdate(
@@ -88,7 +88,6 @@ router.post("/addCar/:groupId", isLoggedIn, async (req, res) => {
                   );
                 }
               });
-            });
           });
         });
       });
@@ -221,7 +220,7 @@ router.post("/leaveCar/:carId", async (req, res) => {
             const { username } = user;
 
             const newNotification = {
-              message: `${username} does no longer needs a seat in your care to drive to ${festivalName}.`,
+              message: `${username} does no longer need a seat in your car to drive to ${festivalName}.`,
               date: today,
               type: "carsharing",
             };
