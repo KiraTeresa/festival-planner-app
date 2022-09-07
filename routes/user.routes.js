@@ -3,11 +3,13 @@ const router = express.Router();
 const User = require("../models/User.model");
 const Group = require("../models/Group.model");
 const Festival = require("../models/Festival.model");
+const Car = require("../models/Car.model");
 const isLoggedIn = require("../middleware/isLoggedIn");
 const { Types } = require("mongoose");
 
 router.get("/dashboard", isLoggedIn, async (req, res) => {
-  User.findById(req.session.user)
+  const currentUser = req.session.user;
+  User.findById(currentUser)
     .populate("groups")
     .then(async (user) => {
       const { username, watchlist, notifications, groups } = user;
@@ -22,11 +24,62 @@ router.get("/dashboard", isLoggedIn, async (req, res) => {
         }
       }
 
+      const carsDriving = [];
+      await Car.find({ driver: Types.ObjectId(currentUser) }).then(
+        async (cars) => {
+          for (const car of cars) {
+            const group = await Group.findById(car.postedInGroup);
+            const festival = await Festival.findById(car.festivalDriving);
+            const to = car.dayDriving;
+            const back = car.dayDrivingBack;
+            const seats = car.seatsAvailable;
+            const passengers = [];
+            for (const element of passengers) {
+              const passenger = await User.findById(element);
+              passengers.push(passenger);
+            }
+            const carInfo = { group, festival, to, back, seats, passengers };
+            carsDriving.push(carInfo);
+          }
+        }
+      );
+
+      const carsPassenger = [];
+      await Car.find({
+        passengers: { $in: Types.ObjectId(currentUser) },
+      }).then(async (cars) => {
+        for (const car of cars) {
+          const driver = await User.findById(car.driver);
+          const group = await Group.findById(car.postedInGroup);
+          const festival = await Festival.findById(car.festivalDriving);
+          const to = car.dayDriving;
+          const back = car.dayDrivingBack;
+          const seats = car.seatsAvailable;
+          const passengers = [];
+          for (const element of passengers) {
+            const passenger = await User.findById(element);
+            passengers.push(passenger);
+          }
+          const carInfo = {
+            driver,
+            group,
+            festival,
+            to,
+            back,
+            seats,
+            passengers,
+          };
+          carsPassenger.push(carInfo);
+        }
+      });
+
       res.render("user/dashboard", {
         username,
         notifications,
         watchlist,
         usersGroups,
+        carsDriving,
+        carsPassenger,
       });
     })
 

@@ -14,7 +14,7 @@ router.get("/search-result", isLoggedIn, (req, res) => {
     .searchArtists(bandName)
     .then((data) => {
       const band = data.body.artists.items;
-      console.log(band);
+      // console.log(band);
       Festival.findById(festivalID).then((festival) => {
         const festivalName = festival.name;
         res.render("band/search-result", {

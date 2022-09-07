@@ -21,6 +21,19 @@
 
     </div>
 
+<div class="grid-element" id="dashboard-item4">
+    <h3>Cars you are sharing:</h3>
+{{#each carsDriving}}
+<div class="item-card">
+    You are the driver to {{festival.name}}. <br>To: {{to}} | Back: {{back}} <br> Going with you: {{#each passengers}}{{username}}{{/each}}{{#unless passengers}} -- {{/unless}} <br>Vacant seats: {{seats}}<br> Posted in: {{group.groupName}}
+</div>
+{{/each}}
+{{#each carsPassenger}}
+<div class="item-card">
+    You are driving with {{driver.username}} to {{festival.name}}. <br>To: {{to}} | Back: {{back}} <br> Going with you: {{#each passengers}}{{username}}{{/each}}{{#unless passengers}} -- {{/unless}}<br>Vacant seats: {{seats}}<br> Posted in: {{group.groupName}}
+</div>
+{{/each}}
+</div>
 
     <div class="grid-element" id="dashboard-item2">
         <h3>Your personal setlist:</h3>
