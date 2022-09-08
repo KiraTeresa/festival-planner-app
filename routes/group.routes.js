@@ -376,49 +376,6 @@ router.get("/:groupName/join/:userId", (req, res) => {
     );
 });
 
-// // Path when admin allows user to join the group (Solution with form):
-// router.post("/:groupName/join/:userId", async (req, res) => {
-//   const { groupName, userId } = req.params;
-//   const currentUser = req.session.user;
-//   await Group.findOne({ groupName })
-//     .populate("admin crew pending")
-//     .then(async (group) => {
-//       const { _id, admin, crew, pending } = group;
-//       if (admin._id.equals(currentUser)) {
-//         // add user to crew and remove from pendingArr:
-//         crew.push(userId);
-//         const pendingUser = pending.find((element) => element.equals(userId));
-//         const posInWaitingList = pending.indexOf(pendingUser);
-//         console.log("Index: ", posInWaitingList);
-//         pending.splice(posInWaitingList, 1);
-//         console.log("New pending: ", pending);
-//         group.save();
-//         // group.populate("admin crew pending");
-
-//         // send notification to user:
-//         await User.findById(userId).then((user) => {
-//           const { notifications, groups } = user;
-//           const today = new Date().toISOString().slice(0, 10);
-
-//           const newNotification = {
-//             message: `Hey ${user.username}, you've been accepted as a new crew member of the group ${groupName}. Congrats!`,
-//             date: today,
-//             type: "group",
-//           };
-//           notifications.push(newNotification);
-
-//           // also add group to user.groups array:
-//           groups.push(new Types.ObjectId(_id));
-//           user.save();
-//           res.redirect(`/group/${_id}`);
-//         });
-//       }
-//     })
-//     .catch((err) =>
-//       console.log("Error while allowing a user to join the crew.", err)
-//     );
-// });
-
 // Path when admin denies user to join the group:
 router.get("/:groupName/deny/:userId", (req, res) => {
   const { groupName, userId } = req.params;
@@ -458,45 +415,6 @@ router.get("/:groupName/deny/:userId", (req, res) => {
     );
 });
 
-// // Path when admin denies user to join the group (Solution with form):
-// router.post("/:groupName/deny/:userId", (req, res) => {
-//   const { groupName, userId } = req.params;
-//   const currentUser = req.session.user;
-//   Group.findOne({ groupName })
-//     .populate("admin crew pending")
-//     .then((group) => {
-//       const { _id, admin, pending } = group;
-//       if (admin._id.equals(currentUser)) {
-//         const pendingUser = pending.find((element) => element.equals(userId));
-//         const posInWaitingList = pending.indexOf(pendingUser);
-//         pending.splice(posInWaitingList, 1);
-//         group.save();
-//         group.populate("admin crew pending");
-//         console.log(
-//           `User ${userId} was denied access to the group ${groupName}`
-//         );
-
-//         // send notification to user:
-//         User.findById(userId).then((user) => {
-//           const { notifications } = user;
-//           const today = new Date().toISOString().slice(0, 10);
-
-//           const newNotification = {
-//             message: `Sorry ${user.username}, the admin of the group ${groupName} didn't not give you permission to join the crew.`,
-//             date: today,
-//             type: "group",
-//           };
-//           notifications.push(newNotification);
-//           user.save();
-//           res.redirect(`/group/${_id}`);
-//         });
-//       }
-//     })
-//     .catch((err) =>
-//       console.log("Error while allowing a user to join the crew.", err)
-//     );
-// });
-
 // Leave a crew:
 router.post("/:id/leave", isLoggedIn, async (req, res) => {
   const { id } = req.params;
@@ -509,8 +427,6 @@ router.post("/:id/leave", isLoggedIn, async (req, res) => {
       const { admin, crew, pending, groupName, festivals } = group;
       const numCrewmembers = crew.length;
 
-      // if (!admin._id.equals(currentUser)) {
-
       // check if user is part of the crew or on pending list:
       const crewMember = await crew.find((aUser) =>
         aUser._id.equals(currentUser)
@@ -521,15 +437,6 @@ router.post("/:id/leave", isLoggedIn, async (req, res) => {
 
       // remove if user is a crew member:
       if (crewMember) {
-        // const index = crew.indexOf(crewMember);
-        // crew.splice(index, 1);
-
-        // console.log("Crew before: ", crew);
-        // console.log("The Crewmember: ", crewMember.username, crewMember._id);
-        // console.log("Log if-statement: ", admin._id.equals(crewMember._id));
-        // console.log("Index 0: ", crew[0]._id);
-        // console.log("Index 1: ", crew[1]._id);
-
         // check if the current user also is the admin:
         if (await admin._id.equals(crewMember._id)) {
           // if admin is the only member --> delete the group:
@@ -562,14 +469,6 @@ router.post("/:id/leave", isLoggedIn, async (req, res) => {
               );
             });
           }
-          // .then((updatedGroup) => {
-          //   console.log(
-          //     "The Updated Group with admin change looks like this: ",
-          //     updatedGroup
-          //   );
-          //   console.log("Index 0: ", updatedGroup.crew[0]._id);
-          //   console.log("Index 1: ", updatedGroup.crew[1]._id);
-          // });
         } else {
           await Group.findByIdAndUpdate(
             id,
@@ -586,13 +485,6 @@ router.post("/:id/leave", isLoggedIn, async (req, res) => {
           },
           { new: true }
         );
-
-        // .then((user) => {
-        //   const { groups } = user;
-        //   const indexOfGroup = groups.indexOf(group._id);
-        //   groups.splice(indexOfGroup, 1);
-        //   user.save();
-        // });
       }
 
       // remove from pending list if user wants to leave before admin had a chance to accept or deny:
@@ -602,8 +494,6 @@ router.post("/:id/leave", isLoggedIn, async (req, res) => {
           { $pull: { pending: crewMember } },
           { new: true }
         );
-        // const index = pending.indexOf(crewMember);
-        // pending.splice(index, 1);
       }
 
       // redirect if none of the above is true:
@@ -612,9 +502,6 @@ router.post("/:id/leave", isLoggedIn, async (req, res) => {
       }
 
       console.log("The Group AFTER: ", group);
-
-      // save changes:
-      // group.save();
       group.populate("admin");
 
       // send notification to admin:
@@ -630,19 +517,6 @@ router.post("/:id/leave", isLoggedIn, async (req, res) => {
           $push: { notifications: newNotification },
         });
       });
-
-      // } else if (admin._id.equals(currentUser)) {
-      //   group.populate("admin crew pending festivals");
-      //   return res.status(400).render("group/details", {
-      //     groupName,
-      //     admin,
-      //     crew,
-      //     pending,
-      //     festivals,
-      //     id,
-      //     userError: "You are the admin, you cannot leave!!!",
-      //   });
-      // }
     })
     .then(() => res.redirect(`/group/${id}`))
     .catch((err) => console.log("Leaving the crew didn't work", err));

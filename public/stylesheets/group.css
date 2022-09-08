@@ -34,7 +34,6 @@
     }
 
 .element:hover {
-    /* text-shadow: 0 0 20px var(--text-color); */
     background-color: var(--text-color);
 }
 
@@ -59,7 +58,7 @@
 /* ************************ */
 .group-detail-container {
     color: white;
-    padding-left: 2rem;
+    /* padding-left: 2rem; */
 }
 
 /* .group-detail-element {
@@ -77,14 +76,12 @@
     display: flex;
 }
 
-.crew-list-element:not(:first-child) {
-    margin-left: .3rem;
-    border-bottom: dotted var(--primary-bg-color) 1px;
+.crew-list-element:not(:last-child):not(:first-child) {
+    border-right: 1px solid #fff;
 }
 
-.crew-list-element:not(:first-child):hover {
-    border-bottom: dotted #fff 1px;
-    cursor:none;
+.crew-list-element:not(:first-child) {
+    padding: 0 .5rem;
 }
 
 .pending-user {
@@ -121,30 +118,24 @@
     color: var(--primary-color);
 }
 
-/* #choose-festival-card > form {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-} */
-
-/* #add-festival-card {
-    background-color: var(--secondary-bg-color);
-    color: var(--text-color);
-  }
-  
-#add-festival-card:hover {
-    background-color: var(--text-color);
-    color: var(--secondary-color);
-  }
-
-#add-festival-card > form > label {
-    transition: none;
-} */
+.festival-link {
+    display: inline;
+}
 
 /* FESTIVAL BANDS */
 #group-grid-item3 {
     grid-column: 1/6;
     grid-row: 2;
+}
+
+.who-is-going-container {
+    display: flex;
+}
+
+.who-is-going-item:not(:last-child) {
+    border-right: 1px solid #fff;
+    padding-right: .5rem;
+    margin-right: .5rem;
 }
 
 /* CAR SHARING */
@@ -162,20 +153,20 @@
     display: none;
   }
 
-  .add-car-label {
-    color: var(--text-color);
-    border-bottom: dotted 1px var(--text-color);
-  }
+.add-car-label {
+  color: var(--text-color);
+  border-bottom: dotted 1px var(--text-color);
+}
 
-  .add-car-label:hover, #show-carsharing-form:checked ~ .add-car-label {
-    color: #fff;
-    border-bottom: dotted 1px #fff;
-  }
+.add-car-label:hover, #show-carsharing-form:checked ~ .add-car-label {
+  color: #fff;
+  border-bottom: dotted 1px #fff;
+}
 
-  .carsharing-form {
-    visibility: hidden;
-  }
+.carsharing-form {
+  visibility: hidden;
+}
   
-  #show-carsharing-form:checked ~ .carsharing-form {
-    visibility: visible;
-  }
+#show-carsharing-form:checked ~ .carsharing-form {
+  visibility: visible;
+}

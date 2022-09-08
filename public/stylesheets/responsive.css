@@ -1,0 +1,232 @@
+/* ************************************* max-width 1135px ************************************* */
+@media (max-width: 1135px){
+/* ********************* */
+/******* INDEX *******/
+/* ******************* */
+#hp-txt {
+    width: 80%;
+  }
+
+/* *************************** */
+/******** BAND SEARCH  ********/
+/* ************************* */
+.band-search-grid-col {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+/* *************************** */
+/******** BAND DETAIL  ********/
+/* ************************* */
+
+.track {
+    flex-direction: column;
+    padding: 1rem;
+}
+
+}
+
+/* ************************************* max-width 730px ************************************* */
+@media (max-width: 730px) {
+    
+header {
+    width: 100vw;
+}
+
+nav {
+    flex-direction: column;
+    padding: 2rem 0;
+}
+
+.helgahelps {
+    text-align: center;
+}
+
+.navigation {
+    flex-direction: column;
+}
+
+.navigation > a:not(:first-child) {
+    padding-left: 0;
+  }
+  
+.navigation > a:not(:last-child) {
+    border-right: none;
+    padding-right: 0;
+}
+
+main, footer {
+    max-width: 100vw;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+
+h1 {
+    margin: 0;
+}
+
+h2 {
+    align-self: center;
+}
+
+.grid-container {
+    width: 100vw;
+    padding: 0;
+}
+
+.grid-5-col {
+    grid-template-columns: repeat(1, 1fr);
+}
+
+.add-form {
+    align-items: center;
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 15px;
+    border: 1px solid var(--primary-bg-color)
+}
+
+/* ********************* */
+/******* INDEX *******/
+/* ******************* */
+.index-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5rem;
+}
+
+#hp-txt {
+    width: 90%;
+    font-size: 1.2rem;
+}
+
+/* *************************** */
+/******* USER DASHBOARD *******/
+/* ************************* */
+#dashboard-item1 {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  
+  #dashboard-item2 {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .db-band-item {
+    min-width: none;
+    width: 15%;
+  }
+
+  #dashboard-item3 {
+    grid-column: 1;
+    grid-row: 4;
+  }
+
+  #dashboard-item4 {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+/* ************************** */
+/******* GROUP DETAILS *******/
+/* ************************ */
+
+.group-detail-container {
+    padding: .5rem;
+}
+
+#group-grid-item1 {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+#group-grid-item2 {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+#group-grid-item3 {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+#group-grid-item4 {
+    grid-column: 1;
+    grid-row: 4;
+}
+
+/* *************************** */
+/****** FESTIVAL DETAILS ******/
+/* ************************* */
+#festival-grid-item1 {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+#festival-grid-item2 {
+    grid-column: 1;
+    grid-row: 2;
+    flex-direction: column;
+}
+
+#festival-grid-item3 {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+/* *************************** */
+/******** BAND SEARCH  ********/
+/* ************************* */
+.band-search-grid-col {
+    grid-template-columns: repeat(1, 1fr);
+}
+
+/* *************************** */
+/******* ADD BAND FORM  *******/
+/* ************************* */
+.band-form-container {
+    flex-direction: column-reverse;
+    align-items: center;
+    width: 100%;
+    gap: 2.5rem;
+}
+
+#add-band-form {
+    max-width: none;
+    width: 20rem;
+    text-align: center;
+}
+
+.band-image-wrapper > img {
+    width: 20rem;
+}
+
+/* *************************** */
+/******** BAND DETAIL  ********/
+/* ************************* */
+#band-item1 {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+#band-item2 {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+#band-item2 > img {
+    align-self: center;
+}
+
+#band-item3 {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+#band-item4 {
+    grid-column: 1;
+    grid-row: 4;
+}
+}

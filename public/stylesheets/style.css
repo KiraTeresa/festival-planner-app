@@ -118,27 +118,31 @@ body {
 nav {
   display: flex;
   justify-content: space-between;
-  /* border: purple dashed 1px; */
   padding: 1rem 4rem;
 }
 
 .navigation {
-  /* background-color: aqua; */
   text-align: center;
   display: flex;
   align-items: center;
-  gap: 0.7rem;
+}
+
+.navigation > a:not(:first-child) {
+  padding-left: .7rem;
+}
+
+.navigation > a:not(:last-child) {
+  border-right: 1px solid var(--primary-color);
+  padding-right: .7rem;
 }
 
 main {
-  /* border: aqua solid 1px; */
   max-width: 1900px;
   margin: 2rem 0;
   padding: 1rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  /* justify-content: center; */
   gap: 3rem;
 }
 
@@ -162,9 +166,7 @@ h1 {
 }
 
 h2 {
-  /* margin-top: 0.5rem; */
   font-size: 1.7rem;
-  /* align-self: flex-end; */
 }
 
 h3 {
@@ -191,7 +193,6 @@ h3 {
 }
 
 input {
-  /* height: 1.5rem; */
   padding-bottom: .3rem;
   padding-left: .1rem;
   border: none;

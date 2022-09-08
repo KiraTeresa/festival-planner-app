@@ -3,8 +3,6 @@
         <div class="grid-element" id="group-grid-item1">
             <h3>Group details</h3>
             <div class="item-card">
-                {{!-- Id: {{id}}
-                <br> --}}
                 <div>
                 Admin: {{admin.username}}
                 </div>
@@ -25,7 +23,6 @@
 
             <div class="item-card">
                 <h4>Waiting to join the crew:</h4>
-                {{!-- Solution with anchor tag --}}
                 {{#each pending}}
                 <div class="pending-user">
                     <div>{{username}}</div>
@@ -37,17 +34,7 @@
                     {{/if}}
                 </div>
                 {{/each}}
-                
-                {{!-- Solution with form --}}
-                {{!-- {{#each pending}}
-                {{username}}
-                <form action="/group/{{../groupName}}/join/{{_id}}" method="post">
-                <button type="submit">WORTHY</button>
-                </form>
-                <form action="/group/{{../groupName}}/deny/{{_id}}" method="post">
-                <button type="submit">DENY</button>
-                </form>
-                {{/each}} --}}
+
                 {{#unless pending}}
                 <i>-- the waiting list is clear --</i>
                 {{/unless}}
@@ -60,7 +47,6 @@
                 <form action="/group/{{id}}/leave" method="post">
                     <button type="submit" class="button-53 btn-leave">Leave</button>
                 </form>
-                {{!-- <a href="/group/{{id}}/leave">Leave</a> --}}
             </div>
             {{#if userError}}
             <div class="item-card empty-card">
@@ -74,7 +60,8 @@
             <h3>Festivals</h3>
             {{#each festivals}}
             <div class="item-card">
-                {{name}} | {{startDate}} – {{endDate}}
+                <a href="/festival/{{_id}}" class="festival-link">{{name}}</a>
+                 | {{startDate}} – {{endDate}}
                 <form>
                     <input type="hidden" value="{{_id}}" name="id">
                 <button type="submit" class="button-28 btn-white btn-small">Show</button>
@@ -137,10 +124,6 @@
                 </label>
 
             <div class="item-card add-card carsharing-form">
-                {{!-- <input type="checkbox" id="show-carsharing-form">
-                    <label for="show-carsharing-form">
-                    <h4>Are you going to drive?</h4>
-                </label> --}}
 
                 <form action="/carsharing/addCar/{{id}}" method="post">
                     <label for="festivalDrivingId">Which festival?</label>
@@ -179,14 +162,20 @@
                         {{this.band.stage}}: {{this.band.startTime}}-{{this.band.endTime}}
                     </div>
 
-                    <div>Who of your crew is going?
-                        <br>
-                        {{#each this.crewArr}}
-                        {{this.username}} | 
-                        {{/each}}
-                        {{#unless this.crewArr}}
-                        <i>-- no one so far --</i>
-                        {{/unless}}
+                    <div>
+                        <div>
+                            Who of your crew is going?
+                        </div>
+                        <div class="who-is-going-container">
+                            {{#each this.crewArr}}
+                            <div class="who-is-going-item">
+                                {{this.username}}
+                            </div>
+                            {{/each}}
+                            {{#unless this.crewArr}}
+                                <i>-- no one so far --</i>
+                            {{/unless}}
+                        </div>
                     </div>
 
                     <div>

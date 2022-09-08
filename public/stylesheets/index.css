@@ -1,6 +1,6 @@
 /* ********************* */
-/******* HOMEPAGE *******/
-/* ********************* */
+/******* INDEX *******/
+/* ******************* */
 .index-container {
   display: flex;
   justify-content: center;
@@ -9,9 +9,6 @@
 
   #hp-txt {
     width: 40%;
-    /* margin: 1.5rem 10rem 0 5rem; */
-    /* margin-top: 1.5rem; */
-    /* margin-left: 5rem; */
     text-align: justify;
     font-size: 1.5rem;
     display: flex;
@@ -34,12 +31,7 @@
   }
   
   .form-container {
-    /* position: absolute; */
     position: relative;
-    /* left: calc(50% + 200px);
-    top: calc(50% - 248px); */
-    /* align-self: center; */
-    /* gap: 2.5rem; */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -49,22 +41,12 @@
     background-color: #fff;
     border: var(--primary-color) solid 2px;
     border-radius: 5%;
-    /* transform: rotate(-25deg); */
   }
   
   .index-form {
     position: relative;
-    /* background-color: yellow; */
-    /* border: var(--primary-color) solid 2px; */
-    /*border-radius: 5%; */
-    /* height: calc(100% - 100px); */
-    /* height: 100%; */
     width: 25rem;
-    /* display: flex;
-    flex-direction: column; */
     text-align: center;
-    /* background-color: #fff; */
-    /* transform: rotate(25deg); */
   }
   
   .index-form > form {
@@ -72,16 +54,12 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    /* border: red solid 1px; */
     height: 60%;
     gap: 1.5rem;
     margin-top: 2rem;
-    /* margin-bottom: 1rem; */
   }
   
   #signup-form {
-    /* border: var(--primary-color) solid 2px; */
-    /* border-radius: 5%; */
     background-color: #fff;
     height: 100%;
     font-size: 1.5rem;
@@ -90,15 +68,10 @@
   
   #login-form {
     color: #fff;
-    /* margin-top: 1rem; */
     position: absolute;
     top: 82%;
     height: 100%;
-    /* left: 120px; */
-    /* transform: translateY(-.5rem); */
-    /* transform: rotate(-9deg); */
     border: var(--primary-color) solid 2px;
-    /* border-radius: 5%; */
     background-color: var(--secondary-color);
     transition: 1.2s ease-in-out;
   }

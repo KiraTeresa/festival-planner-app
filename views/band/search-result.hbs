@@ -1,17 +1,10 @@
 <h2>Search results for: {{bandName}}</h2>
-<div class="grid-element grid-5-col">
-{{!-- <div class="grid-element" id="band-grid-item1"> --}}
+<div class="grid-element band-search-grid-col">
     {{#each band}}
     <div class="item-card band-card">
         <div class="band-card-info">
             <div>
-                {{#if images.2.url}}
                 <img src="{{images.2.url}}" alt="{{name}} band image" class="band-img">
-                {{/if}}
-                {{#unless images.2.url}}
-                <img src="./public/assets/images/matthias-wagner-QrqeusbpFMM-unsplash.jpg" alt="placeholder band image" class="band-img">
-                {{!-- Photo by <a href="https://unsplash.com/@matwag?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Matthias Wagner</a> on <a href="https://unsplash.com/s/photos/band?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a> --}}
-                {{/unless}}
             </div>
             <div>
                 <h3>{{name}}</h3>
@@ -25,5 +18,4 @@
         </form>
     </div>
     {{/each}}
-{{!-- </div> --}}
 </div>
