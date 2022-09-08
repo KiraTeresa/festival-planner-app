@@ -48,6 +48,11 @@
     color: var(--secondary-color);
 }
 
+.element > a {
+    width: 100%;
+    text-align: center;
+}
+
 
 /* ************************** */
 /******* DETAILS *******/
