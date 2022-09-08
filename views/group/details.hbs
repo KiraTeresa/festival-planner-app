@@ -111,20 +111,22 @@
                     Back: {{dayDrivingBack}}
                     Seats available: {{seatsAvailable}}
                     Passengers: {{#if passengers}}{{#each passengers}} {{username}} {{/each}}{{/if}} {{#unless passengers}} none {{/unless}}
+                    <div class="in-out-car-forms">
                     {{#unless allOccupied}}
                         <form action="/carsharing/joinCar/{{_id}}" method="post">
                             <input type="hidden" name="groupId" value="{{../id}}">
                             <input type="hidden" name="festivalName" value="{{festivalDriving.name}}">
-                            <button type="submit">Get in</button>
+                            <button type="submit" class="button-28 btn-white btn-small">Get in</button>
                         </form>
                     {{/unless}}
                     {{#if passengers}}
                         <form action="/carsharing/leaveCar/{{_id}}" method="post">
                             <input type="hidden" name="groupId" value="{{../id}}">
                             <input type="hidden" name="festivalName" value="{{festivalDriving.name}}">
-                            <button type="submit">Get out</button>
+                            <button type="submit" class="button-28 btn-small btn-delete">Get out</button>
                         </form>
                     {{/if}}
+                    </div>
                 </div>
                 {{/each}}
             {{/if}}

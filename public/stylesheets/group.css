@@ -147,3 +147,30 @@
     grid-column: 2/4;
     grid-row: 1;
 }
+
+.in-out-car-forms {
+    display: flex;
+    align-items: center;
+}
+
+#show-carsharing-form {
+    display: none;
+  }
+
+  .add-car-label {
+    color: var(--text-color);
+    border-bottom: dotted 1px var(--text-color);
+  }
+
+  .add-car-label:hover, #show-carsharing-form:checked ~ .add-car-label {
+    color: #fff;
+    border-bottom: dotted 1px #fff;
+  }
+
+  .carsharing-form {
+    visibility: hidden;
+  }
+  
+  #show-carsharing-form:checked ~ .carsharing-form {
+    visibility: visible;
+  }
