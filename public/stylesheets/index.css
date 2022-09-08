@@ -103,17 +103,15 @@
     transition: 1.2s ease-in-out;
   }
   
-  label {
+  .index-label {
     transition: 1.2s ease-in-out;
   }
 
   #index-errorMessage {
-    /* background-color: yellow; */
     margin-top: .5rem;
     padding: .5rem;
     width: 25rem;
     text-align: center;
-    /* z-index: 1; */
   }
   
   /* ********************* */
@@ -124,11 +122,7 @@
   }
   
   #check:checked ~ #login-form {
-    /* transform: translateY(-17.5rem); */
-    /* height: 100%; */
-    /* position: absolute; */
     top: 18%;
-    /*left: 0; */
     border: none;
   }
   
@@ -142,18 +136,8 @@
   }
   
   #check:checked ~ #signup-form {
-    /* position: absolute; */
-    /* top: 82%; */
-    /* transform: translateY(-.5rem); */
-    /* transform: rotate(-8deg); */
-    /* z-index: 1; */
-    /* background-color: #fff; */
     font-size: 1rem;
   }
-  
-  /* #check:checked ~ #signup-form label{
-    transform: scale(1);	
-  } */
   
   /* ******************* */
   /* Homepage Animation */

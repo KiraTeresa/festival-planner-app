@@ -1,41 +1,46 @@
 <h2>Welcome to your personal Dashboard <span id="username">{{username}}</span></h2>
-<form action="/user/delete" method="post">
-<button type="submit">delete your account</button>
-</form>
+
 
 <div class="grid-container grid-5-col">
     
     <div class="grid-element" id="dashboard-item1">
         <h3>Your groups:</h3>
         
-        <div class="db-group-container">
+        {{!-- <div class="db-group-container"> --}}
         {{#if usersGroups}}
         {{#each usersGroups}}
-        <div class="db-group-item"><a href="/group/{{_id}}">{{groupName}}</a></div>
+        <div class="item-card"><a href="/group/{{_id}}">{{groupName}}</a></div>
         {{/each}}
         {{/if}}
         {{#unless usersGroups}}
-        <div class="db-group-item">
+        <div class="item-card empty-card">
             You haven't joint a group yet.
             <a href="/group">Go ahead!</a>
         </div>
         {{/unless}}
-        </div>
+        {{!-- </div> --}}
 
     </div>
 
 <div class="grid-element" id="dashboard-item4">
     <h3>Cars you are sharing:</h3>
-{{#each carsDriving}}
-<div class="item-card">
-    You are the driver to {{festival.name}}. <br>To: {{to}} | Back: {{back}} <br> Going with you: {{#each passengers}}{{username}}{{/each}}{{#unless passengers}} -- {{/unless}} <br>Vacant seats: {{seats}}<br> Posted in: {{group.groupName}}
-</div>
-{{/each}}
-{{#each carsPassenger}}
-<div class="item-card">
-    You are driving with {{driver.username}} to {{festival.name}}. <br>To: {{to}} | Back: {{back}} <br> Going with you: {{#each passengers}}{{username}}{{/each}}{{#unless passengers}} -- {{/unless}}<br>Vacant seats: {{seats}}<br> Posted in: {{group.groupName}}
-</div>
-{{/each}}
+    {{#each carsDriving}}
+    <div class="item-card">
+        You are the driver to {{festival.name}}. <br>To: {{to}} | Back: {{back}} <br> Going with you: {{#each passengers}}{{username}}{{/each}}{{#unless passengers}} -- {{/unless}} <br>Vacant seats: {{seats}}<br> Posted in: {{group.groupName}}
+    </div>
+    {{/each}}
+    {{#each carsPassenger}}
+    <div class="item-card">
+        You are driving with {{driver.username}} to {{festival.name}}. <br>To: {{to}} | Back: {{back}} <br> Going with you: {{#each passengers}}{{username}}{{/each}}{{#unless passengers}} -- {{/unless}}<br>Vacant seats: {{seats}}<br> Posted in: {{group.groupName}}
+    </div>
+    {{/each}}
+    {{#unless carsDriving}}
+    {{#unless carsPassenger}}
+    <div class="item-card empty-card">
+        Your car pool is empty.
+    </div>
+    {{/unless}}
+    {{/unless}}
 </div>
 
     <div class="grid-element" id="dashboard-item2">
@@ -86,4 +91,11 @@
         </div>
         {{/unless}}
     </div>
+</div>
+
+<div class="delete-wrapper">
+    <form action="/user/delete" method="post">
+        <button type="submit" class="button-53 btn-leave">delete your account</button>
+    </form>
+    <span class="caution">Caution! This action is irreversible!</span>
 </div>

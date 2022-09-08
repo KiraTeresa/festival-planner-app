@@ -98,27 +98,6 @@
                     <button type="submit" class="button-28 btn-white btn-small">Add to list</button>
                 </form>
             </div>
-
-            {{!-- <br>
-            <br>
-            {{#each festivals}}
-            <h3>{{name}}</h3>
-            {{#each bands}}
-            <div>{{bandName}} | {{day}} | {{stage}} | Stagetime: {{startTime}}-{{endTime}} 
-                <br>
-                Who is going?
-                <br>
-                <form action="/band/{{bandName}}/{{../_id}}/{{../../id}}/add-to-watchlist" method="post">
-                <button type="submit">Add to your personal setlist
-                </button>
-                </form>
-                <form action="/band/{{bandName}}/{{../_id}}/{{../../id}}/remove-from-watchlist" method="post">
-                <button type="submit">Remove from your personal setlist
-                 </button>
-                </form> --}}
-            {{!-- </div>
-            {{/each}}
-            {{/each}} --}}
         </div>
 
         <div class="grid-element" id="group-grid-item4">
@@ -149,8 +128,18 @@
                 </div>
                 {{/each}}
             {{/if}}
-            <div class="item-card add-card">
-                <h4>Are you going to drive?</h4>
+
+                <input type="checkbox" id="show-carsharing-form">
+                <label for="show-carsharing-form" class="add-car-label">
+                    ..click here to add your car..
+                </label>
+
+            <div class="item-card add-card carsharing-form">
+                {{!-- <input type="checkbox" id="show-carsharing-form">
+                    <label for="show-carsharing-form">
+                    <h4>Are you going to drive?</h4>
+                </label> --}}
+
                 <form action="/carsharing/addCar/{{id}}" method="post">
                     <label for="festivalDrivingId">Which festival?</label>
                     <select name="festivalDrivingId" id="festivalDrivingId">

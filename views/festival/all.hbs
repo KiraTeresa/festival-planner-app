@@ -1,6 +1,11 @@
 <h2>All festivals</h2>
 
 <div class="grid-container">
+    {{#if isOwner}}
+        <div class="element"  id="create-group-item">    
+            <a href="/festival/create">Add a festival</a>
+        </div>
+    {{/if}}
 
     {{#each festivals}}
         <div class="element festival-element">
@@ -8,9 +13,9 @@
         </div>
     {{/each}}
 
-    {{#if isOwner}}
-        <div class="element"  id="create-group-item">    
-            <a href="/festival/create">Add a festival</a>
+    {{#unless festivals}}
+        <div class="element">
+            <p>Sorry, there are no festivals at the moment.</p>
         </div>
-    {{/if}}
+    {{/unless}}
 </div>
