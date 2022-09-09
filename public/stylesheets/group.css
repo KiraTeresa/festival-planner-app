@@ -24,13 +24,13 @@
 }
 
 #create-group-item {
-    background-color: var(--secondary-bg-color);
-    color: var(--text-color);
+    background-color: #fff;
+    color: var(--secondary-color);
 }
 
 #create-group-item:hover {
-    background-color: #fff;
-    color: var(--secondary-color);
+    background-color: var(--secondary-color);
+    color: #fff;
 }
 
 .element > a {
@@ -41,9 +41,6 @@
 /* ************************** */
 /******* DETAILS *******/
 /* ************************ */
-.group-detail-container {
-    color: white;
-}
 
 /* crew */
 #group-grid-item1 {
@@ -100,7 +97,7 @@
     display: inline;
 }
 
-/* FESTIVAL BANDS */
+/* festival bands */
 #group-grid-item3 {
     grid-column: 1/6;
     grid-row: 2;
@@ -116,7 +113,7 @@
     margin-right: .5rem;
 }
 
-/* CAR SHARING */
+/* car sharing */
 #group-grid-item4 {
     grid-column: 2/4;
     grid-row: 1;
@@ -132,17 +129,25 @@
   }
 
 .add-car-label {
-  color: var(--text-color);
-  border-bottom: dotted 1px var(--text-color);
+  color: var(--secondary-bg-color);
+  border-bottom: dotted 1px var(--secondary-bg-color);
 }
 
 .add-car-label:hover, #show-carsharing-form:checked ~ .add-car-label {
-  color: #fff;
-  border-bottom: dotted 1px #fff;
+  color: var(--secondary-color);
+  border-bottom: dotted 1px var(--secondary-color);
 }
 
 .carsharing-form {
   visibility: hidden;
+  background-color: #fff;
+  color: var(--secondary-color);
+  border: var(--secondary-color) 1px solid;
+}
+
+.carsharing-form:hover {
+    background-color: #fff;
+    color: var(--secondary-color);
 }
   
 #show-carsharing-form:checked ~ .carsharing-form {

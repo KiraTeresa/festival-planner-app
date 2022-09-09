@@ -18,7 +18,7 @@
   #hp-info {
     margin-top: 2rem;
     background-color: var(--primary-color);
-    border: #000 solid 0.2rem;
+    border: #fff solid 1px;
     border-radius: 1.5rem;
     padding: 1rem 1.7rem;
     color: #fff;
@@ -71,8 +71,9 @@
     position: absolute;
     top: 82%;
     height: 100%;
-    border: var(--primary-color) solid 2px;
-    background-color: var(--secondary-color);
+    /* border: var(--primary-color) solid 2px; */
+    border: none;
+    background-color: var(--text-color);
     transition: 1.2s ease-in-out;
   }
   
@@ -96,7 +97,6 @@
   
   #check:checked ~ #login-form {
     top: 18%;
-    border: none;
   }
   
   #check:checked ~ #login-form label{

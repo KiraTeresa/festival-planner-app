@@ -28,8 +28,8 @@
   
   .db-band-item {
     border-radius: .5rem;
-    background-color: var(--secondary-color);
-    color: var(--secondary-bg-color);
+    background-color: var(--text-color);
+    color: var(--secondary-color);
     font-weight: bolder;
     padding: 0.3rem;
     min-width: 150px;

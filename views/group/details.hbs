@@ -110,7 +110,7 @@
                         <form action="/carsharing/leaveCar/{{_id}}" method="post">
                             <input type="hidden" name="groupId" value="{{../id}}">
                             <input type="hidden" name="festivalName" value="{{festivalDriving.name}}">
-                            <button type="submit" class="button-28 btn-small btn-delete">Get out</button>
+                            <button type="submit" class="button-28 btn-small btn-remove">Get out</button>
                         </form>
                     {{/if}}
                     </div>
@@ -142,7 +142,7 @@
                     <label for="capacity">Capacity</label>
                     <input type="number" name="capacity" id="capacity" min="1">
 
-                    <button type="submit" class="button-28 btn-white btn-small">Share your car</button>
+                    <button type="submit" class="button-28 btn-white btn-small" id="btn-car">Share your car</button>
                 </form>
             </div>
         </div>

@@ -10,6 +10,7 @@
 .edit-wrapper {
     display: flex;
     align-items: center;
+    gap: .5rem;
 }
 
 #festival-grid-item2 {
@@ -18,12 +19,6 @@
     align-items: center;
     gap: .5rem;
 }
-
-/* .stage-container {
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-  } */
 
 .stage-card {
     border-radius: .5rem;

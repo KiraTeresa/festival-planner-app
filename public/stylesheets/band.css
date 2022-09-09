@@ -88,7 +88,7 @@
 }
 
 #band-item3 > h3 {
-    color: var(--text-color);
+    color: var(--secondary-color);
 }
 
 .track-container {
@@ -103,7 +103,8 @@
 #band-item4 {
     grid-column: 1/6;
     grid-row: 3/4;
-    background-color: var(--secondary-bg-color);
+    background-color: #fff;
+    color: var(--secondary-color);
 }
 
 #band-item4 > a {
@@ -113,6 +114,6 @@
 }
 
 #band-item4:hover {
-    background-color: #fff;
-    color: var(--secondary-color);
+    background-color: var(--secondary-color);
+    color: #fff;
 }

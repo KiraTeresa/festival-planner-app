@@ -3,11 +3,11 @@
 /* ************************ */
 
 :root {
-  --primary-bg-color: #1A1423;
-  --secondary-bg-color: #372549;
-  --text-color: #EACDC2;
-  --primary-color: #774C60;
-  --secondary-color: #B75D69;
+  --primary-bg-color: #F4F1DE;
+  --secondary-bg-color: #81B29A;
+  --text-color: #F2CC8F;
+  --primary-color: #E07A5F;
+  --secondary-color: #3D405B;
 }
 
 /* ********************** */
@@ -50,7 +50,7 @@ body {
   grid-template-rows: auto 1fr auto;
   font-family: 'poppins', sans-serif;
   color: var(--primary-color);
-  background: linear-gradient(to bottom right,#fff 50%, var(--primary-bg-color) 50%);
+  background: linear-gradient(to bottom right,#fff 50%, var(--secondary-bg-color) 50%);
   position: relative;
 }
 
@@ -108,7 +108,8 @@ h3 {
 
 .helgahelps {
   font-family: 'bangers', sans-serif;
-  font-size: 2rem;
+  font-size: 3rem;
+  color: var(--secondary-bg-color);
 }
 
 .errorMessage {
@@ -154,7 +155,7 @@ select {
 /* GRID */
 .grid-container {
   background-color: var(--primary-color);
-  border: #000 solid 0.2rem;
+  border: #fff solid 1px;
   border-radius: 1.5rem;
   padding: 0.5rem;
   width: 100%;
@@ -171,7 +172,7 @@ select {
 .grid-element {
   background-color: var(--primary-bg-color);
   border: #fff solid 1px;
-  border-radius: 1.5rem;
+  border-radius: 1rem;
   padding: .5rem;
 }
 
@@ -191,7 +192,7 @@ select {
 
 .add-card {
   background-color: var(--secondary-bg-color);
-  color: var(--text-color);
+  color: var(--primary-bg-color);
 }
 
 .add-card:hover {

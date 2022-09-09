@@ -52,6 +52,10 @@
     bottom: 2px;
     left: 2px;
   }
+
+  .button-53:hover {
+      background-color: var(--secondary-color);
+  }
   
   @media (min-width: 768px) {
     .button-53 {
@@ -98,7 +102,8 @@
 
 /* Group Details */
 .btn-join {
-  background-color: var(--primary-bg-color);
+  background-color: var(--secondary-bg-color);
+  margin-bottom: .7rem;
 }
 
 .btn-join:after {
@@ -107,7 +112,7 @@
 }
 
 .btn-leave {
-    background-color: var(--secondary-bg-color);
+    background-color: var(--text-color);
     color: #fff;
     font-size: .9rem;
     width: 20%;
@@ -133,10 +138,18 @@
   border-width: 1px;
   border-radius: .5rem;
   width: fit-content;
+  color: var(--secondary-color);
+  border-color: var(--secondary-color)
 }
 
-.btn-delete:hover {
-  background-color: var(--text-color);
-  border-color: transparent;
-  color: var(--primary-bg-color);
+.btn-remove {
+  font-size: .6rem;
+  letter-spacing: 2px;
+  border-width: 1px;
+  border-radius: .5rem;
+  width: fit-content;
+}
+
+#btn-car {
+  margin-top: .7rem;
 }

@@ -1,22 +1,16 @@
 /* ************************************* max-width 1135px ************************************* */
 @media (max-width: 1135px){
-/* ********************* */
-/******* INDEX *******/
-/* ******************* */
 #hp-txt {
     width: 80%;
   }
 
-/* *************************** */
-/******** BAND SEARCH  ********/
-/* ************************* */
+.grid-5-col {
+   grid-template-columns: repeat(3, 1fr);
+}
+
 .band-search-grid-col {
     grid-template-columns: repeat(2, 1fr);
 }
-
-/* *************************** */
-/******** BAND DETAIL  ********/
-/* ************************* */
 
 .track {
     flex-direction: column;
@@ -186,6 +180,10 @@ h2 {
 #festival-grid-item3 {
     grid-column: 1;
     grid-row: 3;
+}
+
+.band-card {
+    margin: 0;
 }
 
 /* *************************** */
