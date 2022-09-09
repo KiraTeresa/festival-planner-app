@@ -1,26 +1,7 @@
-/* body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
-
-a {
-  color: #00b7ff;
-}
-
-h1 {
-  color: 15px;
-}
-
-div {
-  border: 1px solid #000;
-} */
-
-
 /* ************************** */
 /******* COLOR PALETTE *******/
 /* ************************ */
 
-/* Purple DarkRose Beige */
 :root {
   --primary-bg-color: #1A1423;
   --secondary-bg-color: #372549;
@@ -28,42 +9,6 @@ div {
   --primary-color: #774C60;
   --secondary-color: #B75D69;
 }
-
-/* Green Brown Yellow */
-/* :root {
-  --primary-bg-color: #739E82;
-  --secondary-bg-color: #99621e;
-  --text-color: #F3FFB6;
-  --primary-color: #2C5530;
-  --secondary-color: #D38B5D;
-} */
-
-/* Black Violet Lavender Mint */
-/* :root {
-  --primary-bg-color: #070707;
-  --secondary-bg-color: #553555;
-  --text-color: #ADF1D2;
-  --primary-color: #755B69;
-  --secondary-color: #96C5B0;
-} */
-
-/* Brown Orange Wheat Turquoise */
-/* :root {
-  --primary-bg-color: #562C2C;
-  --secondary-bg-color: #F2542D;
-  --text-color: #F5DFBB;
-  --primary-color: #0E9594;
-  --secondary-color: #127475;
-} */
-
-/* Yellow Snow Rose Mint Salom */
-/* :root {
-  --primary-bg-color: #F5CAC3;
-  --secondary-bg-color: #F6BD60;
-  --text-color: #F7EDE2;
-  --primary-color: #84A59D;
-  --secondary-color: #F28482;
-} */
 
 /* ********************** */
 /********* FONTS *********/
@@ -73,11 +18,6 @@ div {
   font-family: bangers;
   src: url(/assets/fonts/Bangers/Bangers-Regular.ttf);
 }
-
-/* @font-face {
-  font-family: laila;
-  src: url(/assets/fonts/Laila/Laila-Regular.ttf);
-} */
 
 @font-face {
   font-family: poppins;
@@ -111,7 +51,6 @@ body {
   font-family: 'poppins', sans-serif;
   color: var(--primary-color);
   background: linear-gradient(to bottom right,#fff 50%, var(--primary-bg-color) 50%);
-  /* background: linear-gradient(to left, var(--primary-bg-color) 50%, #fff 50%); */
   position: relative;
 }
 
@@ -137,7 +76,6 @@ nav {
 }
 
 main {
-  /* max-width: 1900px; */
   margin: 2rem 0;
   padding: 1rem 2rem;
   display: flex;
@@ -154,11 +92,6 @@ footer {
 /* *************************** */
 /******* GENERAL STYLES *******/
 /* ************************* */
-/* #logo {
-  height: 100px;
-  width: 150px;
-} */
-
 h1 {
   font-family: 'bangers', sans-serif;
   font-size: 5rem;
@@ -193,8 +126,7 @@ h3 {
 }
 
 input {
-  padding-bottom: .3rem;
-  padding-left: .1rem;
+  padding: .3rem .1rem;
   border: none;
   border-bottom: #a3a3a3 solid 2.5px;
   background-color: transparent;
@@ -207,7 +139,6 @@ input:hover {
 input:focus, input:valid {
   color: var(--primary-color);
   font-size: 1rem;
-  outline: none;
   border-bottom: var(--primary-color) solid 2.5px;
 }
 
@@ -246,13 +177,11 @@ select {
 
 /* CARDS */
 .item-card {
-  /* border: turquoise dashed 2px; */
   border-radius: 1rem;
   background-color: var(--primary-color);
   color: #fff;
   padding: 0.3rem;
   margin: .7rem 0;
-  /* max-height: 320px; */
 }
 
 .empty-card {
