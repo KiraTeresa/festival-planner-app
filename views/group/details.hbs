@@ -92,11 +92,11 @@
             {{#if carSharing}}
                 {{#each carSharing}}
                 <div class="item-card">
-                    Driver: {{driver.username}}
-                    Festival: {{festivalDriving.name}}
-                    To: {{dayDriving}}
-                    Back: {{dayDrivingBack}}
-                    Seats available: {{seatsAvailable}}
+                    Driver: {{driver.username}} |
+                    Festival: {{festivalDriving.name}} |
+                    To: {{dayDriving}} |
+                    Back: {{dayDrivingBack}} |
+                    Seats available: {{seatsAvailable}} |
                     Passengers: {{#if passengers}}{{#each passengers}} {{username}} {{/each}}{{/if}} {{#unless passengers}} none {{/unless}}
                     <div class="in-out-car-forms">
                     {{#unless allOccupied}}

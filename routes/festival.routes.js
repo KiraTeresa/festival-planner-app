@@ -126,7 +126,7 @@ router.get("/:festivalId/add-band/", isOwner, (req, res) => {
         stages,
         spotifyId,
         bandName: name,
-        image: images[2].url,
+        image: images[0].url,
       });
     });
   });

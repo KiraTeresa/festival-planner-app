@@ -1,23 +1,9 @@
 /* ************************** */
 /******* CREATE *******/
 /* ************************ */
-/* .create-group-container {
-    background-color: var(--primary-bg-color);
-    border-radius: 1.5rem;
-    height: 50%;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-}*/
-
 #groupName {
     border-bottom-color: var(--primary-color);
 }
-
-/* #groupName::placeholder {
-    color: #fff;
-    text-align: center;
-} */
 
 /* ************************** */
 /******* OVERVIEW *******/
@@ -52,20 +38,12 @@
     text-align: center;
 }
 
-
 /* ************************** */
 /******* DETAILS *******/
 /* ************************ */
 .group-detail-container {
     color: white;
-    /* padding-left: 2rem; */
 }
-
-/* .group-detail-element {
-    background-color: var(--primary-bg-color);
-    border: #fff solid 1px;
-    border-radius: 1.5rem;
-} */
 
 /* crew */
 #group-grid-item1 {
