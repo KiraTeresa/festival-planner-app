@@ -485,6 +485,97 @@ router.post("/:id/leave", isLoggedIn, async (req, res) => {
           },
           { new: true }
         );
+
+        // also remove from any related car where user is passenger:
+        await Car.find({
+          $and: [
+            { postedInGroup: Types.ObjectId(id) },
+            { passengers: { $in: Types.ObjectId(currentUser) } },
+          ],
+        })
+          .populate("driver festivalDriving")
+          .then(async (cars) => {
+            for (const element of cars) {
+              const { driver, allOccupied, festivalDriving } = element;
+              await Car.findByIdAndUpdate(
+                element._id,
+                {
+                  $inc: { seatsAvailable: 1 },
+                  $pull: { passengers: Types.ObjectId(currentUser) },
+                },
+                { new: true }
+              ).then(async (updatedCar) => {
+                // change value of allOccupied if all seats were taken before this user got out:
+                if (allOccupied) {
+                  await Car.findByIdAndUpdate(
+                    updatedCar._id,
+                    { $set: { allOccupied: !allOccupied } },
+                    { new: true }
+                  );
+                }
+              });
+              // send notification...
+              const today = new Date().toISOString().slice(0, 10);
+
+              await User.findById(currentUser).then(async (user) => {
+                const { username } = user;
+
+                const newNotification = {
+                  message: `${username} left the group ${groupName} and therefore does no longer need a seat in your car to drive to ${festivalDriving.name}.`,
+                  date: today,
+                  type: "carsharing",
+                };
+
+                // ... to driver:
+                await User.findByIdAndUpdate(
+                  driver._id,
+                  { $push: { notifications: newNotification } },
+                  { new: true }
+                );
+              });
+            }
+          });
+
+        // also remove from any related car where user is driver:
+        await Car.find({
+          $and: [
+            { postedInGroup: Types.ObjectId(id) },
+            { driver: Types.ObjectId(currentUser) },
+          ],
+        }).then(async (cars) => {
+          for (const element of cars) {
+            await Car.findByIdAndDelete(element._id)
+              .populate("driver festivalDriving")
+              .then(async (deletedCar) => {
+                const { driver, festivalDriving, passengers } = deletedCar;
+
+                // remove from groups car pool:
+                await Group.findByIdAndUpdate(
+                  id,
+                  { $pull: { carSharing: Types.ObjectId(deletedCar._id) } },
+                  { new: true }
+                );
+
+                // send notification...
+                const today = new Date().toISOString().slice(0, 10);
+
+                const newNotification = {
+                  message: `${driver.username} left the group ${groupName} and therefore the car you were supposed to get in to drive to ${festivalDriving.name} was removed, sorry.`,
+                  date: today,
+                  type: "carsharing",
+                };
+
+                // ... to all passengers:
+                for (const passenger of passengers) {
+                  await User.findByIdAndUpdate(
+                    passenger,
+                    { $push: { notifications: newNotification } },
+                    { new: true }
+                  );
+                }
+              });
+          }
+        });
       }
 
       // remove from pending list if user wants to leave before admin had a chance to accept or deny:

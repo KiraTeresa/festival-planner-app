@@ -316,32 +316,60 @@ router.post("/delete", isLoggedIn, async (req, res) => {
   // .. remove all cars where user is driver
   await Car.find({ driver: Types.ObjectId(currentUser) }).then(async (cars) => {
     for (const car of cars) {
-      const { _id, passengers, festivalDriving } = car;
-      console.log("CAR TO: ", festivalDriving);
+      // delete the car from car collection:
+      await Car.findById(car._id)
+        .populate("driver festivalDriving postedInGroup")
+        .then(async (foundCar) => {
+          const { driver, festivalDriving, passengers, postedInGroup } =
+            foundCar;
 
-      await Car.findByIdAndDelete(_id);
+          // remove car from the group it was posted in:
+          await Group.findByIdAndUpdate(
+            postedInGroup._id,
+            { $pull: { carSharing: Types.ObjectId(foundCar._id) } },
+            { new: true }
+          );
 
+          // send notification...
+          const today = new Date().toISOString().slice(0, 10);
+          const newNotification = {
+            message: `${driver.username} deleted the account and therefore the ride posted in ${postedInGroup.groupName} to drive to ${festivalDriving.name} was removed, sorry.`,
+            date: today,
+            type: "carsharing",
+          };
+
+          // ... to all passengers:
+          for (const passenger of passengers) {
+            await User.findByIdAndUpdate(
+              passenger,
+              { $push: { notifications: newNotification } },
+              { new: true }
+            );
+          }
+        });
+
+      await Car.findByIdAndDelete(car._id);
       // send notification...
-      let festival;
-      await Festival.findById(festivalDriving).then(
-        (festival) => (festival = festival.name)
-      );
+      // let festival;
+      // await Festival.findById(festivalDriving).then(
+      //   (festival) => (festival = festival.name)
+      // );
 
-      const newNotification = {
-        message: `${username} deleted the account and is therefore no longer driving to ${festival}.`,
-        date: today,
-        type: "carsharing",
-      };
+      // const newNotification = {
+      //   message: `${username} deleted the account and is therefore no longer driving to ${festival}.`,
+      //   date: today,
+      //   type: "carsharing",
+      // };
 
-      // ... to all passengers:
-      for (const passenger of passengers) {
-        console.log("Every passenger: ", passenger);
-        await User.findByIdAndUpdate(
-          passenger,
-          { $push: { notifications: newNotification } },
-          { new: true }
-        );
-      }
+      // // ... to all passengers:
+      // for (const passenger of passengers) {
+      //   console.log("Every passenger: ", passenger);
+      //   await User.findByIdAndUpdate(
+      //     passenger,
+      //     { $push: { notifications: newNotification } },
+      //     { new: true }
+      //   );
+      // }
     }
   });
 
